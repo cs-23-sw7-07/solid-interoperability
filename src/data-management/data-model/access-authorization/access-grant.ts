@@ -22,9 +22,11 @@ export class AccessGrant {
     //     this.hasDataGrant = hasDataGrant;
     // }
 
-    constructor() {
-        
-    }
+  constructor() {
+      
+  }
 
-    
+  toLiteral() {
+    throw new Error('Method not implemented.');
+  }   
 }
