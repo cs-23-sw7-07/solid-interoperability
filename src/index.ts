@@ -9,7 +9,3 @@ export * from './authentication/authentication';
 export function hello(){
     return "hello"
 }
-
-const accessGrant = new AccessGrant(new )
-
-new ExportToRDF().toRdfSocialAgentRegistration()

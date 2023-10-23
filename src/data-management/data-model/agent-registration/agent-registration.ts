@@ -1,15 +1,17 @@
 import { AccessGrant } from "../access-authorization/access-grant";
-import { SocialAgent } from "../agent";
+import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 
 export abstract class AgentRegistration {
+    id: string;
     registeredBy : SocialAgent;
-    registeredWith : string;
+    registeredWith : ApplicationAgent;
     registeredAt : Date;
     updatedAt : Date;
-    registeredAgent : string;
+    registeredAgent : Agent;
     hasAccessGrant : AccessGrant;
     
-    constructor(registeredBy: SocialAgent, registeredWith: string, registeredAt : Date, updatedAt : Date, registeredAgent: string, hasAccessGrant: AccessGrant) {
+    constructor(id: string, registeredBy: SocialAgent, registeredWith: ApplicationAgent, registeredAt : Date, updatedAt : Date, registeredAgent: Agent, hasAccessGrant: AccessGrant) {
+        this.id = id;
         this.registeredBy = registeredBy;
         this.registeredWith = registeredWith;
         this.registeredAt = registeredAt;
