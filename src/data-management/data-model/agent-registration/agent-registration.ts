@@ -20,6 +20,3 @@ export abstract class AgentRegistration {
         this.hasAccessGrant = hasAccessGrant;
     }
 }
-
-
-

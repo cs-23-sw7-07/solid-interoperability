@@ -26,5 +26,4 @@ export class DataRegistration {
         this.updatedAt = updatedAt;
         this.registeredShapeTree = registeredShapeTree;
     }
-
 }
