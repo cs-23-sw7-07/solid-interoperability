@@ -5,6 +5,7 @@ const { namedNode, literal, defaultGraph, quad } = DataFactory;
 import { ApplicationtRegistration } from "../data-model/agent-registration/application-registration";
 import { SocialAgentRegistration } from '../data-model/agent-registration/social-agent-registration';
 import { toXsdDateTime } from '../Utils/date-utils';
+import { DataRegistration } from '../data-model/data-registration/data-registration';
 
 const prefixes = {
     rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -97,5 +98,40 @@ export class ExportToRDF {
             literal(subject + registration.hasAccessGrant.id))
         );
         writer.end((error, result: string) => { return result });
+    }
+
+    toRdfDataRegistration(registration: DataRegistration){
+        const subject = `${registration.registeredBy.identity}/work/data/${registration.id}/`
+        const writer = new N3.Writer(prefixes)
+        writer.addQuad(
+            namedNode(subject),
+            namedNode('a'),
+            namedNode('interop:DataRegistration')
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredBy'),
+            literal(registration.registeredBy.getWebID()))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredWith'),
+            literal(registration.registeredWith))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredAt'),
+            literal(toXsdDateTime(registration.registeredAt)))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:updatedAt'),
+            literal(toXsdDateTime(registration.updatedAt)))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredShapeTree'),
+            literal(registration.registeredShapeTree))
+        );
     }
 }
