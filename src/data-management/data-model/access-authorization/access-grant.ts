@@ -24,7 +24,4 @@ export class AccessGrant {
         this.hasAccessNeedGroup = hasAccessNeedGroup;
         this.hasDataGrant = hasDataGrant;
     }    
-    toLiteral() {
-      throw new Error('Method not implemented.');
-    } 
 }
