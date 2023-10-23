@@ -66,4 +66,43 @@ export class ExportToRDF {
         writer.end((error, result: string) => {return result});
     }
 
+  toRdfApplicationRegistration(registration: ApplicationtRegistration) {
+    const webid = "https://alice.example/"
+    const registration_subject = `${webid}agents/c4562da9\/`
+
+    const writer = new N3.Writer(prefixes)
+    writer.addQuad(
+      namedNode(registration_subject),
+      namedNode('a'),
+      namedNode('interop:ApplicationRegistration')
+    );
+    writer.addQuad(quad(
+      namedNode(registration_subject),
+      namedNode('interop:registeredBy'),
+      literal(registration.registeredBy.getWebID()))
+    );
+    writer.addQuad(quad(
+      namedNode(registration_subject),
+      namedNode("interop:registeredAt "),
+      literal(`"${registration.registeredAt.toISOString()}}"^^xsd:dateTime"`))
+    );
+    writer.addQuad(quad(
+      namedNode(registration_subject),
+      namedNode("interop:updatedAt "),
+      literal(`"${registration.updatedAt.toISOString()}}"^^xsd:dateTime"`))
+    );
+    writer.addQuad(quad(
+      namedNode(registration_subject),
+      namedNode("interop:registeredAgent "),
+      literal(`${registration.registeredAgent}\#id`))
+    );
+    writer.addQuad(quad(
+      namedNode(registration_subject),
+      namedNode("interop:hasAccessGrant "),
+      literal(`${registration.hasAccessGrant.toLiteral()}`))
+    );
+    writer.end((error, result: string) => { return result });
+  }
+
 }
+
