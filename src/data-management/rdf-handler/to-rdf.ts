@@ -13,25 +13,55 @@ const prefixes = {
     interop: 'http://www.w3.org/ns/solid/interop#',
 };
 
+function toXsdDateTime(date: Date) {
+    return `"${date.toISOString()}"^^xsd:dateTime`
+}
+
 
 export class ExportToRDF {
     toRdfSocialAgentRegistration(registration: SocialAgentRegistration) {
-        const webid = "https://alice.example/"
-        const registeredWith = "https://jarvis.example/"
-        const registeredAgent = "https://bob.example"
-
-        const registration_subject = `${webid}agents/c4562da9\/`
+        const subject = `${registration.registeredBy.identity}/agents/${registration.id}/`
 
         const writer = new N3.Writer(prefixes)
         writer.addQuad(
-            namedNode(registration_subject),
+            namedNode(subject),
             namedNode('a'),
             namedNode('interop:SocialAgentRegistration')
         );
         writer.addQuad(quad(
-            namedNode(registration_subject),
+            namedNode(subject),
             namedNode('interop:registeredBy'),
-            literal(`${webid}/#id`)
+            literal(registration.registeredBy.getWebID())
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredWith'),
+            literal(registration.registeredWith.getWebID())
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredAt'),
+            literal(toXsdDateTime(registration.registeredAt))
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:updatedAt'),
+            literal(toXsdDateTime(registration.registeredAt))
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:registeredAgent'),
+            literal(registration.registeredAgent.getWebID())
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:reciprocalRegistration'),
+            literal(registration.reciprocalRegistration)
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:hasAccessGrant'),
+            literal(subject + registration.hasAccessGrant.id)
         ));
         writer.end((error, result: string) => {return result});
     }
