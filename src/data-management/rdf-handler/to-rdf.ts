@@ -6,6 +6,7 @@ import { ApplicationtRegistration } from "../data-model/agent-registration/appli
 import { SocialAgentRegistration } from '../data-model/agent-registration/social-agent-registration';
 import { toXsdDateTime } from '../Utils/date-utils';
 import { DataRegistration } from '../data-model/data-registration/data-registration';
+import { DataGrant, GrantScope } from '../data-model/access-authorization/data-grant';
 
 const prefixes = {
     rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -100,7 +101,7 @@ export class ExportToRDF {
         writer.end((error, result: string) => { return result });
     }
 
-    toRdfDataRegistration(registration: DataRegistration){
+    toRdfDataRegistration(registration: DataRegistration) {
         const subject = `${registration.registeredBy.identity}/work/data/${registration.id}/`
         const writer = new N3.Writer(prefixes)
         writer.addQuad(
@@ -134,4 +135,77 @@ export class ExportToRDF {
             literal(registration.registeredShapeTree))
         );
     }
+    
+    toRdfDataGrant(grant: DataGrant) {
+        const subject = `${grant.agentRegistrationIRI}/${grant.id}/`
+        const writer = new N3.Writer(prefixes)
+        writer.addQuad(
+            namedNode(subject),
+            namedNode('a'),
+            namedNode('interop:DataGrant')
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:dataOwner'),
+            literal(grant.dataOwner.getWebID()))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:grantee"),
+            literal(grant.grantee.getWebID()))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:registeredShapeTree"),
+            literal(grant.registeredShapeTree))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:hasDataRegistration"),
+            literal(grant.hasDataRegistration.storedAt))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:scopeOfGrant"),
+            literal(grant.scopeOfGrant))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:satisfiesAccessNeed"),
+            literal(grant.satisfiesAccessNeed))
+        );
+
+        writer.addQuad(
+            namedNode(subject),
+            namedNode("interop:hasAccessGrant"),
+            writer.list(grant.accessMode.map(mode => namedNode(mode)))
+        );
+
+        if (grant.creatorAccessMode != undefined) {
+            writer.addQuad(
+                namedNode(subject),
+                namedNode("interop:creatorAccessMode"),
+                writer.list(grant.creatorAccessMode.map(mode => namedNode(mode)))
+            );
+        }
+
+        if (grant.hasDataInstanceIRIs != undefined && grant.scopeOfGrant == GrantScope.SelectedFromRegistry) {
+            writer.addQuad(
+                namedNode(subject),
+                namedNode("interop:creatorAccessMode"),
+                writer.list(grant.hasDataInstanceIRIs.map(IRI => namedNode(IRI)))
+            );
+        }
+
+        if (grant.inheritsFromGrant != undefined && grant.scopeOfGrant == GrantScope.Inherited) {
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode("interop:creatorAccessMode"),
+                namedNode(grant.inheritsFromGrant.storedAt))
+            );
+        }
+
+        writer.end((error, result: string) => { return result });
+    }
+
 }

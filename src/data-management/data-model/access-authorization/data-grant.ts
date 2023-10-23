@@ -10,7 +10,7 @@ enum AccessMode {
     Append = "acl:Append"
 }
 
-enum GrantScope {
+export enum GrantScope {
     All = "interop:All",
     AllFromAgent = "interop:AllFromAgent",
     AllFromRegistry = "interop:AllFromRegistry",
@@ -19,6 +19,9 @@ enum GrantScope {
 }
 
 export class DataGrant {
+    id: string;
+    storedAt: string;
+    agentRegistrationIRI: string;
     dataOwner: SocialAgent;
     grantee: Agent;
     registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -27,10 +30,13 @@ export class DataGrant {
     creatorAccessMode?: AccessMode[];
     scopeOfGrant: GrantScope;
     satisfiesAccessNeed: string; // TODO: NEED TO FINDOUT
-    hasDataInstance: string;
+    hasDataInstanceIRIs?: string[];
     inheritsFromGrant?: DataGrant;
 
     constructor(
+        id: string,
+        storedAt: string,
+        agentRegistrationIRI: string,
         dataOwner: SocialAgent,
         grantee: Agent,
         registeredShapeTree: string,
@@ -38,10 +44,13 @@ export class DataGrant {
         accessMode: AccessMode[],
         scopeOfGrant: GrantScope,
         satisfiesAccessNeed: string,
-        hasDataInstance: string,
+        hasDataInstanceIRIs?: string[],
         creatorAccessMode?: AccessMode[],
         inheritsFromGrant?: DataGrant
     ) {
+        this.id = id;
+        this.storedAt = storedAt;
+        this.agentRegistrationIRI = agentRegistrationIRI;
         this.dataOwner = dataOwner;
         this.grantee = grantee;
         this.registeredShapeTree = registeredShapeTree;
@@ -49,7 +58,7 @@ export class DataGrant {
         this.accessMode = accessMode;
         this.scopeOfGrant = scopeOfGrant;
         this.satisfiesAccessNeed = satisfiesAccessNeed;
-        this.hasDataInstance = hasDataInstance;
+        this.hasDataInstanceIRIs = hasDataInstanceIRIs;
         if (creatorAccessMode) this.creatorAccessMode = creatorAccessMode;
         if (inheritsFromGrant) this.inheritsFromGrant = inheritsFromGrant;
     }
