@@ -1,10 +1,10 @@
-import { SocialAgent } from "../agent";
+import { Agent, SocialAgent } from "../agent";
 
 export class DataRegistration {
     id: string;
     storedAt: string;
     registeredBy: SocialAgent;
-    registeredWith: string;
+    registeredWith: Agent;
     registeredAt: Date;
     updatedAt: Date;
     registeredShapeTree: string;
@@ -13,7 +13,7 @@ export class DataRegistration {
         id: string,
         storedAt: string,
         registeredBy: SocialAgent,
-        registeredWith: string,
+        registeredWith: Agent,
         registeredAt: Date,
         updatedAt: Date,
         registeredShapeTree: string

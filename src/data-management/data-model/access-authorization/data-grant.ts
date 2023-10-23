@@ -1,7 +1,7 @@
 import { Agent, SocialAgent } from "../agent";
 import { DataRegistration } from "../data-registration/data-registration";
 
-enum AccessMode {
+export enum AccessMode {
     Read = "acl:Read",
     Write = "acl:Write",
     Update = "acl:Update",

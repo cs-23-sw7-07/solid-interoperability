@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.socialAgentRegistrationc4562da9 = void 0;
+var access_grant_1 = require("../src/data-management/data-model/access-authorization/access-grant");
+var data_grant_1 = require("../src/data-management/data-model/access-authorization/data-grant");
+var agent_1 = require("../src/data-management/data-model/agent");
+var social_agent_registration_1 = require("../src/data-management/data-model/agent-registration/social-agent-registration");
+var data_registration_1 = require("../src/data-management/data-model/data-registration/data-registration");
+var pmShapetrees = 'http://data.example/shapetrees/pm#';
+var alice = 'https://alice.example/';
+var bob = 'https://bob.example/';
+var projectron = 'https://projectron.example/';
+var aliceBob = 'https://alice.example/agents/c4562da9/';
+var aliceWorkData = 'https://work.alice.example/data/';
+var jarvis = 'https://jarvis.example/';
+var bobAgents = 'https://bob.example/agents/';
+var dataRegistration8501f084 = new data_registration_1.DataRegistration("8501f084", aliceWorkData + "8501f084", new agent_1.SocialAgent(alice), new agent_1.ApplicationAgent(jarvis), new Date("2023-10-23T10:00:00Z"), new Date("2020-04-04T21:11:33.000Z"), pmShapetrees + "ProjectTree");
+var dataGrantb42228af = new data_grant_1.DataGrant("b42228af", aliceBob + "b42228af", aliceBob, new agent_1.SocialAgent(alice), new agent_1.SocialAgent(bob), pmShapetrees + "ProjectTree", dataRegistration8501f084, [data_grant_1.AccessMode.Read, data_grant_1.AccessMode.Create], data_grant_1.GrantScope.AllFromRegistry, projectron + "#ac54ff1e", undefined, [data_grant_1.AccessMode.Update, data_grant_1.AccessMode.Delete]);
+var dataRegistrationdf4ab227 = new data_registration_1.DataRegistration("df4ab227/", aliceWorkData + "df4ab227", new agent_1.SocialAgent(alice), new agent_1.ApplicationAgent(jarvis), new Date("2020-04-04T20:15:47.000Z"), new Date("2020-04-04T21:11:33.000Z"), pmShapetrees + "TaskTree");
+// Create an instance of DataGrant.
+var dataGrant95ff7580 = new data_grant_1.DataGrant("95ff7580", aliceBob + "95ff7580", aliceBob, new agent_1.SocialAgent(alice), new agent_1.SocialAgent(bob), pmShapetrees + "TaskTree", dataRegistrationdf4ab227, [data_grant_1.AccessMode.Read, data_grant_1.AccessMode.Create], data_grant_1.GrantScope.Inherited, projectron + "#9462959c", undefined, [data_grant_1.AccessMode.Update, data_grant_1.AccessMode.Delete], dataGrantb42228af);
+var hasAccessNeedGroup = "projectron:#d8219b1f";
+var accessGrantb6e125b8 = new access_grant_1.AccessGrant("b6e125b8", new agent_1.SocialAgent(alice), new Date("2020-04-04T20:15:47.000Z"), new agent_1.SocialAgent(bob), hasAccessNeedGroup, [dataGrantb42228af, dataGrant95ff7580]);
+exports.socialAgentRegistrationc4562da9 = new social_agent_registration_1.SocialAgentRegistration("c4562da9/", new agent_1.SocialAgent(alice), new agent_1.ApplicationAgent(jarvis), new Date("2020-04-04T20:15:47.000Z"), new Date("2020-04-04T21:11:33.000Z"), new agent_1.SocialAgent(bob), accessGrantb6e125b8, bobAgents + "255aa181/");

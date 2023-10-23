@@ -17,51 +17,64 @@ const prefixes = {
 };
 
 export class ExportToRDF {
-    toRdfSocialAgentRegistration(registration: SocialAgentRegistration) {
+    toRdfSocialAgentRegistration(registration: SocialAgentRegistration): Promise<string> {
         const subject = `${registration.registeredBy.identity}/agents/${registration.id}/`
 
-        const writer = new N3.Writer(prefixes)
-        writer.addQuad(
-            namedNode(subject),
-            namedNode('a'),
-            namedNode('interop:SocialAgentRegistration')
-        );
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:registeredBy'),
-            literal(registration.registeredBy.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:registeredWith'),
-            literal(registration.registeredWith.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:registeredAt'),
-            literal(toXsdDateTime(registration.registeredAt))
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:updatedAt'),
-            literal(toXsdDateTime(registration.registeredAt))
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:registeredAgent'),
-            literal(registration.registeredAgent.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:reciprocalRegistration'),
-            literal(registration.reciprocalRegistration)
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
-            namedNode('interop:hasAccessGrant'),
-            literal(subject + registration.hasAccessGrant.id)
-        ));
-        writer.end((error, result: string) => { return result });
+        return new Promise((resolve, reject) => {
+
+
+            const writer = new N3.Writer(prefixes)
+            writer.addQuad(
+                namedNode(subject),
+                namedNode('a'),
+                namedNode('interop:SocialAgentRegistration')
+            );
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:registeredBy'),
+                literal(registration.registeredBy.getWebID())
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:registeredWith'),
+                literal(registration.registeredWith.getWebID())
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:registeredAt'),
+                literal(toXsdDateTime(registration.registeredAt))
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:updatedAt'),
+                literal(toXsdDateTime(registration.registeredAt))
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:registeredAgent'),
+                literal(registration.registeredAgent.getWebID())
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:reciprocalRegistration'),
+                literal(registration.reciprocalRegistration)
+            ));
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode('interop:hasAccessGrant'),
+                literal(subject + registration.hasAccessGrant.id)
+            ));
+
+            writer.end((error, result: string) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(result)
+                }
+
+            })
+
+        })
     }
 
     toRdfApplicationRegistration(registration: ApplicationtRegistration) {
@@ -117,7 +130,7 @@ export class ExportToRDF {
         writer.addQuad(quad(
             namedNode(subject),
             namedNode('interop:registeredWith'),
-            literal(registration.registeredWith))
+            literal(registration.registeredWith.getWebID()))
         );
         writer.addQuad(quad(
             namedNode(subject),
@@ -135,7 +148,7 @@ export class ExportToRDF {
             literal(registration.registeredShapeTree))
         );
     }
-    
+
     toRdfDataGrant(grant: DataGrant) {
         const subject = `${grant.agentRegistrationIRI}/${grant.id}/`
         const writer = new N3.Writer(prefixes)
