@@ -1,12 +1,14 @@
-class DataRegistration {
-    registeredBy: Agent;
+import { SocialAgent } from "../agent";
+
+export class DataRegistration {
+    registeredBy: SocialAgent;
     registeredWith: string;
     registeredAt: Date;
     updatedAt: Date;
     registeredShapeTree: string;
 
     constructor(
-        registeredBy: Agent,
+        registeredBy: SocialAgent,
         registeredWith: string,
         registeredAt: Date,
         updatedAt: Date,

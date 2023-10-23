@@ -1,21 +1,30 @@
-class AccessGrant {
-    grantedBy: Agent;
-    grantedAt: Date;
-    grantee: Agent;
-    hasAccessNeedGroup: string;
-    hasDataGrant: DataGrant[];
+import { Agent, SocialAgent } from "../agent";
+import { DataGrant } from "./data-grant";
 
-    constructor(
-        grantedBy: Agent,
-        grantedAt: Date,
-        grantee: Agent,
-        hasAccessNeedGroup: string,
-        hasDataGrant: DataGrant[]
-    ) {
-        this.grantedBy = grantedBy;
-        this.grantedAt = grantedAt;
-        this.grantee = grantee;
-        this.hasAccessNeedGroup = hasAccessNeedGroup;
-        this.hasDataGrant = hasDataGrant;
+export class AccessGrant {
+    // grantedBy: SocialAgent;
+    // grantedAt: Date;
+    // grantee: Agent;
+    // hasAccessNeedGroup: string;
+    // hasDataGrant: DataGrant[];
+
+    // constructor(
+    //     grantedBy: SocialAgent,
+    //     grantedAt: Date,
+    //     grantee: Agent,
+    //     hasAccessNeedGroup: string,
+    //     hasDataGrant: DataGrant[]
+    // ) {
+    //     this.grantedBy = grantedBy;
+    //     this.grantedAt = grantedAt;
+    //     this.grantee = grantee;
+    //     this.hasAccessNeedGroup = hasAccessNeedGroup;
+    //     this.hasDataGrant = hasDataGrant;
+    // }
+
+    constructor() {
+        
     }
+
+    
 }

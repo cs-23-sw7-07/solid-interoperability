@@ -1,3 +1,6 @@
+import { Agent, SocialAgent } from "../agent";
+import { DataRegistration } from "../data-registration/data-registration";
+
 enum AccessMode {
     Read = "acl:Read",
     Write = "acl:Write",
@@ -15,8 +18,8 @@ enum GrantScope {
     Inherited = "interop:Inherited"
 }
 
-class DataGrant {
-    dataOwner: Agent;
+export class DataGrant {
+    dataOwner: SocialAgent;
     grantee: Agent;
     registeredShapeTree: string; // TODO: NEED TO FINDOUT
     hasDataRegistration: DataRegistration;
@@ -28,7 +31,7 @@ class DataGrant {
     inheritsFromGrant?: DataGrant;
 
     constructor(
-        dataOwner: Agent,
+        dataOwner: SocialAgent,
         grantee: Agent,
         registeredShapeTree: string,
         hasDataRegistration: DataRegistration,
