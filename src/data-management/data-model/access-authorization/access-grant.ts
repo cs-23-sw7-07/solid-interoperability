@@ -6,7 +6,7 @@ export class AccessGrant {
     grantedBy: SocialAgent;
     grantedAt: Date;
     grantee: Agent;
-    hasAccessNeedGroup: string;
+    hasAccessNeedGroup: AccessNeedGroup;
     hasDataGrant: DataGrant[];
 
     constructor(
@@ -14,7 +14,7 @@ export class AccessGrant {
         grantedBy: SocialAgent,
         grantedAt: Date,
         grantee: Agent,
-        hasAccessNeedGroup: string,
+        hasAccessNeedGroup: AccessNeedGroup,
         hasDataGrant: DataGrant[]
     ) {
         this.id = id;
