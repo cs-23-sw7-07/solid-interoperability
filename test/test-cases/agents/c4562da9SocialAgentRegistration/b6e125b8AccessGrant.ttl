@@ -7,7 +7,7 @@ PREFIX interop: <http://www.w3.org/ns/solid/interop#>
 <https://alice.example/agents/c4562da9/b6e125b8>
   a interop:AccessGrant ;
   interop:grantedBy <https://alice.example/#id> ;
-  interop:grantedAt "2020-04-04T20:15:47.000Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+  interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime ;
   interop:grantee <https://jarvis.example/#id> ;
   interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f> ;
   interop:hasDataGrant

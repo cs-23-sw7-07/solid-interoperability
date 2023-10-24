@@ -7,6 +7,7 @@ import { SocialAgentRegistration } from '../data-model/agent-registration/social
 import { toXsdDateTime } from '../Utils/date-utils';
 import { DataRegistration } from '../data-model/data-registration/data-registration';
 import { DataGrant, GrantScope } from '../data-model/access-authorization/data-grant';
+import { AgentRegistration } from '../data-model/agent-registration/agent-registration';
 
 const prefixes = {
     prefixes: {
@@ -18,53 +19,22 @@ const prefixes = {
     }
 };
 
-export class ExportToRDF {
-    toRdfSocialAgentRegistration(registration: SocialAgentRegistration): Promise<string> {
+export namespace ExportToRDF {
+    export function toRdfSocialAgentRegistration(registration: SocialAgentRegistration): Promise<string> {
         const subject = `${registration.registeredBy.identity}agents/${registration.id}/`
 
         return new Promise((resolve, reject) => {
-
-
-            const writer = new N3.Writer(prefixes, { format: "" })
+            const writer = new N3.Writer(prefixes, { format: "Turtle" })
             writer.addQuad(
                 namedNode(subject),
                 namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-                namedNode(prefixes.prefixes.interop + 'SocialAgentRegistration')
+                namedNode('interop:SocialAgentRegistration')
             );
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:registeredBy'),
-                namedNode(registration.registeredBy.getWebID())
-            ));
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:registeredWith'),
-                literal(registration.registeredWith.getWebID())
-            ));
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:registeredAt'),
-                literal(toXsdDateTime(registration.registeredAt))
-            ));
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:updatedAt'),
-                literal(toXsdDateTime(registration.registeredAt))
-            ));
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:registeredAgent'),
-                literal(registration.registeredAgent.getWebID())
-            ));
+            toRdfAgentRegistration(registration, subject, writer)
             writer.addQuad(quad(
                 namedNode(subject),
                 namedNode('interop:reciprocalRegistration'),
-                literal(registration.reciprocalRegistration)
-            ));
-            writer.addQuad(quad(
-                namedNode(subject),
-                namedNode('interop:hasAccessGrant'),
-                literal(subject + registration.hasAccessGrant.id)
+                namedNode(registration.reciprocalRegistration)
             ));
 
             writer.end((error, result: string) => {
@@ -79,44 +49,64 @@ export class ExportToRDF {
         })
     }
 
-    toRdfApplicationRegistration(registration: ApplicationtRegistration) {
-        const subject = `${registration.registeredBy.identity}/agents/${registration.id}/`
+    export function toRdfApplicationRegistration(registration: ApplicationtRegistration) {
+        const subject = `${registration.registeredBy.identity}agents/${registration.id}/`
 
-        const writer = new N3.Writer(prefixes)
-        writer.addQuad(
-            namedNode(subject),
-            namedNode('a'),
-            namedNode('interop:ApplicationRegistration')
-        );
+        return new Promise((resolve, reject) => {
+            const writer = new N3.Writer(prefixes, { format: "Turtle" })
+            writer.addQuad(
+                namedNode(subject),
+                namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+                namedNode('interop:ApplicationRegistration')
+            );
+            toRdfAgentRegistration(registration, subject, writer)
+
+            writer.end((error, result: string) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(result)
+                }
+
+            })
+
+        })
+    }
+
+    function toRdfAgentRegistration(registration: AgentRegistration, subject: string, writer: N3.Writer) {
         writer.addQuad(quad(
             namedNode(subject),
             namedNode('interop:registeredBy'),
-            literal(registration.registeredBy.getWebID()))
-        );
+            namedNode(registration.registeredBy.getWebID())
+        ));
         writer.addQuad(quad(
             namedNode(subject),
-            namedNode("interop:registeredAt"),
-            literal(toXsdDateTime(registration.registeredAt)))
-        );
+            namedNode('interop:registeredWith'),
+            namedNode(registration.registeredWith.getWebID())
+        ));
         writer.addQuad(quad(
             namedNode(subject),
-            namedNode("interop:updatedAt"),
-            literal(toXsdDateTime(registration.updatedAt)))
-        );
+            namedNode('interop:registeredAt'),
+            literal(registration.registeredAt.toISOString(), namedNode("xsd:dateTime"))
+        ));
         writer.addQuad(quad(
             namedNode(subject),
-            namedNode("interop:registeredAgent"),
-            literal(registration.registeredAgent.getWebID()))
-        );
+            namedNode('interop:updatedAt'),
+            literal(registration.updatedAt.toISOString(), namedNode("xsd:dateTime"))
+        ));
         writer.addQuad(quad(
             namedNode(subject),
-            namedNode("interop:hasAccessGrant"),
-            literal(subject + registration.hasAccessGrant.id))
-        );
-        writer.end((error, result: string) => { return result });
+            namedNode('interop:registeredAgent'),
+            namedNode(registration.registeredAgent.getWebID())
+        ));
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:hasAccessGrant'),
+            namedNode(subject + registration.hasAccessGrant.id)
+        ));
     }
 
-    toRdfDataRegistration(registration: DataRegistration) {
+    export function toRdfDataRegistration(registration: DataRegistration) {
         const subject = `${registration.registeredBy.identity}/work/data/${registration.id}/`
         const writer = new N3.Writer(prefixes)
         writer.addQuad(
@@ -151,7 +141,7 @@ export class ExportToRDF {
         );
     }
 
-    toRdfDataGrant(grant: DataGrant) {
+    export function toRdfDataGrant(grant: DataGrant) {
         const subject = `${grant.agentRegistrationIRI}/${grant.id}/`
         const writer = new N3.Writer(prefixes)
         writer.addQuad(

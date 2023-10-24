@@ -54,7 +54,6 @@ const dataRegistrationdf4ab227 = new DataRegistration(
 );
 
 
-// Create an instance of DataGrant.
 const dataGrant95ff7580 = new DataGrant(
     "95ff7580",
     aliceBob + "95ff7580",
@@ -92,3 +91,4 @@ export let socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
     accessGrantb6e125b8,
     bobAgents + "255aa181/"
 );
+
