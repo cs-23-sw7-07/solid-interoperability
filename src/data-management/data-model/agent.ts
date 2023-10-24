@@ -6,7 +6,7 @@ export class Agent {
     }
 
     getWebID(): string {
-        return this.identity + "/#id";
+        return this.identity + "#id";
     }
 }
 

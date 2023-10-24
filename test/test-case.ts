@@ -83,7 +83,7 @@ const accessGrantb6e125b8 = new AccessGrant(
 );
 
 export let socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
-    "c4562da9/",
+    "c4562da9",
     new SocialAgent(alice),
     new ApplicationAgent(jarvis),
     new Date("2020-04-04T20:15:47.000Z"),

@@ -1,6 +1,6 @@
 import N3 from 'n3';
 const { DataFactory } = N3;
-const { namedNode, literal, defaultGraph, quad } = DataFactory;
+const { namedNode, literal, defaultGraph, quad, variable, blankNode } = DataFactory;
 
 import { ApplicationtRegistration } from "../data-model/agent-registration/application-registration";
 import { SocialAgentRegistration } from '../data-model/agent-registration/social-agent-registration';
@@ -9,30 +9,32 @@ import { DataRegistration } from '../data-model/data-registration/data-registrat
 import { DataGrant, GrantScope } from '../data-model/access-authorization/data-grant';
 
 const prefixes = {
-    rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-    xsd: 'http://www.w3.org/2001/XMLSchema#',
-    acl: 'http://www.w3.org/ns/auth/acl#',
-    interop: 'http://www.w3.org/ns/solid/interop#',
+    prefixes: {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
+        acl: 'http://www.w3.org/ns/auth/acl#',
+        interop: 'http://www.w3.org/ns/solid/interop#',
+    }
 };
 
 export class ExportToRDF {
     toRdfSocialAgentRegistration(registration: SocialAgentRegistration): Promise<string> {
-        const subject = `${registration.registeredBy.identity}/agents/${registration.id}/`
+        const subject = `${registration.registeredBy.identity}agents/${registration.id}/`
 
         return new Promise((resolve, reject) => {
 
 
-            const writer = new N3.Writer(prefixes)
+            const writer = new N3.Writer(prefixes, { format: "" })
             writer.addQuad(
                 namedNode(subject),
-                namedNode('a'),
-                namedNode('interop:SocialAgentRegistration')
+                namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+                namedNode(prefixes.prefixes.interop + 'SocialAgentRegistration')
             );
             writer.addQuad(quad(
                 namedNode(subject),
                 namedNode('interop:registeredBy'),
-                literal(registration.registeredBy.getWebID())
+                namedNode(registration.registeredBy.getWebID())
             ));
             writer.addQuad(quad(
                 namedNode(subject),
