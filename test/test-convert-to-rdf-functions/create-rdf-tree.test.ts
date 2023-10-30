@@ -23,10 +23,6 @@ test(
         let expected = getExpectedRDFFromFile("agents/c4562da9SocialAgentRegistration/c4562da9.ttl")
 
         let actual = await new rdfFactory().createRdf(socialAgentRegistrationc4562da9)
-        const json = JSON.stringify(actual)
-        const json2 = JSON.stringify(expected)
-        fs.writeFileSync('./actual.txt', json);
-        fs.writeFileSync('./expected.txt', json2);
 
         expect(actual).toBe(expected)
     }
