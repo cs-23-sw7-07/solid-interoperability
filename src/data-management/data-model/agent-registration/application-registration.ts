@@ -2,7 +2,7 @@ import { AccessGrant } from "../access-authorization/access-grant";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
 
-export class ApplicationtRegistration extends AgentRegistration {
+export class ApplicationRegistration extends AgentRegistration {
     constructor(
         id: string,
         registeredBy: SocialAgent,
