@@ -1,5 +1,9 @@
+import N3 from "n3"
 import { Agent, SocialAgent } from "../agent";
 import { DataRegistration } from "../data-registration/data-registration";
+
+const { DataFactory } = N3;
+const { namedNode, literal, quad } = DataFactory;
 
 export enum AccessMode {
     Read = "acl:Read",
@@ -61,6 +65,76 @@ export class DataGrant {
         this.hasDataInstanceIRIs = hasDataInstanceIRIs;
         if (creatorAccessMode) this.creatorAccessMode = creatorAccessMode;
         if (inheritsFromGrant) this.inheritsFromGrant = inheritsFromGrant;
+    }
+
+    toRdf(writer: N3.Writer): void {
+        const subject = `${this.agentRegistrationIRI}/${this.id}/`
+
+        writer.addQuad(
+            namedNode(subject),
+            namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+            namedNode('interop:DataGrant')
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode('interop:dataOwner'),
+            namedNode(this.dataOwner.identity + "/"))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:grantee"),
+            namedNode(this.grantee.identity + "/"))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:registeredShapeTree"),
+            namedNode(this.registeredShapeTree))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:hasDataRegistration"),
+            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:satisfiesAccessNeed"),
+            namedNode(this.satisfiesAccessNeed))
+        );
+        writer.addQuad(quad(
+            namedNode(subject),
+            namedNode("interop:scopeOfGrant"),
+            namedNode(this.scopeOfGrant))
+        );
+
+        writer.addQuad(
+            namedNode(subject),
+            namedNode("interop:accessMode"),
+            writer.list(this.accessMode.map(mode => namedNode(mode)))
+        );
+
+        if (this.creatorAccessMode != undefined) {
+            writer.addQuad(
+                namedNode(subject),
+                namedNode("interop:creatorAccessMode"),
+                writer.list(this.creatorAccessMode.map(mode => namedNode(mode)))
+            );
+        }
+
+        if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
+            writer.addQuad(
+                namedNode(subject),
+                namedNode("interop:hasDataInstance"),
+                writer.list(this.hasDataInstanceIRIs.map(IRI => namedNode(IRI)))
+            );
+        }
+
+        if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
+            writer.addQuad(quad(
+                namedNode(subject),
+                namedNode("interop:inheritsFromGrant"),
+                namedNode(this.inheritsFromGrant.storedAt))
+            );
+        }
     }
 }
 
