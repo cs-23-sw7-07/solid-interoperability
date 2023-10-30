@@ -1,5 +1,5 @@
 import N3 from "n3"
-import { ItoRdf } from "./toRdf";
+import { ItoRdf } from "./ItoRdf";
 
 const PREFIXES = {
     prefixes: {

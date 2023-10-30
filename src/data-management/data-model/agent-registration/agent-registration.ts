@@ -1,5 +1,5 @@
 import N3 from "n3"
-import { ItoRdf } from "../factory/toRdf";
+import { ItoRdf } from "../factory/ItoRdf";
 import { AccessGrant } from "../access-authorization/access-grant";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 
