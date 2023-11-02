@@ -136,10 +136,10 @@ export class DataGrant implements ItoRdf {
         }
 
         if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
-            writer.addQuad(quad(
+            writer.addQuad(
                 subjectNode,
                 namedNode("interop:inheritsFromGrant"),
-                namedNode(this.inheritsFromGrant.storedAt))
+                namedNode(this.inheritsFromGrant.storedAt)
             );
         }
     }
