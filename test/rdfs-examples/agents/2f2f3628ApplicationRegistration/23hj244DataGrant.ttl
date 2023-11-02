@@ -3,7 +3,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
-@prefix alice: <https://alice.example/>
+@prefix alice: <https://alice.example/>.
 
 <https://alice.example/agents/2f2f3628/23hj244> a interop:DataGrant;
     interop:dataOwner <https://alice.example/#id>;

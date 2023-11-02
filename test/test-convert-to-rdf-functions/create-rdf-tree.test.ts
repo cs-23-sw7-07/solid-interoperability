@@ -8,8 +8,9 @@ import { AccessGrant } from "../../src/data-management/data-model/access-authori
 import { AccessMode, DataGrant } from "../../src/data-management/data-model/access-authorization/data-grant"
 import { SocialAgent } from "../../src/data-management/data-model/agent"
 import { SocialAgentRegistration } from "../../src/data-management/data-model/agent-registration/social-agent-registration"
-import { applicationRegistration2f2f3628, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
+import { applicationRegistration2f2f3628, dataGrant0945218b, dataGrant23hj244, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
 import { rdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
+import { NamedNode } from 'n3';
 
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
@@ -33,6 +34,18 @@ test(
         let expected = getExpectedRDFFromFile("agents/2f2f3628ApplicationRegistration/2f2f3628.ttl")
 
         let actual = await new rdfFactory().createRdf(applicationRegistration2f2f3628)
+
+        expect(actual).toBe(expected)
+    }
+)
+
+test(
+    "Test-toRdfApplicationRegistration-2f2f3628", async () => {
+        let expected = getExpectedRDFFromFile("agents/2f2f3628ApplicationRegistration/23hj244DataGrant.ttl")
+
+        let factory = new rdfFactory()
+        factory.addPrefix('alice', 'https://alice.example/')
+        let actual = await factory.createRdf(dataGrant23hj244)
 
         expect(actual).toBe(expected)
     }

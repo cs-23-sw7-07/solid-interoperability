@@ -1,6 +1,9 @@
 import N3, { NamedNode } from "n3"
 import { ItoRdf } from "./ItoRdf";
 
+const { DataFactory } = N3;
+const { namedNode, literal, quad } = DataFactory;
+
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
  * It uses the `N3.writer` to create a turtle (.ttl) file.
@@ -42,8 +45,8 @@ export class rdfFactory {
      * @param key Short version name
      * @param IRI meaning of the shortname
      */
-    addPrefix(key: string, IRI: NamedNode) {
-        this.writer.addPrefix(key, IRI)
+    addPrefix(key: string, IRI: string) {
+        this.writer.addPrefix(key, namedNode(IRI))
         this.localPrefixes.prefixes[key] = IRI
     }
 
@@ -52,10 +55,11 @@ export class rdfFactory {
      * @params A dictionary containing keys which is the shortname inserted instead of the IRI.
      * The IRI is the value for the key given as a `RDF.NamedNode`
      */
-    addPrefixes(dict: { [key: string]: NamedNode; }) {
+    addPrefixes(dict: { [key: string]: string; }) {
         this.writer.addPrefixes(dict)
         for (let key in dict) {
-            let value = dict[key]
+            let value = namedNode(dict[key])
+            this.writer.addPrefix(key, value)
             this.localPrefixes.prefixes[key] = value
         }
     }

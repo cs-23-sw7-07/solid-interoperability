@@ -106,7 +106,20 @@ export const socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
 
 
 
-
+export const dataGrant23hj244 = new DataGrant(
+    "23hj244",
+    aliceProjectron + "/23hj244",
+    aliceProjectron,
+    new SocialAgent(alice),
+    new ApplicationAgent(projectron),
+    pmShapetrees + "ProjectTree",
+    dataRegistration8501f084,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.AllFromRegistry,
+    projectron + "/#ac54ff1e",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+);
 
 export const dataGrant40d038ea = new DataGrant(
     "40d038ea",
