@@ -1,2 +1,2 @@
-/test/rdfs-examples/* text=auto
-/test/rdfs-examples/* eol=lf
+*.ttl text=auto
+*.ttl eol=lf
