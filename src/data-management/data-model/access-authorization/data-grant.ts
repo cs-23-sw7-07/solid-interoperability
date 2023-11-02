@@ -69,7 +69,8 @@ export class DataGrant implements ItoRdf {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subjectNode = namedNode(`${this.agentRegistrationIRI}/${this.id}`)
+        const subject = `${this.agentRegistrationIRI}/${this.id}/`
+        const subjectNode = namedNode(subject)
 
         writer.addQuad(
             subjectNode,
@@ -135,10 +136,10 @@ export class DataGrant implements ItoRdf {
         }
 
         if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
-            writer.addQuad(quad(
+            writer.addQuad(
                 subjectNode,
                 namedNode("interop:inheritsFromGrant"),
-                namedNode(this.inheritsFromGrant.storedAt))
+                namedNode(this.inheritsFromGrant.storedAt)
             );
         }
     }

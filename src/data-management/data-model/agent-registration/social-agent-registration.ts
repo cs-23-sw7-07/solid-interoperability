@@ -23,7 +23,8 @@ export class SocialAgentRegistration extends AgentRegistration {
     }
         
     public toRdf(writer: N3.Writer): void {
-        const subjectNode = namedNode(`${this.registeredBy.identity}/agents/${this.id}/`)
+        const subject = `${this.registeredBy.identity}/agents/${this.id}/`
+        const subjectNode = namedNode(subject)
 
         writer.addQuad(
             subjectNode,
