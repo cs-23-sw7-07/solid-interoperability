@@ -27,7 +27,7 @@ export abstract class AgentRegistration implements ItoRdf {
 
     public toRdf(writer: N3.Writer) {
         const subject = `${this.registeredBy.identity}/agents/${this.id}/`
-        const subjectNode = namedNode(`${this.registeredBy.identity}/agents/${this.id}/`)
+        const subjectNode = namedNode(subject)
 
         writer.addQuad(
             subjectNode,
