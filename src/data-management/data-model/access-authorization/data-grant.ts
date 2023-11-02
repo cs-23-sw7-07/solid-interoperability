@@ -101,24 +101,30 @@ export class DataGrant implements ItoRdf {
             namedNode("interop:satisfiesAccessNeed"),
             namedNode(this.satisfiesAccessNeed)
         );
-        writer.addQuad(
-            subjectNode,
-            namedNode("interop:accessMode"),
-            writer.list(this.accessMode.map(mode => namedNode(mode)))
-        );
+
+        this.accessMode.forEach(mode => {
+            writer.addQuad(
+                subjectNode,
+                namedNode("interop:accessMode"),
+                namedNode(mode)
+            );
+        });
+
+        if (this.creatorAccessMode != undefined) {
+            this.creatorAccessMode.forEach(mode => {
+                writer.addQuad(
+                    subjectNode,
+                    namedNode("interop:creatorAccessMode"),
+                    namedNode(mode)
+                );
+            });
+        }
+
         writer.addQuad(
             subjectNode,
             namedNode("interop:scopeOfGrant"),
             namedNode(this.scopeOfGrant)
         );
-
-        if (this.creatorAccessMode != undefined) {
-            writer.addQuad(
-                subjectNode,
-                namedNode("interop:creatorAccessMode"),
-                writer.list(this.creatorAccessMode.map(mode => namedNode(mode)))
-            );
-        }
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
             writer.addQuad(
