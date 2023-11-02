@@ -9,7 +9,7 @@ import { AccessMode, DataGrant } from "../../src/data-management/data-model/acce
 import { SocialAgent } from "../../src/data-management/data-model/agent"
 import { SocialAgentRegistration } from "../../src/data-management/data-model/agent-registration/social-agent-registration"
 import { applicationRegistration2f2f3628, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
-import { rdfFactory } from '../../src/data-management/data-model/factory/factory';
+import { rdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
