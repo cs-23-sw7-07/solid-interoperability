@@ -1,2 +1,2 @@
 * text=auto
-*.ttl text eol=crlf
+*.ttl text eol=lf
