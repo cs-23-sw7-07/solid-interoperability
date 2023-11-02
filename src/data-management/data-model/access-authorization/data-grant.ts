@@ -1,6 +1,7 @@
 import N3 from "n3"
 import { Agent, SocialAgent } from "../agent";
 import { DataRegistration } from "../data-registration/data-registration";
+import { ItoRdf } from "../factory/ItoRdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal, quad } = DataFactory;
@@ -22,7 +23,7 @@ export enum GrantScope {
     Inherited = "interop:Inherited"
 }
 
-export class DataGrant {
+export class DataGrant implements ItoRdf {
     id: string;
     storedAt: string;
     agentRegistrationIRI: string;
@@ -68,53 +69,53 @@ export class DataGrant {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subject = `${this.agentRegistrationIRI}/${this.id}/`
+        const subjectNode = namedNode(`${this.agentRegistrationIRI}/${this.id}/`)
 
         writer.addQuad(
-            namedNode(subject),
+            subjectNode,
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:DataGrant')
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:dataOwner'),
             namedNode(this.dataOwner.identity + "/"))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:grantee"),
             namedNode(this.grantee.identity + "/"))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:registeredShapeTree"),
             namedNode(this.registeredShapeTree))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:hasDataRegistration"),
             namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:satisfiesAccessNeed"),
             namedNode(this.satisfiesAccessNeed))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:scopeOfGrant"),
             namedNode(this.scopeOfGrant))
         );
 
         writer.addQuad(
-            namedNode(subject),
+            subjectNode,
             namedNode("interop:accessMode"),
             writer.list(this.accessMode.map(mode => namedNode(mode)))
         );
 
         if (this.creatorAccessMode != undefined) {
             writer.addQuad(
-                namedNode(subject),
+                subjectNode,
                 namedNode("interop:creatorAccessMode"),
                 writer.list(this.creatorAccessMode.map(mode => namedNode(mode)))
             );
@@ -122,7 +123,7 @@ export class DataGrant {
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
             writer.addQuad(
-                namedNode(subject),
+                subjectNode,
                 namedNode("interop:hasDataInstance"),
                 writer.list(this.hasDataInstanceIRIs.map(IRI => namedNode(IRI)))
             );
@@ -130,7 +131,7 @@ export class DataGrant {
 
         if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
             writer.addQuad(quad(
-                namedNode(subject),
+                subjectNode,
                 namedNode("interop:inheritsFromGrant"),
                 namedNode(this.inheritsFromGrant.storedAt))
             );

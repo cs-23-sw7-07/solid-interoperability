@@ -23,16 +23,16 @@ export class SocialAgentRegistration extends AgentRegistration {
     }
         
     public toRdf(writer: N3.Writer): void {
-        const subject = `${this.registeredBy.identity}/agents/${this.id}/`
+        const subjectNode = namedNode(`${this.registeredBy.identity}/agents/${this.id}/`)
 
         writer.addQuad(
-            namedNode(subject),
+            subjectNode,
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:SocialAgentRegistration')
         );
         super.toRdf(writer)
         writer.addQuad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:reciprocalRegistration'),
             namedNode(this.reciprocalRegistration)
         );

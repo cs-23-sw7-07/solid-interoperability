@@ -27,36 +27,37 @@ export abstract class AgentRegistration implements ItoRdf {
 
     public toRdf(writer: N3.Writer) {
         const subject = `${this.registeredBy.identity}/agents/${this.id}/`
+        const subjectNode = namedNode(`${this.registeredBy.identity}/agents/${this.id}/`)
 
-        writer.addQuad(quad(
-            namedNode(subject),
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:registeredBy'),
             namedNode(this.registeredBy.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
+        );
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:registeredWith'),
             namedNode(this.registeredWith.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
+        );
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:registeredAt'),
             literal(this.registeredAt.toISOString(), namedNode("xsd:dateTime"))
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
+        );
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:updatedAt'),
             literal(this.updatedAt.toISOString(), namedNode("xsd:dateTime"))
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
+        );
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:registeredAgent'),
             namedNode(this.registeredAgent.getWebID())
-        ));
-        writer.addQuad(quad(
-            namedNode(subject),
+        );
+        writer.addQuad(
+            subjectNode,
             namedNode('interop:hasAccessGrant'),
             namedNode(subject + this.hasAccessGrant.id)
-        ));
+        );
     }
 }

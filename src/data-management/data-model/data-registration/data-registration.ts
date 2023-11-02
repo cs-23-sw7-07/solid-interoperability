@@ -32,35 +32,35 @@ export class DataRegistration {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subject = `${this.storedAtFolder}/${this.id}/`
+        const subjectNode = namedNode(`${this.storedAtFolder}/${this.id}/`)
 
         writer.addQuad(
-            namedNode(subject),
+            subjectNode,
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:DataRegistration')
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:registeredBy'),
             namedNode(this.registeredBy.getWebID()))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:registeredWith'),
             namedNode(this.registeredWith.getWebID()))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:registeredAt'),
             literal(this.registeredAt.toISOString(), namedNode("xsd:dateTime")))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:updatedAt'),
             literal(this.updatedAt.toISOString(), namedNode("xsd:dateTime")))
         );
         writer.addQuad(quad(
-            namedNode(subject),
+            subjectNode,
             namedNode('interop:registeredShapeTree'),
             namedNode(this.registeredShapeTree))
         );
