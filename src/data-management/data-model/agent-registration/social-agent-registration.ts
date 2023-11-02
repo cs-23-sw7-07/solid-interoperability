@@ -1,6 +1,10 @@
+import N3 from "n3"
 import { AccessGrant } from "../access-authorization/access-grant";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
+
+const { DataFactory } = N3;
+const { namedNode, literal, quad } = DataFactory;
 
 export class SocialAgentRegistration extends AgentRegistration {
     reciprocalRegistration: string;
@@ -16,5 +20,21 @@ export class SocialAgentRegistration extends AgentRegistration {
         reciprocalRegistration: string) {
         super(id, registeredBy, registeredWith, registeredAt, updatedAt, registeredAgent, hasAccessGrant);
         this.reciprocalRegistration = reciprocalRegistration;
+    }
+        
+    public toRdf(writer: N3.Writer): void {
+        const subject = `${this.registeredBy.identity}/agents/${this.id}/`
+
+        writer.addQuad(
+            namedNode(subject),
+            namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+            namedNode('interop:SocialAgentRegistration')
+        );
+        super.toRdf(writer)
+        writer.addQuad(
+            namedNode(subject),
+            namedNode('interop:reciprocalRegistration'),
+            namedNode(this.reciprocalRegistration)
+        );
     }
 }
