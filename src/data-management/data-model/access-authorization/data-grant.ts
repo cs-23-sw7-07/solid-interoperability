@@ -69,48 +69,47 @@ export class DataGrant implements ItoRdf {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subjectNode = namedNode(`${this.agentRegistrationIRI}/${this.id}/`)
+        const subjectNode = namedNode(`${this.agentRegistrationIRI}/${this.id}`)
 
         writer.addQuad(
             subjectNode,
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:DataGrant')
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:dataOwner'),
-            namedNode(this.dataOwner.identity + "/"))
+            namedNode(this.dataOwner.identity + "/")
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:grantee"),
-            namedNode(this.grantee.identity + "/"))
+            namedNode(this.grantee.getWebID())
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:registeredShapeTree"),
-            namedNode(this.registeredShapeTree))
+            namedNode(this.registeredShapeTree)
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:hasDataRegistration"),
-            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`))
+            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`)
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:satisfiesAccessNeed"),
-            namedNode(this.satisfiesAccessNeed))
+            namedNode(this.satisfiesAccessNeed)
         );
-        writer.addQuad(quad(
-            subjectNode,
-            namedNode("interop:scopeOfGrant"),
-            namedNode(this.scopeOfGrant))
-        );
-
         writer.addQuad(
             subjectNode,
             namedNode("interop:accessMode"),
             writer.list(this.accessMode.map(mode => namedNode(mode)))
+        );
+        writer.addQuad(
+            subjectNode,
+            namedNode("interop:scopeOfGrant"),
+            namedNode(this.scopeOfGrant)
         );
 
         if (this.creatorAccessMode != undefined) {
