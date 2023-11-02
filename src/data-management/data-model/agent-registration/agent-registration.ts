@@ -4,7 +4,7 @@ import { AccessGrant } from "../access-authorization/access-grant";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 
 const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+const { namedNode, literal } = DataFactory;
 
 export abstract class AgentRegistration implements ItoRdf {
     id: string;
@@ -26,8 +26,7 @@ export abstract class AgentRegistration implements ItoRdf {
     }
 
     public toRdf(writer: N3.Writer) {
-        const subject = `${this.registeredBy.identity}/agents/${this.id}/`
-        const subjectNode = namedNode(subject)
+        const subjectNode = namedNode(`${this.registeredBy.identity}/agents/${this.id}/`)
 
         writer.addQuad(
             subjectNode,
@@ -57,7 +56,7 @@ export abstract class AgentRegistration implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode('interop:hasAccessGrant'),
-            namedNode(subject + this.hasAccessGrant.id)
+            namedNode(`${this.registeredBy.identity}/agents/${this.id}/` + this.hasAccessGrant.id)
         );
     }
 }

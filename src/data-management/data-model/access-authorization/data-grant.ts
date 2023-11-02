@@ -77,50 +77,55 @@ export class DataGrant implements ItoRdf {
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:DataGrant')
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:dataOwner'),
-            namedNode(this.dataOwner.identity + "/"))
+            namedNode(this.dataOwner.identity + "/")
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:grantee"),
-            namedNode(this.grantee.identity + "/"))
+            namedNode(this.grantee.getWebID())
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:registeredShapeTree"),
-            namedNode(this.registeredShapeTree))
+            namedNode(this.registeredShapeTree)
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:hasDataRegistration"),
-            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`))
+            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`)
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode("interop:satisfiesAccessNeed"),
-            namedNode(this.satisfiesAccessNeed))
+            namedNode(this.satisfiesAccessNeed)
         );
-        writer.addQuad(quad(
-            subjectNode,
-            namedNode("interop:scopeOfGrant"),
-            namedNode(this.scopeOfGrant))
-        );
+
+        this.accessMode.forEach(mode => {
+            writer.addQuad(
+                subjectNode,
+                namedNode("interop:accessMode"),
+                namedNode(mode)
+            );
+        });
+
+        if (this.creatorAccessMode != undefined) {
+            this.creatorAccessMode.forEach(mode => {
+                writer.addQuad(
+                    subjectNode,
+                    namedNode("interop:creatorAccessMode"),
+                    namedNode(mode)
+                );
+            });
+        }
 
         writer.addQuad(
             subjectNode,
-            namedNode("interop:accessMode"),
-            writer.list(this.accessMode.map(mode => namedNode(mode)))
+            namedNode("interop:scopeOfGrant"),
+            namedNode(this.scopeOfGrant)
         );
-
-        if (this.creatorAccessMode != undefined) {
-            writer.addQuad(
-                subjectNode,
-                namedNode("interop:creatorAccessMode"),
-                writer.list(this.creatorAccessMode.map(mode => namedNode(mode)))
-            );
-        }
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
             writer.addQuad(

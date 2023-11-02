@@ -40,30 +40,30 @@ export class DataRegistration {
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
             namedNode('interop:DataRegistration')
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:registeredBy'),
-            namedNode(this.registeredBy.getWebID()))
+            namedNode(this.registeredBy.getWebID())
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:registeredWith'),
-            namedNode(this.registeredWith.getWebID()))
+            namedNode(this.registeredWith.getWebID())
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:registeredAt'),
-            literal(this.registeredAt.toISOString(), namedNode("xsd:dateTime")))
+            literal(this.registeredAt.toISOString(), namedNode("xsd:dateTime"))
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:updatedAt'),
-            literal(this.updatedAt.toISOString(), namedNode("xsd:dateTime")))
+            literal(this.updatedAt.toISOString(), namedNode("xsd:dateTime"))
         );
-        writer.addQuad(quad(
+        writer.addQuad(
             subjectNode,
             namedNode('interop:registeredShapeTree'),
-            namedNode(this.registeredShapeTree))
+            namedNode(this.registeredShapeTree)
         );
     }
 }
