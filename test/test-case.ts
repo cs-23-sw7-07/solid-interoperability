@@ -50,7 +50,7 @@ export const dataRegistrationdf4ab227 = new DataRegistration(
 
 export const dataGrantb42228af = new DataGrant(
     "b42228af",
-    aliceBob,
+    aliceBob + "/b42228af",
     aliceBob,
     new SocialAgent(alice),
     new SocialAgent(bob),
@@ -110,7 +110,7 @@ export const socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
 
 export const dataGrant40d038ea = new DataGrant(
     "40d038ea",
-    aliceProjectron + "40d038ea",
+    aliceProjectron + "/40d038ea",
     aliceProjectron,
     new SocialAgent(alice),
     new ApplicationAgent(projectron),
@@ -125,7 +125,7 @@ export const dataGrant40d038ea = new DataGrant(
 
 export const dataGrant0945218b = new DataGrant(
     "0945218b",
-    aliceProjectron + "0945218b",
+    aliceProjectron + "/0945218b",
     aliceProjectron,
     new SocialAgent(alice),
     new ApplicationAgent(projectron),

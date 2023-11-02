@@ -5,7 +5,7 @@
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
 <https://alice.example/agents/c4562da9/b42228af> a interop:DataGrant;
-    interop:dataOwner <https://alice.example/>;
+    interop:dataOwner <https://alice.example/#id>;
     interop:grantee <https://bob.example/#id>;
     interop:registeredShapeTree <http://data.example/shapetrees/pm#ProjectTree>;
     interop:hasDataRegistration <https://work.alice.example/data/8501f084/>;

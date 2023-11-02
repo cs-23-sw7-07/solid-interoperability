@@ -69,7 +69,7 @@ export class DataGrant implements ItoRdf {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subject = `${this.agentRegistrationIRI}/${this.id}/`
+        const subject = `${this.agentRegistrationIRI}/${this.id}`
         const subjectNode = namedNode(subject)
 
         writer.addQuad(
@@ -80,7 +80,7 @@ export class DataGrant implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode('interop:dataOwner'),
-            namedNode(this.dataOwner.identity + "/")
+            namedNode(this.dataOwner.getWebID())
         );
         writer.addQuad(
             subjectNode,
