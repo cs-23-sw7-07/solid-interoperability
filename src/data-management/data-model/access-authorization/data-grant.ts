@@ -69,7 +69,8 @@ export class DataGrant implements ItoRdf {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subjectNode = namedNode(`${this.agentRegistrationIRI}/${this.id}/`)
+        const subject = `${this.agentRegistrationIRI}/${this.id}/`
+        const subjectNode = namedNode(subject)
 
         writer.addQuad(
             subjectNode,
