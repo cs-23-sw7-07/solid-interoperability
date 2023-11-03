@@ -23,7 +23,7 @@ test(
     "Test-toRdfSocialAgentRegistration-c4562da9", async () => {
         let expected = getExpectedRDFFromFile("agents/c4562da9SocialAgentRegistration/c4562da9.ttl")
 
-        let actual = await new rdfFactory().createRdf(socialAgentRegistrationc4562da9)
+        let actual = await new rdfFactory().create(socialAgentRegistrationc4562da9)
 
         expect(actual).toBe(expected)
     }
@@ -33,19 +33,7 @@ test(
     "Test-toRdfApplicationRegistration-2f2f3628", async () => {
         let expected = getExpectedRDFFromFile("agents/2f2f3628ApplicationRegistration/2f2f3628.ttl")
 
-        let actual = await new rdfFactory().createRdf(applicationRegistration2f2f3628)
-
-        expect(actual).toBe(expected)
-    }
-)
-
-test(
-    "Test-toRdfApplicationRegistration-2f2f3628", async () => {
-        let expected = getExpectedRDFFromFile("agents/2f2f3628ApplicationRegistration/23hj244DataGrant.ttl")
-
-        let factory = new rdfFactory()
-        factory.addPrefix('alice', 'https://alice.example/')
-        let actual = await factory.createRdf(dataGrant23hj244)
+        let actual = await new rdfFactory().create(applicationRegistration2f2f3628)
 
         expect(actual).toBe(expected)
     }
@@ -57,7 +45,7 @@ test.each([
 ])('Test-toRdfDataRegistration-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
 
-    let actual = await new rdfFactory().createRdf(arg.instance)
+    let actual = await new rdfFactory().create(arg.instance)
 
     expect(actual).toBe(expected)
 })
@@ -70,7 +58,7 @@ test.each([
 ])('Test-toRdfDataGrant-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
 
-    let actual = await new rdfFactory().createRdf(arg.instance)
+    let actual = await new rdfFactory().create(arg.instance)
 
     expect(actual).toBe(expected)
 })

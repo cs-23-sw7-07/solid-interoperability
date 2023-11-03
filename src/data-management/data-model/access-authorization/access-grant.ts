@@ -1,7 +1,10 @@
+import { Quad } from "@rdfjs/types";
+import { Writer } from "n3";
 import { Agent, SocialAgent } from "../agent";
+import { ItoRdf } from "../factory/ItoRdf";
 import { DataGrant } from "./data-grant";
 
-export class AccessGrant {
+export class AccessGrant implements ItoRdf {
     id: string;
     grantedBy: SocialAgent;
     grantedAt: Date;
@@ -24,4 +27,8 @@ export class AccessGrant {
         this.hasAccessNeedGroup = hasAccessNeedGroup;
         this.hasDataGrant = hasDataGrant;
     }    
+
+    toRdf(writer: Writer<Quad>): void {
+        throw new Error("Not Implemented")
+    }
 }

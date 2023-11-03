@@ -9,7 +9,7 @@ const { namedNode, literal, quad } = DataFactory;
  * It uses the `N3.writer` to create a turtle (.ttl) file.
  */
 export class rdfFactory {
-    static PREFIXES = {
+    private static PREFIXES = {
         prefixes: {
             rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -19,14 +19,13 @@ export class rdfFactory {
         }
     };
     private writer = new N3.Writer(rdfFactory.PREFIXES, { format: "Turtle" })
-    private localPrefixes: any = {prefixes: {}}
 
     /**
      * 
      * @param object is class implementing the `ItoRdf` interface
      * @returns a `Promise` which if furfulled contains a turtle file, otherwise an error which needs handling
      */
-    createRdf(object: ItoRdf) {
+    create(object: ItoRdf) {
         return new Promise((resolve, reject) => {
             object.toRdf(this.writer)
 
@@ -38,36 +37,5 @@ export class rdfFactory {
                 }
             })
         })
-    }
-
-    /**
-     * **Prefixes cannot be deleted**
-     * @param key Short version name
-     * @param IRI meaning of the shortname
-     */
-    addPrefix(key: string, IRI: string) {
-        this.writer.addPrefix(key, namedNode(IRI))
-        this.localPrefixes.prefixes[key] = IRI
-    }
-
-    /**
-     * **Prefixes cannot be deleted**
-     * @params A dictionary containing keys which is the shortname inserted instead of the IRI.
-     * The IRI is the value for the key given as a `RDF.NamedNode`
-     */
-    addPrefixes(dict: { [key: string]: string; }) {
-        this.writer.addPrefixes(dict)
-        for (let key in dict) {
-            let value = namedNode(dict[key])
-            this.writer.addPrefix(key, value)
-            this.localPrefixes.prefixes[key] = value
-        }
-    }
-
-    /**
-     * @returns returns the current prefixes the `RDF` will contain and the `N3.Writer` will use.
-     */
-    getLocalPrefixes() {
-        return this.localPrefixes
     }
 }

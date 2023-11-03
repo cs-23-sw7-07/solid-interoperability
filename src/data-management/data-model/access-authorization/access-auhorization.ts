@@ -1,6 +1,10 @@
+import { Quad } from "@rdfjs/types";
+import { Writer } from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
+import { ItoRdf } from "../factory/ItoRdf";
+import { NotImplementedError } from "@inrupt/solid-client-authn-node";
 
-export class AccessAuthorization {
+export class AccessAuthorization implements ItoRdf {
     grantedBy: SocialAgent;
     grantedWith: ApplicationAgent;
     grantedAt: Date;
@@ -28,5 +32,9 @@ export class AccessAuthorization {
         this.hasDataAuthorization = hasDataAuthorization;
         this.replaces = replaces;
 
+    }
+
+    toRdf(writer: Writer<Quad>): void {
+        throw new Error("Not Implemented")
     }
 }
