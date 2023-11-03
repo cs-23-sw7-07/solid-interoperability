@@ -1,4 +1,3 @@
-
-export function authenticate(){
-    return "token"
+export function authenticate() {
+  return "token";
 }
