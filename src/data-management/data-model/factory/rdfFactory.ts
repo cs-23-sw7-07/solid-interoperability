@@ -8,7 +8,7 @@ const { namedNode, literal, quad } = DataFactory;
  * This factory is used for `RDF` creation via. the `createRdf` function.
  * It uses the `N3.writer` to create a turtle (.ttl) file.
  */
-export class rdfFactory {
+export class RdfFactory {
     private static PREFIXES = {
         prefixes: {
             rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -18,7 +18,7 @@ export class rdfFactory {
             interop: 'http://www.w3.org/ns/solid/interop#',
         }
     };
-    private writer = new N3.Writer(rdfFactory.PREFIXES, { format: "Turtle" })
+    private writer = new N3.Writer(RdfFactory.PREFIXES, { format: "Turtle" })
 
     /**
      * 
