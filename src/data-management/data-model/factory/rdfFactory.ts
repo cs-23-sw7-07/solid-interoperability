@@ -1,9 +1,6 @@
 import N3, { NamedNode } from "n3"
 import { ItoRdf } from "./ItoRdf";
 
-const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
-
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
  * It uses the `N3.writer` to create a turtle (.ttl) file.
@@ -30,6 +27,25 @@ export class RdfFactory {
             object.toRdf(this.writer)
 
             this.writer.end((error, result: string) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    }
+    /**
+     * @param object is class implementing the `ItoRdf` interface
+     * @param prefixes must be an object of form `{prefixes: {keys: 'values'}}`
+     * @returns an `RDF` if `Promise` resolves else rejects and returns an `Error`
+     */
+    createWithPrefixes(object: ItoRdf, prefixes: any) {
+        let tempWriter = new N3.Writer(prefixes, { format: "Turtle" })
+        return new Promise((resolve, reject) => {
+            object.toRdf(tempWriter)
+
+            tempWriter.end((error, result: string) => {
                 if (error) {
                     reject(error)
                 } else {
