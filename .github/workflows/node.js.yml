@@ -8,7 +8,24 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test_matrix:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run eslint
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'check'
+      - run: eslint src test
+      - name: Run prettier
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'check'
+      - run: prettier --check src
+    
+  test:
     strategy:
       matrix:
         node-version: [16.x, 18.x, 20.x]
@@ -16,10 +33,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
-    - name: Run Eslint
-    - run: eslint src
-    - name: Run Prettier
-    - run: prettier --check src
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -33,4 +47,4 @@ jobs:
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        
+    
