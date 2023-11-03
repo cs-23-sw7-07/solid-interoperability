@@ -16,6 +16,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
+    - name: Run Eslint
+    - run: eslint src
+    - name: Run Prettier
+    - run: prettier --check src
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
