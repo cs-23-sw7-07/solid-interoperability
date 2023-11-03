@@ -3,7 +3,7 @@ const path = require('path')
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { accessGrant27eae14b, accessGrantb6e125b8, applicationRegistration2f2f3628, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
+import { accessAuthorizatione2765d6c, accessAuthorizatione47e07897, accessGrant27eae14b, accessGrantb6e125b8, applicationRegistration2f2f3628, dataAuthorization0e4cb692, dataAuthorization54a1b6a0, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 
 
@@ -62,6 +62,28 @@ test.each([
     { name: '27eae14b', expect_rdf_file_path: "agents/2f2f3628ApplicationRegistration/27eae14bAccessGrant.ttl", instance: accessGrant27eae14b },
     { name: 'b6e125b8', expect_rdf_file_path: "agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant.ttl", instance: accessGrantb6e125b8 },
 ])('Test-toRdfAccessGrant-%s', async (arg) => {
+    let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
+
+    let actual = await new RdfFactory().create(arg.instance)
+
+    expect(actual).toBe(expected)
+})
+
+test.each([
+    { name: '0e4cb692', expect_rdf_file_path: "authorization/0e4cb692DataAuth.ttl", instance: dataAuthorization0e4cb692 },
+    { name: '54a1b6a0', expect_rdf_file_path: "authorization/54a1b6a0DataAuth.ttl", instance: dataAuthorization54a1b6a0 },
+])('Test-toRdfDataAuthorization-%s', async (arg) => {
+    let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
+
+    let actual = await new RdfFactory().create(arg.instance)
+
+    expect(actual).toBe(expected)
+})
+
+test.each([
+    { name: 'e2765d6c', expect_rdf_file_path: "authorization/e2765d6cAccessAuth.ttl", instance: accessAuthorizatione2765d6c },
+    { name: '47e07897', expect_rdf_file_path: "authorization/47e07897AccessAuth.ttl", instance: accessAuthorizatione47e07897 },
+])('Test-toRdfDataAuthorization-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
 
     let actual = await new RdfFactory().create(arg.instance)

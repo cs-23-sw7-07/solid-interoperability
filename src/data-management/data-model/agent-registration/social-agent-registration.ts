@@ -1,7 +1,7 @@
 import N3 from "n3"
-import { AccessGrant } from "../access-authorization/access-grant";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
+import { AccessGrant } from "../authorization/access-grant";
 
 const { DataFactory } = N3;
 const { namedNode, literal, quad } = DataFactory;

@@ -1,3 +1,5 @@
+import { AccessNeed } from "./AccessNeed";
+
 class AccessNeedGroup {
     id: string;
     hasAccessDescriptionSet: AccessDescriptionSet;

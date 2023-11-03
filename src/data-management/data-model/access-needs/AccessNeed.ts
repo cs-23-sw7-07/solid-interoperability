@@ -1,4 +1,6 @@
-class AccessNeed {
+import { AccessMode } from "../authorization/access-mode";
+
+export class AccessNeed {
     registeredShapeTree: string;
     acessMode: AccessMode;
     creatorAccessMode: AccessMode;

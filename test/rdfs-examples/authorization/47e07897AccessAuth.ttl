@@ -7,9 +7,7 @@
 <https://alice.example/authorization/47e07897> a interop:AccessAuthorization;
     interop:grantedBy <https://alice.example/#id>;
     interop:grantedWith <https://jarvis.example/#id>;
-    interop:grantedAt "2020-09-05T06:15:01Z"^^xsd:dateTime;
+    interop:grantedAt "2020-09-05T06:15:01.000Z"^^xsd:dateTime;
     interop:grantee <https://jarvis.example/#id>;
     interop:hasAccessNeedGroup <https://jarvis.example/#4fd1482d>;
-    interop:hasDataAuthorization
-        <https://alice.example/authorization/55363f56>,
-        <https://alice.example/authorization/935458cf>.
+    interop:hasDataAuthorization <https://alice.example/authorization/0e4cb692>.

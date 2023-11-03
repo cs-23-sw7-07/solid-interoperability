@@ -11,7 +11,6 @@ const { namedNode } = DataFactory;
 export class DataAuthorization implements ItoRdf {
     id: string;
     storedAt: string;
-    agentRegistrationIRI: string;
     dataOwner: SocialAgent;
     grantee: Agent;
     registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -26,7 +25,6 @@ export class DataAuthorization implements ItoRdf {
     constructor(
         id: string,
         storedAt: string,
-        agentRegistrationIRI: string,
         dataOwner: SocialAgent,
         grantee: Agent,
         registeredShapeTree: string,
@@ -40,7 +38,6 @@ export class DataAuthorization implements ItoRdf {
     ) {
         this.id = id;
         this.storedAt = storedAt;
-        this.agentRegistrationIRI = agentRegistrationIRI;
         this.dataOwner = dataOwner;
         this.grantee = grantee;
         this.registeredShapeTree = registeredShapeTree;
@@ -54,7 +51,7 @@ export class DataAuthorization implements ItoRdf {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subject = `${this.agentRegistrationIRI}/${this.id}`
+        const subject = `${this.storedAt}/${this.id}`
         const subjectNode = namedNode(subject)
 
         writer.addQuad(
@@ -82,11 +79,6 @@ export class DataAuthorization implements ItoRdf {
             namedNode("interop:hasDataRegistration"),
             namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`)
         );
-        writer.addQuad(
-            subjectNode,
-            namedNode("interop:satisfiesAccessNeed"),
-            namedNode(this.satisfiesAccessNeed)
-        );
 
         this.accessMode.forEach(mode => {
             writer.addQuad(
@@ -108,8 +100,14 @@ export class DataAuthorization implements ItoRdf {
 
         writer.addQuad(
             subjectNode,
-            namedNode("interop:scopeOfGrant"),
+            namedNode("interop:scopeOfAuthorization"),
             namedNode(this.scopeOfAuthorization)
+        );
+
+        writer.addQuad(
+            subjectNode,
+            namedNode("interop:satisfiesAccessNeed"),
+            namedNode(this.satisfiesAccessNeed)
         );
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfAuthorization == GrantScope.SelectedFromRegistry) {
@@ -123,8 +121,8 @@ export class DataAuthorization implements ItoRdf {
         if (this.inheritsFromAuthorization != undefined && this.scopeOfAuthorization == GrantScope.Inherited) {
             writer.addQuad(
                 subjectNode,
-                namedNode("interop:inheritsFromGrant"),
-                namedNode(this.inheritsFromAuthorization.storedAt)
+                namedNode("interop:inheritsFromAuthorization"),
+                namedNode(`${this.inheritsFromAuthorization.storedAt}/${this.inheritsFromAuthorization.id}`)
             );
         }
     }

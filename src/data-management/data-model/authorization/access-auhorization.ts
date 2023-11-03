@@ -8,8 +8,8 @@ const { namedNode, literal } = DataFactory;
 
 export class AccessAuthorization implements ItoRdf {
     grantedBy: SocialAgent;
-    grantedWith: ApplicationAgent;
     grantedAt: Date;
+    grantedWith: ApplicationAgent;
     grantee: Agent;
     hasAccessNeedGroup: string;
     hasDataAuthorization: DataAuthorization[];
@@ -74,9 +74,16 @@ export class AccessAuthorization implements ItoRdf {
         this.hasDataAuthorization.forEach(data_authorization => {
             writer.addQuad(
                 subjectNode,
-                namedNode("interop:hasDataGrant"),
-                namedNode(`${data_authorization.agentRegistrationIRI}/${data_authorization.id}`)
+                namedNode("interop:hasDataAuthorization"),
+                namedNode(`${data_authorization.storedAt}/${data_authorization.id}`)
             );
         });
+        if (this.replaces !== undefined){
+            writer.addQuad(
+                subjectNode,
+                namedNode("interop:replaces"),
+                namedNode(`${this.grantedBy.identity}/authorization/${this.replaces.id}`)
+            );
+        }
     }
 }
