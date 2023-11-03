@@ -1,8 +1,10 @@
-import { AccessGrant } from "../src/data-management/data-model/access-authorization/access-grant";
-import { AccessMode, DataGrant, GrantScope } from "../src/data-management/data-model/access-authorization/data-grant";
 import { ApplicationAgent, SocialAgent } from "../src/data-management/data-model/agent";
 import { ApplicationRegistration } from "../src/data-management/data-model/agent-registration/application-registration";
 import { SocialAgentRegistration } from "../src/data-management/data-model/agent-registration/social-agent-registration";
+import { AccessGrant } from "../src/data-management/data-model/authorization/access-grant";
+import { AccessMode } from "../src/data-management/data-model/authorization/access-mode";
+import { DataGrant } from "../src/data-management/data-model/authorization/data-grant";
+import { GrantScope } from "../src/data-management/data-model/authorization/grant-scope";
 import { DataRegistration } from "../src/data-management/data-model/data-registration/data-registration";
 
 const pmShapetrees = 'http://data.example/shapetrees/pm#';
@@ -40,14 +42,6 @@ export const dataRegistrationdf4ab227 = new DataRegistration(
 );
 
 
-
-
-
-
-
-
-
-
 export const dataGrantb42228af = new DataGrant(
     "b42228af",
     aliceBob + "/b42228af",
@@ -81,10 +75,11 @@ export const dataGrant95ff7580 = new DataGrant(
 
 export const accessGrantb6e125b8 = new AccessGrant(
     "b6e125b8",
+    aliceBob,
     new SocialAgent(alice),
     new Date("2020-04-04T20:15:47.000Z"),
     new SocialAgent(bob),
-    "projectron:#d8219b1f",
+    projectron + "/#d8219b1f",
     [dataGrantb42228af, dataGrant95ff7580]
 );
 
@@ -154,10 +149,11 @@ export const dataGrant0945218b = new DataGrant(
 
 export const accessGrant27eae14b = new AccessGrant(
     "27eae14b",
-    new SocialAgent("https://alice.example/"),
+    aliceProjectron,
+    new SocialAgent(alice),
     new Date("2020-04-04T20:15:47.000Z"),
-    new ApplicationAgent("https://projectron.example/"),
-    "projectron:#d8219b1f",
+    new ApplicationAgent(projectron),
+    projectron + "/#d8219b1f",
     [
         dataGrant40d038ea,
         dataGrant0945218b,

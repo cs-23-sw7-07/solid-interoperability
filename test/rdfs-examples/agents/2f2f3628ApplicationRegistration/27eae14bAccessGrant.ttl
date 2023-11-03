@@ -4,12 +4,9 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-alice-projectron:27eae14b a interop:AccessGrant;
-    interop:grantedBy alice:#id;
+<https://alice.example/agents/2f2f3628/27eae14b> a interop:AccessGrant;
+    interop:grantedBy <https://alice.example/#id>;
     interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
-    interop:grantee projectron:#id;
-    interop:hasAccessNeedGroup projectron:#d8219b1f;
-    interop:hasDataGrant
-    alice-projectron:40d038ea,
-    alice-projectron:2aa21a8c,
-    alice-projectron:0945218b.
+    interop:grantee <https://projectron.example/#id>;
+    interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f>;
+    interop:hasDataGrant <https://alice.example/agents/2f2f3628/40d038ea>, <https://alice.example/agents/2f2f3628/0945218b>.

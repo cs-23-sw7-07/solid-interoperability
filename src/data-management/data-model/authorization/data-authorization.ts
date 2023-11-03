@@ -2,28 +2,13 @@ import N3 from "n3"
 import { Agent, SocialAgent } from "../agent";
 import { DataRegistration } from "../data-registration/data-registration";
 import { ItoRdf } from "../factory/ItoRdf";
+import { GrantScope } from "./grant-scope";
+import { AccessMode } from "./access-mode";
 
 const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+const { namedNode } = DataFactory;
 
-export enum AccessMode {
-    Read = "acl:Read",
-    Write = "acl:Write",
-    Update = "acl:Update",
-    Create = "acl:Create",
-    Delete = "acl:Delete",
-    Append = "acl:Append"
-}
-
-export enum GrantScope {
-    All = "interop:All",
-    AllFromAgent = "interop:AllFromAgent",
-    AllFromRegistry = "interop:AllFromRegistry",
-    SelectedFromRegistry = "interop:SelectedFromRegistry",
-    Inherited = "interop:Inherited"
-}
-
-export class DataGrant implements ItoRdf {
+export class DataAuthorization implements ItoRdf {
     id: string;
     storedAt: string;
     agentRegistrationIRI: string;
@@ -33,10 +18,10 @@ export class DataGrant implements ItoRdf {
     hasDataRegistration: DataRegistration;
     accessMode: AccessMode[];
     creatorAccessMode?: AccessMode[];
-    scopeOfGrant: GrantScope;
+    scopeOfAuthorization: GrantScope;
     satisfiesAccessNeed: string; // TODO: NEED TO FINDOUT
     hasDataInstanceIRIs?: string[];
-    inheritsFromGrant?: DataGrant;
+    inheritsFromAuthorization?: DataAuthorization;
 
     constructor(
         id: string,
@@ -47,11 +32,11 @@ export class DataGrant implements ItoRdf {
         registeredShapeTree: string,
         hasDataRegistration: DataRegistration,
         accessMode: AccessMode[],
-        scopeOfGrant: GrantScope,
+        scopeOfAuthorization: GrantScope,
         satisfiesAccessNeed: string,
         hasDataInstanceIRIs?: string[],
         creatorAccessMode?: AccessMode[],
-        inheritsFromGrant?: DataGrant
+        inheritsFromAuthorization?: DataAuthorization
     ) {
         this.id = id;
         this.storedAt = storedAt;
@@ -61,11 +46,11 @@ export class DataGrant implements ItoRdf {
         this.registeredShapeTree = registeredShapeTree;
         this.hasDataRegistration = hasDataRegistration;
         this.accessMode = accessMode;
-        this.scopeOfGrant = scopeOfGrant;
+        this.scopeOfAuthorization = scopeOfAuthorization;
         this.satisfiesAccessNeed = satisfiesAccessNeed;
         this.hasDataInstanceIRIs = hasDataInstanceIRIs;
-        if (creatorAccessMode) this.creatorAccessMode = creatorAccessMode;
-        if (inheritsFromGrant) this.inheritsFromGrant = inheritsFromGrant;
+        this.creatorAccessMode = creatorAccessMode;
+        this.inheritsFromAuthorization = inheritsFromAuthorization;
     }
 
     toRdf(writer: N3.Writer): void {
@@ -75,7 +60,7 @@ export class DataGrant implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-            namedNode('interop:DataGrant')
+            namedNode('interop:DataAuthorization')
         );
         writer.addQuad(
             subjectNode,
@@ -124,10 +109,10 @@ export class DataGrant implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode("interop:scopeOfGrant"),
-            namedNode(this.scopeOfGrant)
+            namedNode(this.scopeOfAuthorization)
         );
 
-        if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
+        if (this.hasDataInstanceIRIs != undefined && this.scopeOfAuthorization == GrantScope.SelectedFromRegistry) {
             writer.addQuad(
                 subjectNode,
                 namedNode("interop:hasDataInstance"),
@@ -135,11 +120,11 @@ export class DataGrant implements ItoRdf {
             );
         }
 
-        if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
+        if (this.inheritsFromAuthorization != undefined && this.scopeOfAuthorization == GrantScope.Inherited) {
             writer.addQuad(
                 subjectNode,
                 namedNode("interop:inheritsFromGrant"),
-                namedNode(this.inheritsFromGrant.storedAt)
+                namedNode(this.inheritsFromAuthorization.storedAt)
             );
         }
     }
