@@ -9,8 +9,8 @@ import { AccessMode, DataGrant } from "../../src/data-management/data-model/acce
 import { SocialAgent } from "../../src/data-management/data-model/agent"
 import { SocialAgentRegistration } from "../../src/data-management/data-model/agent-registration/social-agent-registration"
 import { applicationRegistration2f2f3628, dataGrant0945218b, dataGrant23hj244, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
-import { rdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 import { NamedNode } from 'n3';
+import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
@@ -23,7 +23,7 @@ test(
     "Test-toRdfSocialAgentRegistration-c4562da9", async () => {
         let expected = getExpectedRDFFromFile("agents/c4562da9SocialAgentRegistration/c4562da9.ttl")
 
-        let actual = await new rdfFactory().create(socialAgentRegistrationc4562da9)
+        let actual = await new RdfFactory().create(socialAgentRegistrationc4562da9)
 
         expect(actual).toBe(expected)
     }
@@ -33,7 +33,7 @@ test(
     "Test-toRdfApplicationRegistration-2f2f3628", async () => {
         let expected = getExpectedRDFFromFile("agents/2f2f3628ApplicationRegistration/2f2f3628.ttl")
 
-        let actual = await new rdfFactory().create(applicationRegistration2f2f3628)
+        let actual = await new RdfFactory().create(applicationRegistration2f2f3628)
 
         expect(actual).toBe(expected)
     }
@@ -45,7 +45,7 @@ test.each([
 ])('Test-toRdfDataRegistration-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
 
-    let actual = await new rdfFactory().create(arg.instance)
+    let actual = await new RdfFactory().create(arg.instance)
 
     expect(actual).toBe(expected)
 })
@@ -58,7 +58,7 @@ test.each([
 ])('Test-toRdfDataGrant-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
 
-    let actual = await new rdfFactory().create(arg.instance)
+    let actual = await new RdfFactory().create(arg.instance)
 
     expect(actual).toBe(expected)
 })
