@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<https://alice.example/agents/c4562da9/b6e125b8> a interop:AccessGrant;
+    interop:grantedBy <https://alice.example/#id>;
+    interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
+    interop:grantee <https://bob.example/#id>;
+    interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f>;
+    interop:hasDataGrant <https://alice.example/agents/c4562da9/b42228af>, <https://alice.example/agents/c4562da9/95ff7580>.
