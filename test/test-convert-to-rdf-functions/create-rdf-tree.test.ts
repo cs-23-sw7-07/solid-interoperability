@@ -1,8 +1,5 @@
-const path = require('path')
-
 import { readFileSync } from 'fs';
 import { join } from 'path';
-
 import { ExampleInstances } from "../test-case"
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 
