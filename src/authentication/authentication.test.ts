@@ -1,7 +1,3 @@
+import { expect } from "@jest/globals";
 
-import {expect} from "@jest/globals";
-
-test(
-    "Something",
-    () => expect(true).toBeTruthy()
-)
+test("Something", () => expect(true).toBeTruthy());

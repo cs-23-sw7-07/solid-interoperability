@@ -1,4 +1,4 @@
-import N3, { NamedNode } from "n3"
+import N3, { NamedNode } from "n3";
 import { ItoRdf } from "./ItoRdf";
 
 /**
