@@ -1,23 +1,23 @@
 export class Agent {
-  identity: string;
+    identity : string
 
-  constructor(identity: string) {
-    this.identity = identity;
-  }
+    constructor(identity : string) {
+        this.identity = identity
+    }
 
-  getWebID(): string {
-    return this.identity + "/#id";
-  }
+    getWebID(): string {
+        return this.identity + "/#id";
+    }
 }
 
 export class SocialAgent extends Agent {
-  constructor(identity: string) {
-    super(identity);
-  }
+    constructor(identity : string) {
+        super(identity)
+    }
 }
 
 export class ApplicationAgent extends Agent {
-  constructor(identity: string) {
-    super(identity);
-  }
+    constructor(identity : string) {
+        super(identity)
+    }
 }
