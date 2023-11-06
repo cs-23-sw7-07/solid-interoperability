@@ -10,5 +10,4 @@
     interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
     interop:grantee <https://projectron.example/#id>;
     interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f>;
-    interop:hasDataAuthorization <https://alice.example/authorization/54a1b6a0>, <https://alice.example/authorization/0e4cb692>;
-    interop:replaces <https://alice.example/authorization/e2765d6d>.
+    interop:hasDataAuthorization <https://alice.example/authorization/54a1b6a0>, <https://alice.example/authorization/0e4cb692>.
