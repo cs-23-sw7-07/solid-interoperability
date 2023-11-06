@@ -81,6 +81,7 @@ test.each([
 
 test.each([
     { name: 'e2765d6c', expect_rdf_file_path: "authorization/e2765d6cAccessAuth.ttl", instance: ExampleInstances.accessAuthorizatione2765d6c },
+    { name: 'e2765d6d', expect_rdf_file_path: "authorization/e2765d6dAccessAuth.ttl", instance: ExampleInstances.accessAuthorizatione2765d6d },
     { name: '47e07897', expect_rdf_file_path: "authorization/47e07897AccessAuth.ttl", instance: ExampleInstances.accessAuthorizatione47e07897 },
 ])('Test-toRdfDataAuthorization-%s', async (arg) => {
     let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)

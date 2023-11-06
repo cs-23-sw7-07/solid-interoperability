@@ -218,6 +218,18 @@ export namespace ExampleInstances {
         ]
     );
 
+    export const accessAuthorizatione2765d6d = new AccessAuthorization(
+        "e2765d6d",
+        new SocialAgent(alice),
+        new ApplicationAgent(jarvis),
+        new Date("2020-03-04T20:15:47.000Z"),
+        new ApplicationAgent(projectron),
+        projectron + "/#d8219b1f",
+        [
+            dataAuthorization54a1b6a0
+        ]
+    );
+
     export const accessAuthorizatione2765d6c = new AccessAuthorization(
         "e2765d6c",
         new SocialAgent(alice),
@@ -228,9 +240,9 @@ export namespace ExampleInstances {
         [
             dataAuthorization54a1b6a0,
             dataAuthorization0e4cb692,
-        ]
+        ],
+        accessAuthorizatione2765d6d
     );
-
 
     export const applicationRegistration2f2f3628 = new ApplicationRegistration(
         "2f2f3628",
