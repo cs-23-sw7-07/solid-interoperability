@@ -3,7 +3,7 @@ const path = require('path')
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { accessAuthorizatione2765d6c, accessAuthorizatione47e07897, accessGrant27eae14b, accessGrantb6e125b8, applicationRegistration2f2f3628, dataAuthorization0e4cb692, dataAuthorization54a1b6a0, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
+import { accessAuthorizationd577d117, accessAuthorizatione2765d6c, accessAuthorizatione47e07897, accessGrant27eae14b, accessGrantb6e125b8, applicationRegistration2f2f3628, dataAuthorization0e4cb692, dataAuthorization54a1b6a0, dataGrant0945218b, dataGrant40d038ea, dataGrant95ff7580, dataGrantb42228af, dataRegistration8501f084, dataRegistrationdf4ab227, socialAgentRegistrationc4562da9 } from "../test-case"
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 
 
@@ -91,3 +91,37 @@ test.each([
     expect(actual).toBe(expected)
 })
 
+test.each([
+    { name: 'd577d117', expect_rdf_file_path: "authorization/d577d117AccessAuthorization.ttl", instance: accessAuthorizationd577d117 },
+])('Test-createWithPrefixes-%s', async (arg) => {
+    const PREFIXEStest = {
+            rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+            rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+            xsd: 'http://www.w3.org/2001/XMLSchema#',
+            acl: 'http://www.w3.org/ns/auth/acl#',
+            interop: 'http://www.w3.org/ns/solid/interop#',
+            alice: 'https://alice.example/',
+            jarvis: 'https://jarvis.example/',
+            'alice-authorization': 'https://alice.example/authorization/',
+        }
+    let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
+
+    let actual = await new RdfFactory().create(arg.instance, PREFIXEStest)
+
+    expect(actual).toBe(expected)
+})
+
+test.each([
+    { name: 'd577d117', expect_rdf_file_path: "authorization/d577d117AccessAuthorization.ttl", instance: accessAuthorizationd577d117 },
+])('Test-createWithPrefixesAndDefault-%s', async (arg) => {
+    const PREFIXEStest = {
+            'alice': 'https://alice.example/',
+            'jarvis': 'https://jarvis.example/',
+            'alice-authorization': 'https://alice.example/authorization/',
+        }
+    let expected = getExpectedRDFFromFile(arg.expect_rdf_file_path)
+
+    let actual = await new RdfFactory().create(arg.instance, PREFIXEStest)
+
+    expect(actual).toBe(expected)
+})

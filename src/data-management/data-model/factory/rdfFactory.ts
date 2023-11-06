@@ -15,37 +15,23 @@ export class RdfFactory {
             interop: 'http://www.w3.org/ns/solid/interop#',
         }
     };
-    private writer = new N3.Writer(RdfFactory.PREFIXES, { format: "Turtle" })
 
     /**
      * 
      * @param object is class implementing the `ItoRdf` interface
+     * @param prefixes must be an object of form `{keys: 'values'}`. 
+     * Otherwise uses `RdfFactory.PREFIXES`
      * @returns a `Promise` which if furfulled contains a turtle file, otherwise an error which needs handling
+     * 
      */
-    create(object: ItoRdf) {
-        return new Promise((resolve, reject) => {
-            object.toRdf(this.writer)
+    create(object: ItoRdf, prefixes?: any) {
+        const finalPrefix = {prefixes: {...prefixes, ...RdfFactory.PREFIXES.prefixes}}
+        const writer = new N3.Writer(finalPrefix, { format: "Turtle" })
 
-            this.writer.end((error, result: string) => {
-                if (error) {
-                    reject(error)
-                } else {
-                    resolve(result)
-                }
-            })
-        })
-    }
-    /**
-     * @param object is class implementing the `ItoRdf` interface
-     * @param prefixes must be an object of form `{prefixes: {keys: 'values'}}`
-     * @returns an `RDF` if `Promise` resolves else rejects and returns an `Error`
-     */
-    createWithPrefixes(object: ItoRdf, prefixes: any) {
-        let tempWriter = new N3.Writer(prefixes, { format: "Turtle" })
         return new Promise((resolve, reject) => {
-            object.toRdf(tempWriter)
+            object.toRdf(writer)
 
-            tempWriter.end((error, result: string) => {
+            writer.end((error, result: string) => {
                 if (error) {
                     reject(error)
                 } else {

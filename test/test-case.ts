@@ -227,3 +227,16 @@ export const accessAuthorizatione47e07897 = new AccessAuthorization(
         dataAuthorization0e4cb692
     ]
 );
+
+
+export const accessAuthorizationd577d117 = new AccessAuthorization(
+    "d577d117",
+    new SocialAgent(alice),
+    new ApplicationAgent(jarvis),
+    new Date("2020-09-05T06:15:01.000Z"),
+    new ApplicationAgent(jarvis),
+    jarvis + "/#4fd1482d",
+    [
+        dataAuthorization0e4cb692
+    ]
+);

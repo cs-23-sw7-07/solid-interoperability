@@ -1,0 +1,16 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+@prefix alice: <https://alice.example/>.
+@prefix jarvis: <https://jarvis.example/>.
+@prefix alice-authorization: <https://alice.example/authorization/>.
+
+alice-authorization:d577d117 a interop:AccessAuthorization;
+    interop:grantedBy alice:#id;
+    interop:grantedWith jarvis:#id;
+    interop:grantedAt "2020-09-05T06:15:01.000Z"^^xsd:dateTime;
+    interop:grantee jarvis:#id;
+    interop:hasAccessNeedGroup jarvis:#4fd1482d;
+    interop:hasDataAuthorization alice-authorization:0e4cb692.
