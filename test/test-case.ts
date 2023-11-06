@@ -43,6 +43,20 @@ export const dataRegistrationdf4ab227 = new DataRegistration(
     pmShapetrees + "TaskTree"
 );
 
+export const dataGrant2aa21a8c = new DataGrant(
+    "2aa21a8c",
+    aliceBob + "/2aa21a8c",
+    aliceBob,
+    new SocialAgent(alice),
+    new SocialAgent(bob),
+    pmShapetrees + "ProjectTree",
+    dataRegistration8501f084,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.SelectedFromRegistry,
+    projectron + "/#ac54ff1e",
+    ["https://work.alice.example/data/8501f084/16e1eae9", "https://work.alice.example/data/8501f084/886785d2"],
+    [AccessMode.Update, AccessMode.Delete]
+);
 
 export const dataGrantb42228af = new DataGrant(
     "b42228af",

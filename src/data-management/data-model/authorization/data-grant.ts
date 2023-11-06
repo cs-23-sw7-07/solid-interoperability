@@ -113,11 +113,13 @@ export class DataGrant implements ItoRdf {
         );
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfGrant == GrantScope.SelectedFromRegistry) {
-            writer.addQuad(
-                subjectNode,
-                namedNode("interop:hasDataInstance"),
-                writer.list(this.hasDataInstanceIRIs.map(IRI => namedNode(IRI)))
-            );
+            this.hasDataInstanceIRIs.forEach(IRI => {
+                writer.addQuad(
+                    subjectNode,
+                    namedNode("interop:hasDataInstance"),
+                    namedNode(IRI)
+                );
+            });
         }
 
         if (this.inheritsFromGrant != undefined && this.scopeOfGrant == GrantScope.Inherited) {
