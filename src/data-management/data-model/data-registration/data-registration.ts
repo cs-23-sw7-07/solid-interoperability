@@ -6,7 +6,7 @@ const { namedNode, literal, quad } = DataFactory;
 
 export class DataRegistration {
     id: string;
-    storedAtFolder: string;
+    storedAt: string;
     registeredBy: SocialAgent;
     registeredWith: Agent;
     registeredAt: Date;
@@ -15,7 +15,7 @@ export class DataRegistration {
 
     constructor(
         id: string,
-        storedAtFolder: string,
+        storedAt: string,
         registeredBy: SocialAgent,
         registeredWith: Agent,
         registeredAt: Date,
@@ -23,7 +23,7 @@ export class DataRegistration {
         registeredShapeTree: string
     ) {
         this.id = id;
-        this.storedAtFolder = storedAtFolder;
+        this.storedAt = storedAt;
         this.registeredBy = registeredBy;
         this.registeredWith = registeredWith;
         this.registeredAt = registeredAt;
@@ -32,7 +32,7 @@ export class DataRegistration {
     }
 
     toRdf(writer: N3.Writer): void {
-        const subject = `${this.storedAtFolder}/${this.id}/`
+        const subject = `${this.storedAt}/${this.id}/`
         const subjectNode = namedNode(subject)
 
         writer.addQuad(

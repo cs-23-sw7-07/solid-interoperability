@@ -80,7 +80,7 @@ export class DataGrant implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode("interop:hasDataRegistration"),
-            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`)
+            namedNode(`${this.hasDataRegistration.storedAt}/${this.hasDataRegistration.id}/`)
         );
         writer.addQuad(
             subjectNode,

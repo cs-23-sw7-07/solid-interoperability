@@ -77,7 +77,7 @@ export class DataAuthorization implements ItoRdf {
         writer.addQuad(
             subjectNode,
             namedNode("interop:hasDataRegistration"),
-            namedNode(`${this.hasDataRegistration.storedAtFolder}/${this.hasDataRegistration.id}/`)
+            namedNode(`${this.hasDataRegistration.storedAt}/${this.hasDataRegistration.id}/`)
         );
 
         this.accessMode.forEach(mode => {
@@ -111,11 +111,13 @@ export class DataAuthorization implements ItoRdf {
         );
 
         if (this.hasDataInstanceIRIs != undefined && this.scopeOfAuthorization == GrantScope.SelectedFromRegistry) {
-            writer.addQuad(
-                subjectNode,
-                namedNode("interop:hasDataInstance"),
-                writer.list(this.hasDataInstanceIRIs.map(IRI => namedNode(IRI)))
-            );
+            this.hasDataInstanceIRIs.forEach(IRI => {
+                writer.addQuad(
+                    subjectNode,
+                    namedNode("interop:hasDataInstance"),
+                    namedNode(IRI)
+                );
+            });
         }
 
         if (this.inheritsFromAuthorization != undefined && this.scopeOfAuthorization == GrantScope.Inherited) {
