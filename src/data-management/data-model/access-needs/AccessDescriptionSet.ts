@@ -1,7 +1,6 @@
 class AccessDescriptionSet {
-    usesLanguage: string[];
-    constructor(usesLanguage: string[]) {
-        this.usesLanguage = usesLanguage;
-    }
+  usesLanguage: string[];
+  constructor(usesLanguage: string[]) {
+    this.usesLanguage = usesLanguage;
+  }
 }
-
