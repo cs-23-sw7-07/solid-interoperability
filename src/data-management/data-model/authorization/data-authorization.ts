@@ -51,8 +51,7 @@ export class DataAuthorization implements ItoRdf {
   }
 
   toRdf(writer: N3.Writer): void {
-    const subject = this.id;
-    const subjectNode = namedNode(subject);
+    const subjectNode = namedNode(this.id);
 
     writer.addQuad(
       subjectNode,
