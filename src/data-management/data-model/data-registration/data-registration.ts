@@ -32,7 +32,7 @@ export class DataRegistration {
   }
 
   toRdf(writer: N3.Writer): void {
-    const subject = `${this.storedAt}/${this.id}/`;
+    const subject = this.id;
     const subjectNode = namedNode(subject);
 
     writer.addQuad(
