@@ -20,32 +20,37 @@ const bobAgents = 'https://bob.example/agents'
 const aliceProjectron = 'https://alice.example/agents/2f2f3628'
 const aliceauthorization = 'https://alice.example/authorization'
 
+const aliceID = new SocialAgent(alice + '/#id')
+const bobID = new SocialAgent(bob + '/#id')
+const jarvisID = new ApplicationAgent(jarvis + '/#id')
+const projectronID = new ApplicationAgent(projectron + '/#id')
+
 export const dataRegistration8501f084 = new DataRegistration(
-    "8501f084",
+    "https://work.alice.example/data/8501f084/",
     aliceWorkData,
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    aliceID,
+    jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
     new Date("2020-04-04T21:11:33.000Z"),
     pmShapetrees + "ProjectTree"
 );
 
 export const dataRegistrationdf4ab227 = new DataRegistration(
-    "df4ab227",
+    "https://work.alice.example/data/df4ab227/",
     aliceWorkData,
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    aliceID,
+    jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
     new Date("2020-04-04T21:11:33.000Z"),
     pmShapetrees + "TaskTree"
 );
 
 export const dataGrant2aa21a8c = new DataGrant(
-    "2aa21a8c",
+    "https://alice.example/agents/c4562da9/2aa21a8c",
     aliceBob + "/2aa21a8c",
     aliceBob,
-    new SocialAgent(alice),
-    new SocialAgent(bob),
+    aliceID,
+    bobID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -56,10 +61,10 @@ export const dataGrant2aa21a8c = new DataGrant(
 );
 
 export const dataAuthorization23a123bd = new DataAuthorization(
-    "23a123bd",
+    "https://alice.example/authorization/23a123bd",
     aliceauthorization,
-    new SocialAgent(alice),
-    new SocialAgent(bob),
+    aliceID,
+    bobID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -70,11 +75,11 @@ export const dataAuthorization23a123bd = new DataAuthorization(
 );
 
 export const dataGrantb42228af = new DataGrant(
-    "b42228af",
+    "https://alice.example/agents/c4562da9/b42228af",
     aliceBob + "/b42228af",
     aliceBob,
-    new SocialAgent(alice),
-    new SocialAgent(bob),
+    aliceID,
+    bobID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -85,11 +90,11 @@ export const dataGrantb42228af = new DataGrant(
 );
 
 export const dataGrant95ff7580 = new DataGrant(
-    "95ff7580",
+    "https://alice.example/agents/c4562da9/95ff7580",
     aliceBob + "95ff7580",
     aliceBob,
-    new SocialAgent(alice),
-    new SocialAgent(bob),
+    aliceID,
+    bobID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
@@ -101,39 +106,33 @@ export const dataGrant95ff7580 = new DataGrant(
 );
 
 export const accessGrantb6e125b8 = new AccessGrant(
-    "b6e125b8",
+    "https://alice.example/agents/c4562da9/b6e125b8",
     aliceBob,
-    new SocialAgent(alice),
+    aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
-    new SocialAgent(bob),
+    bobID,
     projectron + "/#d8219b1f",
     [dataGrantb42228af, dataGrant95ff7580]
 );
 
 export const socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
-    "c4562da9",
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    "https://alice.example/agents/c4562da9/",
+    aliceID,
+    jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
     new Date("2020-04-04T21:11:33.000Z"),
-    new SocialAgent(bob),
+    bobID,
     accessGrantb6e125b8,
     bobAgents + "/255aa181/"
 );
-
-
-
-
-
-
 
 
 export const dataGrant23hj244 = new DataGrant(
     "23hj244",
     aliceProjectron + "/23hj244",
     aliceProjectron,
-    new SocialAgent(alice),
-    new ApplicationAgent(projectron),
+    aliceID,
+    projectronID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -144,11 +143,11 @@ export const dataGrant23hj244 = new DataGrant(
 );
 
 export const dataGrant40d038ea = new DataGrant(
-    "40d038ea",
+    "https://alice.example/agents/2f2f3628/40d038ea",
     aliceProjectron + "/40d038ea",
     aliceProjectron,
-    new SocialAgent(alice),
-    new ApplicationAgent(projectron),
+    aliceID,
+    projectronID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -159,10 +158,10 @@ export const dataGrant40d038ea = new DataGrant(
 );
 
 export const dataAuthorization54a1b6a0 = new DataAuthorization(
-    "54a1b6a0",
+    "https://alice.example/authorization/54a1b6a0",
     aliceauthorization,
-    new SocialAgent(alice),
-    new ApplicationAgent(projectron),
+    aliceID,
+    projectronID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
@@ -173,11 +172,11 @@ export const dataAuthorization54a1b6a0 = new DataAuthorization(
 );
 
 export const dataGrant0945218b = new DataGrant(
-    "0945218b",
+    "https://alice.example/agents/2f2f3628/0945218b",
     aliceProjectron + "/0945218b",
     aliceProjectron,
-    new SocialAgent(alice),
-    new ApplicationAgent(projectron),
+    aliceID,
+    projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
@@ -189,10 +188,10 @@ export const dataGrant0945218b = new DataGrant(
 );
 
 export const dataAuthorization0e4cb692 = new DataAuthorization(
-    "0e4cb692",
+    "https://alice.example/authorization/0e4cb692",
     aliceauthorization,
-    new SocialAgent(alice),
-    new ApplicationAgent(projectron),
+    aliceID,
+    projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
@@ -204,11 +203,11 @@ export const dataAuthorization0e4cb692 = new DataAuthorization(
 )
 
 export const accessGrant27eae14b = new AccessGrant(
-    "27eae14b",
+    "https://alice.example/agents/2f2f3628/27eae14b",
     aliceProjectron,
-    new SocialAgent(alice),
+    aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
-    new ApplicationAgent(projectron),
+    projectronID,
     projectron + "/#d8219b1f",
     [
         dataGrant40d038ea,
@@ -217,11 +216,11 @@ export const accessGrant27eae14b = new AccessGrant(
 );
 
 export const accessAuthorizatione2765d6d = new AccessAuthorization(
-    "e2765d6d",
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    "https://alice.example/authorization/e2765d6d",
+    aliceID,
+    jarvisID,
     new Date("2020-03-04T20:15:47.000Z"),
-    new ApplicationAgent(projectron),
+    projectronID,
     projectron + "/#d8219b1f",
     [
         dataAuthorization54a1b6a0
@@ -229,11 +228,11 @@ export const accessAuthorizatione2765d6d = new AccessAuthorization(
 );
 
 export const accessAuthorizatione2765d6c = new AccessAuthorization(
-    "e2765d6c",
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    "https://alice.example/authorization/e2765d6c",
+    aliceID,
+    jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
-    new ApplicationAgent(projectron),
+    projectronID,
     projectron + "/#d8219b1f",
     [
         dataAuthorization54a1b6a0,
@@ -243,22 +242,22 @@ export const accessAuthorizatione2765d6c = new AccessAuthorization(
 );
 
 export const applicationRegistration2f2f3628 = new ApplicationRegistration(
-    "2f2f3628",
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    "https://alice.example/agents/2f2f3628/",
+    aliceID,
+    jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
     new Date("2020-04-04T21:11:33.000Z"),
-    new ApplicationAgent(projectron),
+    projectronID,
     accessGrant27eae14b
 );
 
 
 export const accessAuthorizatione47e07897 = new AccessAuthorization(
-    "47e07897",
-    new SocialAgent(alice),
-    new ApplicationAgent(jarvis),
+    "https://alice.example/authorization/47e07897",
+    aliceID,
+    jarvisID,
     new Date("2020-09-05T06:15:01.000Z"),
-    new ApplicationAgent(jarvis),
+    jarvisID,
     jarvis + "/#4fd1482d",
     [
         dataAuthorization0e4cb692

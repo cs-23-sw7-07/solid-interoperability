@@ -51,7 +51,7 @@ export class DataAuthorization implements ItoRdf {
   }
 
   toRdf(writer: N3.Writer): void {
-    const subject = `${this.storedAt}/${this.id}`;
+    const subject = this.id;
     const subjectNode = namedNode(subject);
 
     writer.addQuad(
@@ -78,7 +78,7 @@ export class DataAuthorization implements ItoRdf {
       subjectNode,
       namedNode("interop:hasDataRegistration"),
       namedNode(
-        `${this.hasDataRegistration.storedAt}/${this.hasDataRegistration.id}/`,
+        this.hasDataRegistration.id,
       ),
     );
 
@@ -133,7 +133,7 @@ export class DataAuthorization implements ItoRdf {
         subjectNode,
         namedNode("interop:inheritsFromAuthorization"),
         namedNode(
-          `${this.inheritsFromAuthorization.storedAt}/${this.inheritsFromAuthorization.id}`,
+          this.inheritsFromAuthorization.id,
         ),
       );
     }

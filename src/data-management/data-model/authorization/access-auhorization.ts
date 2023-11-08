@@ -36,7 +36,7 @@ export class AccessAuthorization implements ItoRdf {
   }
 
   toRdf(writer: N3.Writer): void {
-    const subject = `${this.grantedBy.identity}/authorization/${this.id}`;
+    const subject = this.id;
     const subjectNode = namedNode(subject);
 
     writer.addQuad(
@@ -74,7 +74,7 @@ export class AccessAuthorization implements ItoRdf {
       writer.addQuad(
         subjectNode,
         namedNode("interop:hasDataAuthorization"),
-        namedNode(`${data_authorization.storedAt}/${data_authorization.id}`),
+        namedNode(data_authorization.id),
       );
     });
     if (this.replaces !== undefined) {
@@ -82,7 +82,7 @@ export class AccessAuthorization implements ItoRdf {
         subjectNode,
         namedNode("interop:replaces"),
         namedNode(
-          `${this.grantedBy.identity}/authorization/${this.replaces.id}`,
+          this.replaces.id,
         ),
       );
     }
