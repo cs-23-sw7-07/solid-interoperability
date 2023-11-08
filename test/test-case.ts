@@ -25,7 +25,6 @@ const projectronID = new ApplicationAgent(projectron + '/#id')
 
 export const dataRegistration8501f084 = new DataRegistration(
     "https://work.alice.example/data/8501f084/",
-    //aliceWorkData,
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -35,7 +34,6 @@ export const dataRegistration8501f084 = new DataRegistration(
 
 export const dataRegistrationdf4ab227 = new DataRegistration(
     "https://work.alice.example/data/df4ab227/",
-    //aliceWorkData,
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -60,7 +58,6 @@ export const dataGrant2aa21a8c = new DataGrant(
 
 export const dataAuthorization23a123bd = new DataAuthorization(
     "https://alice.example/authorization/23a123bd",
-    //aliceauthorization,
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -157,7 +154,6 @@ export const dataGrant40d038ea = new DataGrant(
 
 export const dataAuthorization54a1b6a0 = new DataAuthorization(
     "https://alice.example/authorization/54a1b6a0",
-    //aliceauthorization,
     aliceID,
     projectronID,
     pmShapetrees + "ProjectTree",
@@ -187,7 +183,6 @@ export const dataGrant0945218b = new DataGrant(
 
 export const dataAuthorization0e4cb692 = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    //aliceauthorization,
     aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
