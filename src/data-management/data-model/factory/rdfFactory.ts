@@ -51,7 +51,7 @@ export class RdfFactory {
     });
   }
 
-  parse(doc_path: string): Promise<Map<String, any>> {
+  parse(doc_path: string): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
       let rdf_string: string = getRDFFromFile(doc_path)
       const parser = new N3.Parser();
@@ -72,19 +72,19 @@ export class RdfFactory {
 
   parse_quads(quads: N3.Quad[]) {
     let args: Map<string, any> = new Map<string, any>();
-    quads.forEach( async (quad) => {
+    quads.forEach( (quad) => {
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
           args.set("type", quad.object.id);
-          args.set("id", quad.subject.id.split("/").at(-1));
+          args.set("id", quad.subject.id);
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantedBy": {
-          args.set("grantedBy", new SocialAgent(quad.object.id.slice(0, -3)));
+          args.set("grantedBy", new SocialAgent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantedWith": {
-          args.set("grantedWith", new ApplicationAgent(quad.object.id.slice(0, -3)));
+          args.set("grantedWith", new ApplicationAgent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantedAt": {
@@ -92,7 +92,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantee": {
-          args.set("grantee", new Agent(quad.object.id.slice(0, -3)));
+          args.set("grantee", new Agent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasAccessNeedGroup": {
@@ -100,22 +100,13 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataAuthorization": {
-          let args_for_DataAuthorization: Map<String, any>;
-          await this.parse(quad.object.id).then((result: Map<String, any>) => args_for_DataAuthorization = result);
-          args.set("hasDataAuthorization", new DataAuthorization(
-              args_for_DataAuthorization!.get("id"),
-              args_for_DataAuthorization!.get("storedAt"),
-              args_for_DataAuthorization!.get("dataOwner"),
-              args_for_DataAuthorization!.get("grantee"),
-              args_for_DataAuthorization!.get("registeredShapeTree"),
-              args_for_DataAuthorization!.get("hasDataRegistration"),
-              args_for_DataAuthorization!.get("accessMode"),
-              args_for_DataAuthorization!.get("creatorAccessMode"),
-              args_for_DataAuthorization!.get("scopeOfAuthorization"),
-              args_for_DataAuthorization!.get("satisfiesAccessNeed"),
-              args_for_DataAuthorization!.get("hasDataInstanceIRIs"),
-              args_for_DataAuthorization!.get("inheritsFromAuthorization")
-          ));
+          let argsForDataAuthorization: Map<string, any> = new Map<string, any>();
+          this.parse(quad.object.id).then((result: Map<string, any>) => {
+            argsForDataAuthorization = result;
+            argsForDataAuthorization.set("storedAt", ""); // Is going to be deleted later
+            //console.log("hasDataAuthorization args: \n" + [...argsForDataAuthorization.entries()]);
+            args.set("hasDataAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
+          });
           break;
         }
         case "http://www.w3.org/ns/solid/interop#dataOwner": {
@@ -127,8 +118,12 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataRegistration": {
-          let args_for_DataRegistration: Map<String, any>;
-          await this.parse(quad.object.id).then((result: Map<String, any>) => args_for_DataRegistration = result);
+          let argsForDataRegistration: Map<string, any> = new Map<string, any>();
+          this.parse(quad.object.id).then((result: Map<string, any>) => {
+            argsForDataRegistration = result;
+            argsForDataRegistration.set("storedAt", ""); // Is going to be deleted later
+            args.set("hasDataRegistration", DataRegistration.makeDataRegistrationFromArgsMap(argsForDataRegistration));
+          });
           break;
         }
         case "http://www.w3.org/ns/solid/interop#accessMode": {
@@ -165,9 +160,16 @@ export class RdfFactory {
           args.set("registeredAt", getDateFromStr(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": {
-          let args_for_DataAuthorization: Map<String, any>;
-          await this.parse(quad.object.id).then((result: Map<String, any>) => args_for_DataAuthorization = result);
+        case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": { // THIS DOES NOT WORK YET, SOMEHOW hasDataRegistration IS MISSING!
+          let argsForDataAuthorization: Map<string, any> = new Map<string, any>();
+          this.parse(quad.object.id).then((result: Map<string, any>) => {
+            argsForDataAuthorization = result;
+            argsForDataAuthorization.set("storedAt", "");
+            args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
+          });
+          //argsForDataAuthorization.set("storedAt", ""); // Is going to be deleted later
+          //console.log("inheritsFromAuthorization args: \n" + [...argsForDataAuthorization.entries()]);
+          //args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#updatedAt": {
@@ -179,8 +181,10 @@ export class RdfFactory {
           break;
         }
       }
-    })
+    });
     console.log(args);
+    //console.log(args.has("hasDataRegistration"))
+
     return args;
   }
 }

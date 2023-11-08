@@ -31,6 +31,18 @@ export class DataRegistration {
     this.registeredShapeTree = registeredShapeTree;
   }
 
+  static makeDataRegistrationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataRegistration {
+    return new DataRegistration(
+        argsForDataAuthorization.get("id"),
+        argsForDataAuthorization.get("storedAt"),
+        argsForDataAuthorization.get("registeredBy"),
+        argsForDataAuthorization.get("registeredWith"),
+        argsForDataAuthorization.get("registeredAt"),
+        argsForDataAuthorization.get("updatedAt"),
+        argsForDataAuthorization.get("registeredShapeTree"),
+    );
+  }
+
   toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
 

@@ -9,7 +9,10 @@ test.each([
 ])('Test-toRdfDataRegistration-%s', async (arg) => {
     const expected = arg.instance
 
-    await new RdfFactory().parse(arg.expect_rdf_file_path)
+    let args: Map<string, any> = new Map<string, any>();
+
+    await new RdfFactory().parse(arg.expect_rdf_file_path).then((result: Map<string, any>) => args = result);
+    //console.log(args);
 
     expect(true).toBe(true)
 })

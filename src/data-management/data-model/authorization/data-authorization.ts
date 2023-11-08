@@ -50,6 +50,23 @@ export class DataAuthorization implements ItoRdf {
     this.inheritsFromAuthorization = inheritsFromAuthorization;
   }
 
+  static makeDataAuthorizationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataAuthorization {
+    return new DataAuthorization(
+        argsForDataAuthorization.get("id"),
+        argsForDataAuthorization.get("storedAt"),
+        argsForDataAuthorization.get("dataOwner"),
+        argsForDataAuthorization.get("grantee"),
+        argsForDataAuthorization.get("registeredShapeTree"),
+        argsForDataAuthorization.get("hasDataRegistration"),
+        argsForDataAuthorization.get("accessMode"),
+        argsForDataAuthorization.get("scopeOfAuthorization"),
+        argsForDataAuthorization.get("satisfiesAccessNeed"),
+        argsForDataAuthorization.has("hasDataInstanceIRIs") ? argsForDataAuthorization.get("hasDataInstanceIRIs"): undefined,
+        argsForDataAuthorization.has("creatorAccessMode") ? argsForDataAuthorization.get("creatorAccessMode"): undefined,
+        argsForDataAuthorization.has("inheritsFromAuthorization") ? argsForDataAuthorization.get("inheritsFromAuthorization"): undefined,
+    );
+  }
+
   toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
 
