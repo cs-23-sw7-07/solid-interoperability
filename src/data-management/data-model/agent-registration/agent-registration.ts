@@ -34,9 +34,7 @@ export abstract class AgentRegistration implements ItoRdf {
   }
 
   public toRdf(writer: N3.Writer) {
-    const subjectNode = namedNode(
-      `${this.registeredBy.identity}/agents/${this.id}/`,
-    );
+    const subjectNode = namedNode(this.id);
 
     writer.addQuad(
       subjectNode,
@@ -66,10 +64,7 @@ export abstract class AgentRegistration implements ItoRdf {
     writer.addQuad(
       subjectNode,
       namedNode("interop:hasAccessGrant"),
-      namedNode(
-        `${this.registeredBy.identity}/agents/${this.id}/` +
-          this.hasAccessGrant.id,
-      ),
+      namedNode(this.hasAccessGrant.id),
     );
   }
 }

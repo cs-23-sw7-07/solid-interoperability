@@ -32,7 +32,7 @@ export class ApplicationRegistration
   }
 
   public toRdf(writer: N3.Writer): void {
-    const subject = `${this.registeredBy.identity}/agents/${this.id}/`;
+    const subject = this.id;
     const subjectNode = namedNode(subject);
 
     writer.addQuad(

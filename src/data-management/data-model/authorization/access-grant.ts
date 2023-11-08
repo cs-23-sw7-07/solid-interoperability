@@ -34,7 +34,7 @@ export class AccessGrant implements ItoRdf {
   }
 
   toRdf(writer: N3.Writer): void {
-    const subject = `${this.agentRegistrationIRI}/${this.id}`;
+    const subject = this.id;
     const subjectNode = namedNode(subject);
 
     writer.addQuad(
@@ -67,7 +67,7 @@ export class AccessGrant implements ItoRdf {
       writer.addQuad(
         subjectNode,
         namedNode("interop:hasDataGrant"),
-        namedNode(`${data_grant.agentRegistrationIRI}/${data_grant.id}`),
+        namedNode(data_grant.id),
       );
     });
   }
