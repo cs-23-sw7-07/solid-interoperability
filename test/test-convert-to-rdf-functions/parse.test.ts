@@ -1,9 +1,10 @@
 import * as ExampleInstances from "../test-case";
 import {RdfFactory} from "../../src/data-management/data-model/factory/rdfFactory";
 import {AccessAuthorization} from "../../src/data-management/data-model/authorization/access-auhorization";
+import {accessAuthorizatione47e07897Parse} from "../test-case";
 
 test.each([
-    { name: '47e07897', expect_rdf_file_path: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse.ttl", instance: ExampleInstances.accessAuthorizatione47e07897 },
+    { name: '47e07897', expect_rdf_file_path: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse.ttl", instance: ExampleInstances.accessAuthorizatione47e07897Parse },
 ])('Test-toRdfDataRegistration-%s', async (arg) => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const args: Map<string, any> = await new RdfFactory().parse(arg.expect_rdf_file_path);
