@@ -51,28 +51,28 @@ export class RdfFactory {
     });
   }
 
-  parse(doc_path: string): Promise<Map<string, any>> {
+  parse(docPath: string): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
-      let rdf_string: string = getRDFFromFile(doc_path)
+      let rdfString: string = getRDFFromFile(docPath)
       const parser = new N3.Parser();
-      const quads: N3.Quad[] = [];
+      let quads: N3.Quad[] = [];
       parser.parse(
-          rdf_string,
+          rdfString,
           (error, quad, _) => {
             if (error)
               reject("Could not make quads")
             if (quad)
               quads.push(quad)
             else {
-              resolve(this.parse_quads(quads))
+              resolve(this.parseQuads(quads))
             }
           });
     })
   }
 
-  parse_quads(quads: N3.Quad[]) {
+  async parseQuads(quads: N3.Quad[]) {
     let args: Map<string, any> = new Map<string, any>();
-    quads.forEach( (quad) => {
+    for (const quad of quads) {
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
           args.set("type", quad.object.id);
@@ -100,13 +100,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataAuthorization": {
-          let argsForDataAuthorization: Map<string, any> = new Map<string, any>();
-          this.parse(quad.object.id).then((result: Map<string, any>) => {
-            argsForDataAuthorization = result;
-            argsForDataAuthorization.set("storedAt", ""); // Is going to be deleted later
-            //console.log("hasDataAuthorization args: \n" + [...argsForDataAuthorization.entries()]);
-            args.set("hasDataAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
-          });
+          args.set("hasDataAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(await this.parse(quad.object.id)));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#dataOwner": {
@@ -118,12 +112,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataRegistration": {
-          let argsForDataRegistration: Map<string, any> = new Map<string, any>();
-          this.parse(quad.object.id).then((result: Map<string, any>) => {
-            argsForDataRegistration = result;
-            argsForDataRegistration.set("storedAt", ""); // Is going to be deleted later
-            args.set("hasDataRegistration", DataRegistration.makeDataRegistrationFromArgsMap(argsForDataRegistration));
-          });
+          args.set("hasDataRegistration", DataRegistration.makeDataRegistrationFromArgsMap(await this.parse(quad.object.id)));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#accessMode": {
@@ -160,16 +149,8 @@ export class RdfFactory {
           args.set("registeredAt", getDateFromStr(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": { // THIS DOES NOT WORK YET, SOMEHOW hasDataRegistration IS MISSING!
-          let argsForDataAuthorization: Map<string, any> = new Map<string, any>();
-          this.parse(quad.object.id).then((result: Map<string, any>) => {
-            argsForDataAuthorization = result;
-            argsForDataAuthorization.set("storedAt", "");
-            args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
-          });
-          //argsForDataAuthorization.set("storedAt", ""); // Is going to be deleted later
-          //console.log("inheritsFromAuthorization args: \n" + [...argsForDataAuthorization.entries()]);
-          //args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(argsForDataAuthorization));
+        case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": {
+          args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(await this.parse(quad.object.id)));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#updatedAt": {
@@ -181,9 +162,7 @@ export class RdfFactory {
           break;
         }
       }
-    });
-    console.log(args);
-    //console.log(args.has("hasDataRegistration"))
+    }
 
     return args;
   }

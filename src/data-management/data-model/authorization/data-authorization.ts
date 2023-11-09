@@ -10,7 +10,6 @@ const { namedNode } = DataFactory;
 
 export class DataAuthorization implements ItoRdf {
   id: string;
-  storedAt: string;
   dataOwner: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -24,7 +23,6 @@ export class DataAuthorization implements ItoRdf {
 
   constructor(
     id: string,
-    storedAt: string,
     dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
@@ -37,7 +35,6 @@ export class DataAuthorization implements ItoRdf {
     inheritsFromAuthorization?: DataAuthorization,
   ) {
     this.id = id;
-    this.storedAt = storedAt;
     this.dataOwner = dataOwner;
     this.grantee = grantee;
     this.registeredShapeTree = registeredShapeTree;
@@ -53,7 +50,6 @@ export class DataAuthorization implements ItoRdf {
   static makeDataAuthorizationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataAuthorization {
     return new DataAuthorization(
         argsForDataAuthorization.get("id"),
-        argsForDataAuthorization.get("storedAt"),
         argsForDataAuthorization.get("dataOwner"),
         argsForDataAuthorization.get("grantee"),
         argsForDataAuthorization.get("registeredShapeTree"),

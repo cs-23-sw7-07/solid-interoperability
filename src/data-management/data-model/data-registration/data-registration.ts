@@ -6,7 +6,6 @@ const { namedNode, literal } = DataFactory;
 
 export class DataRegistration {
   id: string;
-  storedAt: string;
   registeredBy: SocialAgent;
   registeredWith: Agent;
   registeredAt: Date;
@@ -15,7 +14,6 @@ export class DataRegistration {
 
   constructor(
     id: string,
-    storedAt: string,
     registeredBy: SocialAgent,
     registeredWith: Agent,
     registeredAt: Date,
@@ -23,7 +21,6 @@ export class DataRegistration {
     registeredShapeTree: string,
   ) {
     this.id = id;
-    this.storedAt = storedAt;
     this.registeredBy = registeredBy;
     this.registeredWith = registeredWith;
     this.registeredAt = registeredAt;
@@ -34,7 +31,6 @@ export class DataRegistration {
   static makeDataRegistrationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataRegistration {
     return new DataRegistration(
         argsForDataAuthorization.get("id"),
-        argsForDataAuthorization.get("storedAt"),
         argsForDataAuthorization.get("registeredBy"),
         argsForDataAuthorization.get("registeredWith"),
         argsForDataAuthorization.get("registeredAt"),
