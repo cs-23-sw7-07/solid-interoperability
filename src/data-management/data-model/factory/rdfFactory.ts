@@ -8,6 +8,7 @@ import { getAccessmodeFromStr } from "../../Utils/get-accessmode-from-str";
 import { getScopeOfAuthFromStr } from "../../Utils/get-scope-of-auth-from-str";
 import { getDateFromStr } from "../../Utils/get-date-from-str";
 import { fetchResource } from "../../Utils/fetch-resource";
+import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
 
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
@@ -193,9 +194,16 @@ export class RdfFactory {
           args.set("updatedAt", getDateFromStr(quad.object.id));
           break;
         }
-        default: {
-          //console.log(quad);
+        case "http://www.w3.org/ns/solid/interop#applicationName": {
+          args.set("applicationName", quad.object.id);
           break;
+        }
+        case "http://www.w3.org/ns/solid/interop#applicationDescription": {
+          args.set("applicationDescription", quad.object.id);
+          break;
+        }
+        default: {
+          throw new NotImplementedYet(JSON.stringify(quad, null, 4));
         }
       }
     }
