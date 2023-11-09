@@ -59,10 +59,11 @@ export class RdfFactory {
       const parser = new N3.Parser();
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
-        if (error)
+        if (error) {
           reject("Could not make quads: " + error + " in file: " + docPath);
-        if (quad) quads.push(quad);
-        else {
+        } else if (quad) {
+          quads.push(quad);
+        } else {
           try {
             resolve(this.parseQuads(quads));
           } catch (e) {
