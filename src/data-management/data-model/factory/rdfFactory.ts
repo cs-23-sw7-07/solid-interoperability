@@ -143,20 +143,29 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#accessMode": {
-          if (args.has("accessMode"))
-            args.get("accessMode").push(getAccessmodeFromStr(quad.object.id));
-          else args.set("accessMode", [getAccessmodeFromStr(quad.object.id)]);
+          try {
+            if (args.has("accessMode"))
+              args.get("accessMode").push(getAccessmodeFromStr(quad.object.id));
+            else args.set("accessMode", [getAccessmodeFromStr(quad.object.id)]);
+          } catch (e) {
+            throw e;
+          }
           break;
         }
         case "http://www.w3.org/ns/solid/interop#creatorAccessMode": {
-          if (args.has("creatorAccessMode"))
-            args
-              .get("creatorAccessMode")
-              .push(getAccessmodeFromStr(quad.object.id));
-          else
-            args.set("creatorAccessMode", [
-              getAccessmodeFromStr(quad.object.id),
-            ]);
+          try {
+            if (args.has("creatorAccessMode"))
+              args
+                  .get("creatorAccessMode")
+                  .push(getAccessmodeFromStr(quad.object.id));
+            else
+              args.set("creatorAccessMode", [
+                getAccessmodeFromStr(quad.object.id),
+              ]);
+          } catch (e) {
+            throw e;
+          }
+
           break;
         }
         case "http://www.w3.org/ns/solid/interop#scopeOfAuthorization": {

@@ -27,6 +27,9 @@ export function getAccessmodeFromStr(accessMode: string): AccessMode {
       accessModeEnum = AccessMode.Append;
       break;
     }
+    default: {
+      throw new Error("Could not infer access mode")
+    }
   }
   return accessModeEnum!;
 }
