@@ -36,7 +36,7 @@ export class AccessAuthorization implements ItoRdf {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeAccessAuthorizationFromArgsMap(
+  static makeAccessAuthorization(
     argsForAccessAuthorization: Map<string, any>,
   ): AccessAuthorization {
     return new AccessAuthorization(

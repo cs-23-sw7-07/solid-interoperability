@@ -48,7 +48,7 @@ export class DataAuthorization implements ItoRdf {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeDataAuthorizationFromArgsMap(
+  static makeDataAuthorization(
     argsForDataAuthorization: Map<string, any>,
   ): DataAuthorization {
     return new DataAuthorization(

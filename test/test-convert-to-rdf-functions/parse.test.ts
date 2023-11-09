@@ -7,7 +7,7 @@ test.each([
 ])('Test-toRdfDataRegistration-%s', async (arg) => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const args: Map<string, any> = await new RdfFactory().parse(arg.expect_rdf_file_path);
-    const accessAuthorization: AccessAuthorization = AccessAuthorization.makeAccessAuthorizationFromArgsMap(args);
+    const accessAuthorization: AccessAuthorization = AccessAuthorization.makeAccessAuthorization(args);
 
     expect(accessAuthorization).toStrictEqual(arg.instance);
 })

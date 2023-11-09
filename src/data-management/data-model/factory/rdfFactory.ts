@@ -76,6 +76,8 @@ export class RdfFactory {
 
   async parseQuads(quads: N3.Quad[]): Promise<Map<string, any>> {
     const args: Map<string, any> = new Map<string, any>();
+    const solidInterop: string = "http://www.w3.org/ns/solid/interop#";
+
     for (const quad of quads) {
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
@@ -83,116 +85,116 @@ export class RdfFactory {
           args.set("id", quad.subject.id);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#grantedBy": {
+        case solidInterop + "grantedBy": {
           args.set("grantedBy", new SocialAgent(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#grantedWith": {
+        case solidInterop + "grantedWith": {
           args.set("grantedWith", new ApplicationAgent(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#grantedAt": {
+        case solidInterop + "grantedAt": {
           args.set("grantedAt", getDate(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#grantee": {
+        case solidInterop + "grantee": {
           const type = (await this.parse(fetchResource())).get("type");
-          if (type == "http://www.w3.org/ns/solid/interop#Application")
+          if (type == solidInterop + "Application")
             args.set("grantee", new ApplicationAgent(quad.object.id));
-          else if (type == "http://www.w3.org/ns/solid/interop:Agent")
+          else if (type == solidInterop + "Agent")
             args.set("grantee", new SocialAgent(quad.object.id));
           else throw new Error("Could not infer agent type");
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#hasAccessNeedGroup": {
+        case solidInterop + "hasAccessNeedGroup": {
           args.set("hasAccessNeedGroup", quad.object.id);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#hasDataAuthorization": {
+        case solidInterop + "hasDataAuthorization": {
           if (args.has("hasDataAuthorization"))
             args
               .get("hasDataAuthorization")
               .push(
-                DataAuthorization.makeDataAuthorizationFromArgsMap(
+                DataAuthorization.makeDataAuthorization(
                   await this.parse(quad.object.id),
                 ),
               );
           else
             args.set("hasDataAuthorization", [
-              DataAuthorization.makeDataAuthorizationFromArgsMap(
+              DataAuthorization.makeDataAuthorization(
                 await this.parse(quad.object.id),
               ),
             ]);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#dataOwner": {
+        case solidInterop + "dataOwner": {
           args.set("dataOwner", new SocialAgent(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#registeredShapeTree": {
+        case solidInterop + "registeredShapeTree": {
           args.set("registeredShapeTree", quad.object.id);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#hasDataRegistration": {
+        case solidInterop + "hasDataRegistration": {
           args.set(
             "hasDataRegistration",
-            DataRegistration.makeDataRegistrationFromArgsMap(
+            DataRegistration.makeDataRegistration(
               await this.parse(quad.object.id),
             ),
           );
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#accessMode": {
+        case solidInterop + "accessMode": {
           if (args.has("accessMode"))
             args.get("accessMode").push(getAccessmode(quad.object.id));
           else args.set("accessMode", [getAccessmode(quad.object.id)]);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#creatorAccessMode": {
+        case solidInterop + "creatorAccessMode": {
           if (args.has("creatorAccessMode"))
             args.get("creatorAccessMode").push(getAccessmode(quad.object.id));
           else args.set("creatorAccessMode", [getAccessmode(quad.object.id)]);
 
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#scopeOfAuthorization": {
+        case solidInterop + "scopeOfAuthorization": {
           args.set("scopeOfAuthorization", getScopeOfAuth(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#satisfiesAccessNeed": {
+        case solidInterop + "satisfiesAccessNeed": {
           args.set("satisfiesAccessNeed", quad.object.id);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#registeredBy": {
+        case solidInterop + "registeredBy": {
           args.set("registeredBy", new SocialAgent(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#registeredWith": {
+        case solidInterop + "registeredWith": {
           args.set("registeredWith", new ApplicationAgent(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#registeredAt": {
+        case solidInterop + "registeredAt": {
           args.set("registeredAt", getDate(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": {
+        case solidInterop + "inheritsFromAuthorization": {
           args.set(
             "inheritsFromAuthorization",
-            DataAuthorization.makeDataAuthorizationFromArgsMap(
+            DataAuthorization.makeDataAuthorization(
               await this.parse(quad.object.id),
             ),
           );
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#updatedAt": {
+        case solidInterop + "updatedAt": {
           args.set("updatedAt", getDate(quad.object.id));
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#applicationName": {
+        case solidInterop + "applicationName": {
           args.set("applicationName", quad.object.id);
           break;
         }
-        case "http://www.w3.org/ns/solid/interop#applicationDescription": {
+        case solidInterop + "applicationDescription": {
           args.set("applicationDescription", quad.object.id);
           break;
         }

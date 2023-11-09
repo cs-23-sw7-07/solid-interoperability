@@ -29,7 +29,7 @@ export class DataRegistration {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeDataRegistrationFromArgsMap(
+  static makeDataRegistration(
     argsForDataAuthorization: Map<string, any>,
   ): DataRegistration {
     return new DataRegistration(

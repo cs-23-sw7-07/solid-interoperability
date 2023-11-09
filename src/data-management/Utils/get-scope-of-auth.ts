@@ -2,24 +2,26 @@ import { GrantScope } from "../data-model/authorization/grant-scope";
 
 export function getScopeOfAuth(scopeOfAuth: string): GrantScope {
   let scopeOfAuthEnum: GrantScope;
+  const solidInterop: string = "http://www.w3.org/ns/solid/interop#";
+
   switch (scopeOfAuth) {
-    case "http://www.w3.org/ns/solid/interop#All": {
+    case solidInterop + "All": {
       scopeOfAuthEnum = GrantScope.All;
       break;
     }
-    case "http://www.w3.org/ns/solid/interop#AllFromAgent": {
+    case solidInterop + "AllFromAgent": {
       scopeOfAuthEnum = GrantScope.AllFromAgent;
       break;
     }
-    case "http://www.w3.org/ns/solid/interop#AllFromRegistry": {
+    case solidInterop + "AllFromRegistry": {
       scopeOfAuthEnum = GrantScope.AllFromRegistry;
       break;
     }
-    case "http://www.w3.org/ns/solid/interop#SelectedFromRegistry": {
+    case solidInterop + "SelectedFromRegistry": {
       scopeOfAuthEnum = GrantScope.SelectedFromRegistry;
       break;
     }
-    case "http://www.w3.org/ns/solid/interop#Inherited": {
+    case solidInterop + "Inherited": {
       scopeOfAuthEnum = GrantScope.Inherited;
       break;
     }

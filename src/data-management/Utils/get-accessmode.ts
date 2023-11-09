@@ -2,33 +2,35 @@ import { AccessMode } from "../data-model/authorization/access-mode";
 
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
+  const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
+
   switch (accessMode) {
-    case "http://www.w3.org/ns/auth/acl#Read": {
+    case solidAcl + "Read": {
       accessModeEnum = AccessMode.Read;
       break;
     }
-    case "http://www.w3.org/ns/auth/acl#Write": {
+    case solidAcl + "Write": {
       accessModeEnum = AccessMode.Write;
       break;
     }
-    case "http://www.w3.org/ns/auth/acl#Update": {
+    case solidAcl + "Update": {
       accessModeEnum = AccessMode.Update;
       break;
     }
-    case "http://www.w3.org/ns/auth/acl#Create": {
+    case solidAcl + "Create": {
       accessModeEnum = AccessMode.Create;
       break;
     }
-    case "http://www.w3.org/ns/auth/acl#Delete": {
+    case solidAcl + "Delete": {
       accessModeEnum = AccessMode.Delete;
       break;
     }
-    case "http://www.w3.org/ns/auth/acl#Append": {
+    case solidAcl + "Append": {
       accessModeEnum = AccessMode.Append;
       break;
     }
     default: {
-      throw new Error("Could not infer access mode")
+      throw new Error("Could not infer access mode");
     }
   }
   return accessModeEnum!;
