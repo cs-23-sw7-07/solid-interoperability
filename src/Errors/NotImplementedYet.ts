@@ -1,6 +1,6 @@
 export class NotImplementedYet extends Error {
-  constructor(msg: string) {
-    super("Not implemented yet: " + msg);
+  constructor(msg?: string) {
+    super(msg);
     this.name = "NotImplementedYet";
   }
 }

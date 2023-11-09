@@ -9,6 +9,7 @@ import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";
 import { getDate } from "../../Utils/get-date";
 import { fetchResource } from "../../Utils/fetch-resource";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
+import { NotParsable } from "../../../Errors/NotParsable";
 
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
@@ -53,14 +54,19 @@ export class RdfFactory {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  parse(docPath: string): Promise<Map<string, any>> {
+  parse(docPath: string): Promise<Map<string, any> | Error> {
     return new Promise((resolve, reject) => {
       const rdf: string = getRDFFromPath(docPath);
       const parser = new N3.Parser();
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
         if (error) {
-          reject("Could not make quads: " + error + " in file: " + docPath);
+          reject(
+            new NotParsable(
+              "Could not make quads: " + error + " in file: " + docPath,
+            ),
+          );
+          return;
         } else if (quad) {
           quads.push(quad);
         } else {
@@ -68,6 +74,7 @@ export class RdfFactory {
             resolve(this.parseQuads(quads));
           } catch (e) {
             reject(e);
+            return;
           }
         }
       });
@@ -98,12 +105,24 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "grantee": {
-          const type = (await this.parse(fetchResource())).get("type");
-          if (type == solidInterop + "Application")
-            args.set("grantee", new ApplicationAgent(quad.object.id));
-          else if (type == solidInterop + "Agent")
-            args.set("grantee", new SocialAgent(quad.object.id));
-          else throw new Error("Could not infer agent type");
+          const result = await this.parse(fetchResource());
+          if (result instanceof Error) {
+            throw result;
+          }
+
+          switch (result.get("type")) {
+            case solidInterop + "Application": {
+              args.set("grantee", new ApplicationAgent(quad.object.id));
+              break;
+            }
+            case solidInterop + "Agent": {
+              args.set("grantee", new SocialAgent(quad.object.id));
+              break;
+            }
+            default: {
+              throw new Error("Could not infer agent type");
+            }
+          }
           break;
         }
         case solidInterop + "hasAccessNeedGroup": {
@@ -111,19 +130,17 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasDataAuthorization": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
           if (args.has("hasDataAuthorization"))
             args
               .get("hasDataAuthorization")
-              .push(
-                DataAuthorization.makeDataAuthorization(
-                  await this.parse(quad.object.id),
-                ),
-              );
+              .push(DataAuthorization.makeDataAuthorization(result));
           else
             args.set("hasDataAuthorization", [
-              DataAuthorization.makeDataAuthorization(
-                await this.parse(quad.object.id),
-              ),
+              DataAuthorization.makeDataAuthorization(result),
             ]);
           break;
         }
@@ -136,11 +153,13 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasDataRegistration": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
           args.set(
             "hasDataRegistration",
-            DataRegistration.makeDataRegistration(
-              await this.parse(quad.object.id),
-            ),
+            DataRegistration.makeDataRegistration(result),
           );
           break;
         }
@@ -178,11 +197,13 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "inheritsFromAuthorization": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
           args.set(
             "inheritsFromAuthorization",
-            DataAuthorization.makeDataAuthorization(
-              await this.parse(quad.object.id),
-            ),
+            DataAuthorization.makeDataAuthorization(result),
           );
           break;
         }
