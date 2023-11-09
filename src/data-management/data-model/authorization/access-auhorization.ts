@@ -35,16 +35,19 @@ export class AccessAuthorization implements ItoRdf {
     this.replaces = replaces;
   }
 
-  static makeAccessAuthorizationFromArgsMap(argsForAccessAuthorization: Map<String, any>): AccessAuthorization {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeAccessAuthorizationFromArgsMap(
+    argsForAccessAuthorization: Map<string, any>,
+  ): AccessAuthorization {
     return new AccessAuthorization(
       argsForAccessAuthorization.get("id"),
       argsForAccessAuthorization.get("grantedBy"),
-        argsForAccessAuthorization.get("grantedWith"),
-        argsForAccessAuthorization.get("grantedAt"),
-        argsForAccessAuthorization.get("grantee"),
-        argsForAccessAuthorization.get("hasAccessNeedGroup"),
-        argsForAccessAuthorization.get("hasDataAuthorization"),
-        argsForAccessAuthorization.has("replaces") ? argsForAccessAuthorization.get("replaces") : undefined,
+      argsForAccessAuthorization.get("grantedWith"),
+      argsForAccessAuthorization.get("grantedAt"),
+      argsForAccessAuthorization.get("grantee"),
+      argsForAccessAuthorization.get("hasAccessNeedGroup"),
+      argsForAccessAuthorization.get("hasDataAuthorization"),
+      argsForAccessAuthorization.get("replaces"),
     );
   }
 

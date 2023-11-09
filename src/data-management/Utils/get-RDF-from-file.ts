@@ -1,6 +1,5 @@
-import {readFileSync} from "fs";
-import {join} from "path";
+import { readFileSync } from "fs";
 
 export function getRDFFromFile(path: string): string {
-    return readFileSync(path, 'utf-8')
+  return readFileSync(path, "utf-8");
 }

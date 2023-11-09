@@ -1,13 +1,13 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
-import {getRDFFromFile} from "../../Utils/get-RDF-from-file";
-import {Agent, ApplicationAgent, SocialAgent} from "../agent";
-import {DataAuthorization} from "../authorization/data-authorization";
-import {getIdentityFromWebId} from "../../Utils/get-identity-from-web-id";
-import {DataRegistration} from "../data-registration/data-registration";
-import {getAccessmodeFromStr} from "../../Utils/get-accessmode-from-str";
-import {getScopeOfAuthFromStr} from "../../Utils/get-scope-of-auth-from-str";
-import {getDateFromStr} from "../../Utils/get-date-from-str";
+import { getRDFFromFile } from "../../Utils/get-RDF-from-file";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { DataAuthorization } from "../authorization/data-authorization";
+import { DataRegistration } from "../data-registration/data-registration";
+import { getAccessmodeFromStr } from "../../Utils/get-accessmode-from-str";
+import { getScopeOfAuthFromStr } from "../../Utils/get-scope-of-auth-from-str";
+import { getDateFromStr } from "../../Utils/get-date-from-str";
+import { fetchResource } from "../../Utils/fetch-resource";
 
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
@@ -51,27 +51,29 @@ export class RdfFactory {
     });
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   parse(docPath: string): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
-      let rdfString: string = getRDFFromFile(docPath)
+      const rdf: string = getRDFFromFile(docPath);
       const parser = new N3.Parser();
-      let quads: N3.Quad[] = [];
-      parser.parse(
-          rdfString,
-          (error, quad, _) => {
-            if (error)
-              reject("Could not make quads")
-            if (quad)
-              quads.push(quad)
-            else {
-              resolve(this.parseQuads(quads))
-            }
-          });
-    })
+      const quads: N3.Quad[] = [];
+      parser.parse(rdf, (error, quad) => {
+        if (error)
+          reject("Could not make quads: " + error + " in file: " + docPath);
+        if (quad) quads.push(quad);
+        else {
+          try {
+            resolve(this.parseQuads(quads));
+          } catch (e) {
+            reject(e);
+          }
+        }
+      });
+    });
   }
 
-  async parseQuads(quads: N3.Quad[]) {
-    let args: Map<string, any> = new Map<string, any>();
+  async parseQuads(quads: N3.Quad[]): Promise<Map<string, any>> {
+    const args: Map<string, any> = new Map<string, any>();
     for (const quad of quads) {
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
@@ -92,7 +94,12 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantee": {
-          args.set("grantee", new Agent(quad.object.id));
+          const type = (await this.parse(fetchResource())).get("type");
+          if (type == "http://www.w3.org/ns/solid/interop#Application")
+            args.set("grantee", new ApplicationAgent(quad.object.id));
+          else if (type == "http://www.w3.org/ns/solid/interop:Agent")
+            args.set("grantee", new SocialAgent(quad.object.id));
+          else throw new Error("Could not infer agent type");
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasAccessNeedGroup": {
@@ -100,11 +107,24 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataAuthorization": {
-          args.set("hasDataAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(await this.parse(quad.object.id)));
+          if (args.has("hasDataAuthorization"))
+            args
+              .get("hasDataAuthorization")
+              .push(
+                DataAuthorization.makeDataAuthorizationFromArgsMap(
+                  await this.parse(quad.object.id),
+                ),
+              );
+          else
+            args.set("hasDataAuthorization", [
+              DataAuthorization.makeDataAuthorizationFromArgsMap(
+                await this.parse(quad.object.id),
+              ),
+            ]);
           break;
         }
         case "http://www.w3.org/ns/solid/interop#dataOwner": {
-          args.set("dataOwner", getIdentityFromWebId(quad.object.id));
+          args.set("dataOwner", new SocialAgent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#registeredShapeTree": {
@@ -112,25 +132,36 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#hasDataRegistration": {
-          args.set("hasDataRegistration", DataRegistration.makeDataRegistrationFromArgsMap(await this.parse(quad.object.id)));
+          args.set(
+            "hasDataRegistration",
+            DataRegistration.makeDataRegistrationFromArgsMap(
+              await this.parse(quad.object.id),
+            ),
+          );
           break;
         }
         case "http://www.w3.org/ns/solid/interop#accessMode": {
           if (args.has("accessMode"))
             args.get("accessMode").push(getAccessmodeFromStr(quad.object.id));
-          else
-            args.set("accessMode", [getAccessmodeFromStr(quad.object.id)]);
+          else args.set("accessMode", [getAccessmodeFromStr(quad.object.id)]);
           break;
         }
         case "http://www.w3.org/ns/solid/interop#creatorAccessMode": {
           if (args.has("creatorAccessMode"))
-            args.get("creatorAccessMode").push(getAccessmodeFromStr(quad.object.id));
+            args
+              .get("creatorAccessMode")
+              .push(getAccessmodeFromStr(quad.object.id));
           else
-            args.set("creatorAccessMode", [getAccessmodeFromStr(quad.object.id)]);
+            args.set("creatorAccessMode", [
+              getAccessmodeFromStr(quad.object.id),
+            ]);
           break;
         }
         case "http://www.w3.org/ns/solid/interop#scopeOfAuthorization": {
-          args.set("scopeOfAuthorization", getScopeOfAuthFromStr(quad.object.id));
+          args.set(
+            "scopeOfAuthorization",
+            getScopeOfAuthFromStr(quad.object.id),
+          );
           break;
         }
         case "http://www.w3.org/ns/solid/interop#satisfiesAccessNeed": {
@@ -138,11 +169,11 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#registeredBy": {
-          args.set("registeredBy", new SocialAgent(getIdentityFromWebId(quad.object.id)));
+          args.set("registeredBy", new SocialAgent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#registeredWith": {
-          args.set("registeredWith", new Agent(getIdentityFromWebId(quad.object.id)));
+          args.set("registeredWith", new ApplicationAgent(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#registeredAt": {
@@ -150,15 +181,20 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": {
-          args.set("inheritsFromAuthorization", DataAuthorization.makeDataAuthorizationFromArgsMap(await this.parse(quad.object.id)));
+          args.set(
+            "inheritsFromAuthorization",
+            DataAuthorization.makeDataAuthorizationFromArgsMap(
+              await this.parse(quad.object.id),
+            ),
+          );
           break;
         }
         case "http://www.w3.org/ns/solid/interop#updatedAt": {
-          args.set("updatedAt", getDateFromStr(quad.object.id))
+          args.set("updatedAt", getDateFromStr(quad.object.id));
           break;
         }
         default: {
-          console.log(quad);
+          //console.log(quad);
           break;
         }
       }

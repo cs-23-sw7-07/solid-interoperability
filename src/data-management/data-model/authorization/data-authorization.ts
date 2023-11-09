@@ -47,19 +47,22 @@ export class DataAuthorization implements ItoRdf {
     this.inheritsFromAuthorization = inheritsFromAuthorization;
   }
 
-  static makeDataAuthorizationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataAuthorization {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeDataAuthorizationFromArgsMap(
+    argsForDataAuthorization: Map<string, any>,
+  ): DataAuthorization {
     return new DataAuthorization(
-        argsForDataAuthorization.get("id"),
-        argsForDataAuthorization.get("dataOwner"),
-        argsForDataAuthorization.get("grantee"),
-        argsForDataAuthorization.get("registeredShapeTree"),
-        argsForDataAuthorization.get("hasDataRegistration"),
-        argsForDataAuthorization.get("accessMode"),
-        argsForDataAuthorization.get("scopeOfAuthorization"),
-        argsForDataAuthorization.get("satisfiesAccessNeed"),
-        argsForDataAuthorization.has("hasDataInstanceIRIs") ? argsForDataAuthorization.get("hasDataInstanceIRIs"): undefined,
-        argsForDataAuthorization.has("creatorAccessMode") ? argsForDataAuthorization.get("creatorAccessMode"): undefined,
-        argsForDataAuthorization.has("inheritsFromAuthorization") ? argsForDataAuthorization.get("inheritsFromAuthorization"): undefined,
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("hasDataRegistration"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("scopeOfAuthorization"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("hasDataInstanceIRIs"),
+      argsForDataAuthorization.get("creatorAccessMode"),
+      argsForDataAuthorization.get("inheritsFromAuthorization"),
     );
   }
 

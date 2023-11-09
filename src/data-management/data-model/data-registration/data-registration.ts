@@ -28,14 +28,17 @@ export class DataRegistration {
     this.registeredShapeTree = registeredShapeTree;
   }
 
-  static makeDataRegistrationFromArgsMap(argsForDataAuthorization: Map<String, any>): DataRegistration {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeDataRegistrationFromArgsMap(
+    argsForDataAuthorization: Map<string, any>,
+  ): DataRegistration {
     return new DataRegistration(
-        argsForDataAuthorization.get("id"),
-        argsForDataAuthorization.get("registeredBy"),
-        argsForDataAuthorization.get("registeredWith"),
-        argsForDataAuthorization.get("registeredAt"),
-        argsForDataAuthorization.get("updatedAt"),
-        argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("registeredBy"),
+      argsForDataAuthorization.get("registeredWith"),
+      argsForDataAuthorization.get("registeredAt"),
+      argsForDataAuthorization.get("updatedAt"),
+      argsForDataAuthorization.get("registeredShapeTree"),
     );
   }
 

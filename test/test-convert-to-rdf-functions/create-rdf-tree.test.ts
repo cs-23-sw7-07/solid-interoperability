@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import { join } from 'path';
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 import * as ExampleInstances from '../test-case'

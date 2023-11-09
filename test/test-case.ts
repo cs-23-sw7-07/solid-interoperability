@@ -14,11 +14,9 @@ const alice = 'https://alice.example';
 const bob = 'https://bob.example';
 const projectron = 'https://projectron.example';
 const aliceBob = 'https://alice.example/agents/c4562da9';
-const aliceWorkData = 'https://work.alice.example/data';
 const jarvis = 'https://jarvis.example';
 const bobAgents = 'https://bob.example/agents'
 const aliceProjectron = 'https://alice.example/agents/2f2f3628'
-const aliceauthorization = 'https://alice.example/authorization'
 
 const aliceID = new SocialAgent(alice + '/#id')
 const bobID = new SocialAgent(bob + '/#id')
