@@ -1,6 +1,6 @@
 import { GrantScope } from "../data-model/authorization/grant-scope";
 
-export function getScopeOfAuthFromStr(scopeOfAuth: string): GrantScope {
+export function getScopeOfAuth(scopeOfAuth: string): GrantScope {
   let scopeOfAuthEnum: GrantScope;
   switch (scopeOfAuth) {
     case "http://www.w3.org/ns/solid/interop#All": {

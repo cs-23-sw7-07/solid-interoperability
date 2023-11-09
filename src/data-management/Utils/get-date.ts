@@ -1,4 +1,4 @@
-export function getDateFromStr(date: string): Date {
+export function getDate(date: string): Date {
   const regex =
     /^"([^"]+)"\^\^http:\/\/www\.w3\.org\/2001\/XMLSchema#dateTime$/;
   const match = date.match(regex);

@@ -1,12 +1,12 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
-import { getRDFFromFile } from "../../Utils/get-RDF-from-file";
+import { getRDFFromPath } from "../../Utils/get-RDF";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { DataAuthorization } from "../authorization/data-authorization";
 import { DataRegistration } from "../data-registration/data-registration";
-import { getAccessmodeFromStr } from "../../Utils/get-accessmode-from-str";
-import { getScopeOfAuthFromStr } from "../../Utils/get-scope-of-auth-from-str";
-import { getDateFromStr } from "../../Utils/get-date-from-str";
+import { getAccessmode } from "../../Utils/get-accessmode";
+import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";
+import { getDate } from "../../Utils/get-date";
 import { fetchResource } from "../../Utils/fetch-resource";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
 
@@ -55,7 +55,7 @@ export class RdfFactory {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   parse(docPath: string): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
-      const rdf: string = getRDFFromFile(docPath);
+      const rdf: string = getRDFFromPath(docPath);
       const parser = new N3.Parser();
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
@@ -92,7 +92,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantedAt": {
-          args.set("grantedAt", getDateFromStr(quad.object.id));
+          args.set("grantedAt", getDate(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#grantee": {
@@ -143,36 +143,20 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#accessMode": {
-          try {
-            if (args.has("accessMode"))
-              args.get("accessMode").push(getAccessmodeFromStr(quad.object.id));
-            else args.set("accessMode", [getAccessmodeFromStr(quad.object.id)]);
-          } catch (e) {
-            throw e;
-          }
+          if (args.has("accessMode"))
+            args.get("accessMode").push(getAccessmode(quad.object.id));
+          else args.set("accessMode", [getAccessmode(quad.object.id)]);
           break;
         }
         case "http://www.w3.org/ns/solid/interop#creatorAccessMode": {
-          try {
-            if (args.has("creatorAccessMode"))
-              args
-                  .get("creatorAccessMode")
-                  .push(getAccessmodeFromStr(quad.object.id));
-            else
-              args.set("creatorAccessMode", [
-                getAccessmodeFromStr(quad.object.id),
-              ]);
-          } catch (e) {
-            throw e;
-          }
+          if (args.has("creatorAccessMode"))
+            args.get("creatorAccessMode").push(getAccessmode(quad.object.id));
+          else args.set("creatorAccessMode", [getAccessmode(quad.object.id)]);
 
           break;
         }
         case "http://www.w3.org/ns/solid/interop#scopeOfAuthorization": {
-          args.set(
-            "scopeOfAuthorization",
-            getScopeOfAuthFromStr(quad.object.id),
-          );
+          args.set("scopeOfAuthorization", getScopeOfAuth(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#satisfiesAccessNeed": {
@@ -188,7 +172,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#registeredAt": {
-          args.set("registeredAt", getDateFromStr(quad.object.id));
+          args.set("registeredAt", getDate(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#inheritsFromAuthorization": {
@@ -201,7 +185,7 @@ export class RdfFactory {
           break;
         }
         case "http://www.w3.org/ns/solid/interop#updatedAt": {
-          args.set("updatedAt", getDateFromStr(quad.object.id));
+          args.set("updatedAt", getDate(quad.object.id));
           break;
         }
         case "http://www.w3.org/ns/solid/interop#applicationName": {

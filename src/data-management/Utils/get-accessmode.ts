@@ -1,6 +1,6 @@
 import { AccessMode } from "../data-model/authorization/access-mode";
 
-export function getAccessmodeFromStr(accessMode: string): AccessMode {
+export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
   switch (accessMode) {
     case "http://www.w3.org/ns/auth/acl#Read": {
