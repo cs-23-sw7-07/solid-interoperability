@@ -1,6 +1,10 @@
 import { AccessMode } from "../authorization/access-mode";
 import { AccessNecessity } from "./AccessNecessity";
 
+/**
+ * A class which has the fields to conform to the `Access Need` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#needs-access-need
+ */
 export class AccessNeed {
   registeredShapeTree: string;
   acessMode: AccessMode;

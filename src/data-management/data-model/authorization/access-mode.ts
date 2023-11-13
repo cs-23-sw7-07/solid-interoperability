@@ -1,3 +1,7 @@
+/**
+ * These access modes are all the different modes which the Solid interoperability specification defines on Data Grant and Data Authorization.
+ * Both can be found here respectivly: https://solid.github.io/data-interoperability-panel/specification/#data-grant, https://solid.github.io/data-interoperability-panel/specification/#data-authorization.
+ */
 export enum AccessMode {
   Read = "acl:Read",
   Write = "acl:Write",

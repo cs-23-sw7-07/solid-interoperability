@@ -6,6 +6,10 @@ import { DataAuthorization } from "./data-authorization";
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
+/**
+ * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
+ */
 export class AccessAuthorization implements ItoRdf {
   grantedBy: SocialAgent;
   grantedAt: Date;

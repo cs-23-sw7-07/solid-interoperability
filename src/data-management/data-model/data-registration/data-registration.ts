@@ -4,6 +4,10 @@ import { Agent, SocialAgent } from "../agent";
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
+/**
+ * A class which has the fields to conform to the `Data Registration` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-registration
+ */
 export class DataRegistration {
   id: string;
   storedAt: string;

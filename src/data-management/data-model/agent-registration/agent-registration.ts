@@ -6,6 +6,10 @@ import { AccessGrant } from "../authorization/access-grant";
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
+/**
+ * An abstract class which is used polymophicly where functions which both a `Social Agent Registration` or `Application Agent Resitration` can perform.
+ * Has the fields which both the agent types share.
+ */
 export abstract class AgentRegistration implements ItoRdf {
   id: string;
   registeredBy: SocialAgent;
