@@ -8,6 +8,10 @@ import { AccessMode } from "./access-mode";
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
+/**
+ * A class which has the fields to conform to the `Data Grant` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-grant
+ */
 export class DataGrant implements ItoRdf {
   id: string;
   storedAt: string;

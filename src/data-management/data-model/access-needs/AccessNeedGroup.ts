@@ -1,6 +1,10 @@
 import { AccessNeed } from "./AccessNeed";
 import { AccessDescriptionSet } from "./AccessDescriptionSet";
 
+/**
+ * A class which has the fields to conform to the `Access Need Group` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-need-group
+ */
 export class AccessNeedGroup {
   id: string;
   hasAccessDescriptionSet: AccessDescriptionSet;

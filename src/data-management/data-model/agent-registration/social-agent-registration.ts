@@ -6,6 +6,10 @@ import { AccessGrant } from "../authorization/access-grant";
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
+/**
+ * A class which has the fields to conform to the `Social Agent Registration` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#social-agent-registration
+ */
 export class SocialAgentRegistration extends AgentRegistration {
   reciprocalRegistration: string;
 
