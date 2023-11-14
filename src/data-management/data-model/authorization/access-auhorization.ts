@@ -31,7 +31,7 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
     hasDataAuthorization: DataAuthorization[],
     replaces?: AccessAuthorization,
   ) {
-    super(id, "aaaaa");
+    super(id, "AccessAuthorization");
     this.id = id;
     this.grantedBy = grantedBy;
     this.grantedWith = grantedWith;

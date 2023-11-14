@@ -23,7 +23,14 @@ export abstract class AgentRegistration extends Registration {
     registeredAgent: Agent,
     hasAccessGrant: AccessGrant,
   ) {
-    super(id, "hello", registeredBy, registeredWith, registeredAt, updatedAt);
+    super(
+      id,
+      "AgentRegistration",
+      registeredBy,
+      registeredWith,
+      registeredAt,
+      updatedAt,
+    );
     this.registeredAgent = registeredAgent;
     this.hasAccessGrant = hasAccessGrant;
   }
