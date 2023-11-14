@@ -8,6 +8,10 @@ const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
 export class AccessAuthorization extends Rdf implements ItoRdf {
+/**
+ * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
+ */
   grantedBy: SocialAgent;
   grantedAt: Date;
   grantedWith: ApplicationAgent;

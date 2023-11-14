@@ -8,6 +8,10 @@ const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
 export class AccessGrant extends Rdf implements ItoRdf {
+/**
+ * A class which has the fields to conform to the `Access Grant` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-grant
+ */
   agentRegistrationIRI: string;
   grantedBy: SocialAgent;
   grantedAt: Date;
