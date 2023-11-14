@@ -2,16 +2,16 @@ import N3 from "n3";
 import { Agent, SocialAgent } from "../agent";
 import { ItoRdf } from "../factory/ItoRdf";
 import { DataGrant } from "./data-grant";
-import {Rdf} from "../rdf";
+import { Rdf } from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
 export class AccessGrant extends Rdf implements ItoRdf {
-/**
- * A class which has the fields to conform to the `Access Grant` graph defined in the Solid interoperability specification.
- * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-grant
- */
+  /**
+   * A class which has the fields to conform to the `Access Grant` graph defined in the Solid interoperability specification.
+   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-grant
+   */
   agentRegistrationIRI: string;
   grantedBy: SocialAgent;
   grantedAt: Date;
@@ -28,7 +28,7 @@ export class AccessGrant extends Rdf implements ItoRdf {
     hasAccessNeedGroup: string,
     hasDataGrant: DataGrant[],
   ) {
-    super(id, "AccessGrant")
+    super(id, "AccessGrant");
     this.agentRegistrationIRI = agentRegistrationIRI;
     this.grantedBy = grantedBy;
     this.grantedAt = grantedAt;

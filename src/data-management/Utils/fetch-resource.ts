@@ -8,5 +8,5 @@ export function fetchResource(tempResource: string): string {
   } else if (tempResource == "https://jarvis.example/#id") {
     return "test/rdfs-examples/parse-tests-rdfs/profile-doc-defualt.ttl";
   }
-  return ""
+  return "";
 }

@@ -1,4 +1,4 @@
-import {InvalidDate} from "../../Errors/InvalidDate";
+import { InvalidDate } from "../../Errors/InvalidDate";
 
 export function getDate(date: string): Date {
   const regex =
@@ -9,7 +9,7 @@ export function getDate(date: string): Date {
     throw new InvalidDate("Could not match datetime");
   }
 
-  let dateResult: Date = new Date(match[1]);
+  const dateResult: Date = new Date(match[1]);
   if (dateResult.toString() === "Invalid Date") {
     throw new InvalidDate(date + " is of invalid datetime format");
   }

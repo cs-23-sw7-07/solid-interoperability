@@ -1,17 +1,16 @@
 import N3 from "n3";
 import { Agent, SocialAgent } from "../agent";
-import {Rdf} from "../rdf";
-import {Registration} from "../registration";
+import { Registration } from "../registration";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-export class DataRegistration extends Registration{
-  readonly registeredShapeTree
-/**
- * A class which has the fields to conform to the `Data Registration` graph defined in the Solid interoperability specification.
- * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-registration
- */
+export class DataRegistration extends Registration {
+  readonly registeredShapeTree;
+  /**
+   * A class which has the fields to conform to the `Data Registration` graph defined in the Solid interoperability specification.
+   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-registration
+   */
   constructor(
     id: string,
     registeredBy: SocialAgent,
@@ -20,7 +19,14 @@ export class DataRegistration extends Registration{
     updatedAt: Date,
     registeredShapeTree: string,
   ) {
-    super(id, "DataRegistration", registeredBy, registeredWith, registeredAt, updatedAt)
+    super(
+      id,
+      "DataRegistration",
+      registeredBy,
+      registeredWith,
+      registeredAt,
+      updatedAt,
+    );
     this.registeredShapeTree = registeredShapeTree;
   }
 

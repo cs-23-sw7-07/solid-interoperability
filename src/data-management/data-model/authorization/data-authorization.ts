@@ -4,16 +4,16 @@ import { DataRegistration } from "../data-registration/data-registration";
 import { ItoRdf } from "../factory/ItoRdf";
 import { GrantScope } from "./grant-scope";
 import { AccessMode } from "./access-mode";
-import {Rdf} from "../rdf";
+import { Rdf } from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
 export class DataAuthorization extends Rdf implements ItoRdf {
-/**
- * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
- * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
- */
+  /**
+   * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
+   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
+   */
   dataOwner: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -38,8 +38,7 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
   ) {
-    super(id, "DataAuthorization")
-
+    super(id, "DataAuthorization");
     this.dataOwner = dataOwner;
     this.grantee = grantee;
     this.registeredShapeTree = registeredShapeTree;

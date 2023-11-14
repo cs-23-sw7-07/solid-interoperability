@@ -1,10 +1,8 @@
-import N3 from "n3";
 class Rdf {
-    constructor(readonly id: string, readonly type: string) {}
-
-    public parse(rdf: string){
-
-    }
+  constructor(
+    readonly id: string,
+    readonly type: string,
+  ) {}
 }
 
-export {Rdf}
+export { Rdf };
