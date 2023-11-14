@@ -1,17 +1,13 @@
 import N3 from "n3";
 import { Agent, SocialAgent } from "../agent";
+import {Rdf} from "../rdf";
+import {Registration} from "../registration";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-export class DataRegistration {
-  id: string;
-  registeredBy: SocialAgent;
-  registeredWith: Agent;
-  registeredAt: Date;
-  updatedAt: Date;
-  registeredShapeTree: string;
-
+export class DataRegistration extends Registration{
+  readonly registeredShapeTree
   constructor(
     id: string,
     registeredBy: SocialAgent,
@@ -20,11 +16,7 @@ export class DataRegistration {
     updatedAt: Date,
     registeredShapeTree: string,
   ) {
-    this.id = id;
-    this.registeredBy = registeredBy;
-    this.registeredWith = registeredWith;
-    this.registeredAt = registeredAt;
-    this.updatedAt = updatedAt;
+    super(id, "DataRegistration", registeredBy, registeredWith, registeredAt, updatedAt)
     this.registeredShapeTree = registeredShapeTree;
   }
 

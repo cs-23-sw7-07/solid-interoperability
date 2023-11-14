@@ -1,4 +1,5 @@
 import { AccessMode } from "../data-model/authorization/access-mode";
+import {InvalidAccessMode} from "../../Errors/InvalidAccessMode";
 
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
@@ -30,7 +31,7 @@ export function getAccessmode(accessMode: string): AccessMode {
       break;
     }
     default: {
-      throw new Error("Could not infer access mode");
+      throw new InvalidAccessMode("Could not infer access mode");
     }
   }
   return accessModeEnum!;

@@ -4,12 +4,12 @@ import { DataRegistration } from "../data-registration/data-registration";
 import { ItoRdf } from "../factory/ItoRdf";
 import { GrantScope } from "./grant-scope";
 import { AccessMode } from "./access-mode";
+import {Rdf} from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export class DataGrant implements ItoRdf {
-  id: string;
+export class DataGrant extends Rdf implements ItoRdf {
   storedAt: string;
   agentRegistrationIRI: string;
   dataOwner: SocialAgent;
@@ -38,7 +38,7 @@ export class DataGrant implements ItoRdf {
     creatorAccessMode?: AccessMode[],
     inheritsFromGrant?: DataGrant,
   ) {
-    this.id = id;
+    super(id, "DataGrant")
     this.storedAt = storedAt;
     this.agentRegistrationIRI = agentRegistrationIRI;
     this.dataOwner = dataOwner;

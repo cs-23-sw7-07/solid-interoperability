@@ -2,11 +2,12 @@ import N3 from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 import { ItoRdf } from "../factory/ItoRdf";
 import { DataAuthorization } from "./data-authorization";
+import {Rdf} from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-export class AccessAuthorization implements ItoRdf {
+export class AccessAuthorization extends Rdf implements ItoRdf {
   grantedBy: SocialAgent;
   grantedAt: Date;
   grantedWith: ApplicationAgent;
@@ -15,6 +16,7 @@ export class AccessAuthorization implements ItoRdf {
   hasDataAuthorization: DataAuthorization[];
   replaces?: AccessAuthorization;
   id: string;
+
   constructor(
     id: string,
     grantedBy: SocialAgent,
@@ -25,6 +27,7 @@ export class AccessAuthorization implements ItoRdf {
     hasDataAuthorization: DataAuthorization[],
     replaces?: AccessAuthorization,
   ) {
+    super(id, "aaaaa")
     this.id = id;
     this.grantedBy = grantedBy;
     this.grantedWith = grantedWith;

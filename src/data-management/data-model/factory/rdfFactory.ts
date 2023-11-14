@@ -61,11 +61,9 @@ export class RdfFactory {
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
         if (error) {
-          reject(
-            new NotParsable(
+          reject(new NotParsable(
               "Could not make quads: " + error + " in file: " + docPath,
-            ),
-          );
+            ));
           return;
         } else if (quad) {
           quads.push(quad);
@@ -105,7 +103,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "grantee": {
-          const result = await this.parse(fetchResource());
+          const result: Map<string, any> | Error = await this.parse(fetchResource(quad.object.id));
           if (result instanceof Error) {
             throw result;
           }
@@ -173,7 +171,6 @@ export class RdfFactory {
           if (args.has("creatorAccessMode"))
             args.get("creatorAccessMode").push(getAccessmode(quad.object.id));
           else args.set("creatorAccessMode", [getAccessmode(quad.object.id)]);
-
           break;
         }
         case solidInterop + "scopeOfAuthorization": {

@@ -2,12 +2,12 @@ import N3 from "n3";
 import { Agent, SocialAgent } from "../agent";
 import { ItoRdf } from "../factory/ItoRdf";
 import { DataGrant } from "./data-grant";
+import {Rdf} from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-export class AccessGrant implements ItoRdf {
-  id: string;
+export class AccessGrant extends Rdf implements ItoRdf {
   agentRegistrationIRI: string;
   grantedBy: SocialAgent;
   grantedAt: Date;
@@ -24,7 +24,7 @@ export class AccessGrant implements ItoRdf {
     hasAccessNeedGroup: string,
     hasDataGrant: DataGrant[],
   ) {
-    this.id = id;
+    super(id, "AccessGrant")
     this.agentRegistrationIRI = agentRegistrationIRI;
     this.grantedBy = grantedBy;
     this.grantedAt = grantedAt;

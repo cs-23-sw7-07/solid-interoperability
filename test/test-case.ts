@@ -209,6 +209,62 @@ export const dataAuthorization0e4cb692Parse = new DataAuthorization(
     dataAuthorization54a1b6a0
 )
 
+export const dataAuthorization0e4cb692ParseSocialAgentGrantee = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    bobID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create, AccessMode.Write, AccessMode.Append],
+    GrantScope.Inherited,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthAllFromAgent = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.AllFromAgent,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthAllFromRegistry = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.AllFromRegistry,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthSelectedFromRegistry = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.SelectedFromRegistry,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
 export const accessGrant27eae14b = new AccessGrant(
     "https://alice.example/agents/2f2f3628/27eae14b",
     aliceProjectron,

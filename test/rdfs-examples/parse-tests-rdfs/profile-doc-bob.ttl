@@ -1,0 +1,6 @@
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+@prefix projectron: <https://projectron.example/#>.
+
+projectron:id a interop:Agent;
+    interop:applicationName "Bob";
+    interop:applicationDescription "BOB han bygger!!!!".
