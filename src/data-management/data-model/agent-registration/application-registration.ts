@@ -35,6 +35,21 @@ export class ApplicationRegistration
     );
   }
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeApplicationRegistration(
+    argsApplicationRegistration: Map<string, any>,
+  ): ApplicationRegistration {
+    return new ApplicationRegistration(
+      argsApplicationRegistration.get("id"),
+      argsApplicationRegistration.get("registeredBy"),
+      argsApplicationRegistration.get("registeredWith"),
+      argsApplicationRegistration.get("registeredAt"),
+      argsApplicationRegistration.get("updatedAt"),
+      argsApplicationRegistration.get("registeredAgent"),
+      argsApplicationRegistration.get("hasAccessGrant"),
+    );
+  }
+
   public toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
 

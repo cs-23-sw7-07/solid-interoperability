@@ -14,8 +14,6 @@ export class DataGrant extends Rdf implements ItoRdf {
    * A class which has the fields to conform to the `Data Grant` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-grant
    */
-  storedAt: string;
-  agentRegistrationIRI: string;
   dataOwner: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -29,8 +27,6 @@ export class DataGrant extends Rdf implements ItoRdf {
 
   constructor(
     id: string,
-    storedAt: string,
-    agentRegistrationIRI: string,
     dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
@@ -43,8 +39,6 @@ export class DataGrant extends Rdf implements ItoRdf {
     inheritsFromGrant?: DataGrant,
   ) {
     super(id, "DataGrant");
-    this.storedAt = storedAt;
-    this.agentRegistrationIRI = agentRegistrationIRI;
     this.dataOwner = dataOwner;
     this.grantee = grantee;
     this.registeredShapeTree = registeredShapeTree;
@@ -55,6 +49,23 @@ export class DataGrant extends Rdf implements ItoRdf {
     this.hasDataInstanceIRIs = hasDataInstanceIRIs;
     if (creatorAccessMode) this.creatorAccessMode = creatorAccessMode;
     if (inheritsFromGrant) this.inheritsFromGrant = inheritsFromGrant;
+  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeDataGrant(argsDataGrant: Map<string, any>): DataGrant {
+    return new DataGrant(
+      argsDataGrant.get("id"),
+      argsDataGrant.get("dataOwner"),
+      argsDataGrant.get("grantee"),
+      argsDataGrant.get("registeredShapeTree"),
+      argsDataGrant.get("hasDataRegistration"),
+      argsDataGrant.get("accessMode"),
+      argsDataGrant.get("scopeOfGrant"),
+      argsDataGrant.get("satisfiesAccessNeed"),
+      argsDataGrant.get("hasDataInstanceIRIs"),
+      argsDataGrant.get("creatorAccessMode"),
+      argsDataGrant.get("inheritsFromGrant"),
+    );
   }
 
   toRdf(writer: N3.Writer): void {
@@ -135,7 +146,7 @@ export class DataGrant extends Rdf implements ItoRdf {
       writer.addQuad(
         subjectNode,
         namedNode("interop:inheritsFromGrant"),
-        namedNode(this.inheritsFromGrant.storedAt),
+        namedNode(this.inheritsFromGrant.id),
       );
     }
   }

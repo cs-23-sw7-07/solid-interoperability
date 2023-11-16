@@ -12,7 +12,6 @@ export class AccessGrant extends Rdf implements ItoRdf {
    * A class which has the fields to conform to the `Access Grant` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-grant
    */
-  agentRegistrationIRI: string;
   grantedBy: SocialAgent;
   grantedAt: Date;
   grantee: Agent;
@@ -21,7 +20,6 @@ export class AccessGrant extends Rdf implements ItoRdf {
 
   constructor(
     id: string,
-    agentRegistrationIRI: string,
     grantedBy: SocialAgent,
     grantedAt: Date,
     grantee: Agent,
@@ -29,12 +27,23 @@ export class AccessGrant extends Rdf implements ItoRdf {
     hasDataGrant: DataGrant[],
   ) {
     super(id, "AccessGrant");
-    this.agentRegistrationIRI = agentRegistrationIRI;
     this.grantedBy = grantedBy;
     this.grantedAt = grantedAt;
     this.grantee = grantee;
     this.hasAccessNeedGroup = hasAccessNeedGroup;
     this.hasDataGrant = hasDataGrant;
+  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeAccessGrant(argsAccessGrant: Map<string, any>): AccessGrant {
+    return new AccessGrant(
+      argsAccessGrant.get("id"),
+      argsAccessGrant.get("grantedBy"),
+      argsAccessGrant.get("grantedAt"),
+      argsAccessGrant.get("grantee"),
+      argsAccessGrant.get("hasAccessNeedGroup"),
+      argsAccessGrant.get("hasDataGrant"),
+    );
   }
 
   toRdf(writer: N3.Writer): void {
