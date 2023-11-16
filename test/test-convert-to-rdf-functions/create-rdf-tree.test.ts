@@ -1,7 +1,8 @@
 import { join } from 'path';
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 import * as ExampleInstances from '../test-case'
-import { getRDFFromPath } from '../../src/data-management/Utils/get-RDF'
+import { getRDFFromPath } from '../Utils/get-RDF';
+
 
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")

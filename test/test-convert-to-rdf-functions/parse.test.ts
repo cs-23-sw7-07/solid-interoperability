@@ -9,12 +9,40 @@ import {DataAuthorization} from "../../src/data-management/data-model/authorizat
 import {
     ApplicationRegistration
 } from "../../src/data-management/data-model/agent-registration/application-registration";
+import { getRDFFromPath } from "../Utils/get-RDF";
+
+function fetchResource(tempResource: string): string {
+    // This should take in a URL string
+    // This should use the fetch API to fetch the actual RDF online from the server
+    if (tempResource == "https://projectron.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-projection.ttl";
+    } else if (tempResource == "https://bob.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-bob.ttl";
+    } else if (tempResource == "https://jarvis.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-defualt.ttl";
+    }
+    return tempResource;
+  }
+
+function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
+    return new Promise((resolve) => {
+          const responseInit: ResponseInit = {
+            status: 200,
+            headers: new Headers({
+              'Content-Type': 'text/turtle',
+            }),
+          };
+    
+          const response = new Response(getRDFFromPath(fetchResource(input as string)), responseInit);
+          resolve(response);
+      });
+}
 
 test.each([
     { name: '47e07897', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse.ttl", instance: ExampleInstances.accessAuthorizatione47e07897Parse }
 ])('Test-fromRdftoAccessAuthorization', async (arg) => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    const args: Map<string, any> | Error = await new RdfFactory().parse(arg.rdfFilePath);
+    const args: Map<string, any> | Error = await new RdfFactory().parse(fetch, arg.rdfFilePath);
     if (args instanceof Error) {
         fail(args)
     }
@@ -31,7 +59,7 @@ test.each([
     { name: 'Test-Grantee-social-agent-RDF', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/0e4cb692DataAuth-parse-grantee-social-agent.ttl", instance: ExampleInstances.dataAuthorization0e4cb692ParseSocialAgentGrantee}
 ])('Test-fromRdftoAccessAuthorization', async (arg) => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    const args: Map<string, any> | Error = await new RdfFactory().parse(arg.rdfFilePath);
+    const args: Map<string, any> | Error = await new RdfFactory().parse(fetch, arg.rdfFilePath);
     if (args instanceof Error) {
         fail(args)
     }
@@ -43,7 +71,7 @@ test.each([
 test.each([
     { name: "Test-parse-ApplicationRegistration-2f2f3628", rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/2f2f3628ApplicationRegistration-parse/2f2f3628.ttl", instance: ExampleInstances.applicationRegistration2f2f3628 }
 ])("Test-parse-ApplicationRegistration", async (arg) => {
-    const args: Map<string, any> | Error = await new RdfFactory().parse(arg.rdfFilePath);
+    const args: Map<string, any> | Error = await new RdfFactory().parse(fetch, arg.rdfFilePath);
     if (args instanceof Error) {
         fail(args)
     }
@@ -54,7 +82,7 @@ test.each([
 
 test('Test-unparseable-RDF', async () => {
     const faultyPath: string = "test/rdfs-examples/parse-tests-rdfs/Faulty.ttl";
-    new RdfFactory().parse(faultyPath)
+    new RdfFactory().parse(fetch, faultyPath)
         .then(() => fail("Should not be able ot parse file: " + faultyPath))
         .catch((e) => expect(e instanceof NotParsable).toStrictEqual(true));
 })
@@ -63,21 +91,21 @@ test.each([
     { name: 'Test-unparseable-missing-date-RDF', faultyPath: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse-faulty-date1.ttl"},
     { name: 'Test-unparseable-invalid-date-RDF', faultyPath: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse-faulty-date2.ttl"}
 ])('Test-fromRdftoAccessAuthorization', async (arg) => {
-    new RdfFactory().parse(arg.faultyPath)
+    new RdfFactory().parse(fetch, arg.faultyPath)
         .then(() => fail("Should not be able ot parse file: " + arg.faultyPath))
         .catch((e) => expect(e instanceof InvalidDate).toStrictEqual(true));
 })
 
 test('Test-unparseable-access-mode-RDF', async () => {
     const faultyPath: string = "test/rdfs-examples/parse-tests-rdfs/0e4cb692DataAuth-parse-faulty-access-mode.ttl";
-    new RdfFactory().parse(faultyPath)
+    new RdfFactory().parse(fetch, faultyPath)
         .then(() => fail("Should not be able ot parse file: " + faultyPath))
         .catch((e) => expect(e instanceof InvalidAccessMode).toStrictEqual(true));
 })
 
 test('Test-unparseable-not-implemented-pred-RDF', async () => {
     const faultyPath: string = "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse-non-implemented-pred.ttl";
-    new RdfFactory().parse(faultyPath)
+    new RdfFactory().parse(fetch, faultyPath)
         .then(() => fail("Should not be able ot parse file: " + faultyPath))
         .catch((e) => expect(e instanceof NotImplementedYet).toStrictEqual(true));
 })
