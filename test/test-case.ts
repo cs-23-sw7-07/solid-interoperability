@@ -13,10 +13,8 @@ const pmShapetrees = 'http://data.example/shapetrees/pm#';
 const alice = 'https://alice.example';
 const bob = 'https://bob.example';
 const projectron = 'https://projectron.example';
-const aliceBob = 'https://alice.example/agents/c4562da9';
 const jarvis = 'https://jarvis.example';
 const bobAgents = 'https://bob.example/agents'
-const aliceProjectron = 'https://alice.example/agents/2f2f3628'
 
 const aliceID = new SocialAgent(alice + '/#id')
 const bobID = new SocialAgent(bob + '/#id')
@@ -43,8 +41,6 @@ export const dataRegistrationdf4ab227 = new DataRegistration(
 
 export const dataGrant2aa21a8c = new DataGrant(
     "https://alice.example/agents/c4562da9/2aa21a8c",
-    aliceBob + "/2aa21a8c",
-    aliceBob,
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -71,8 +67,6 @@ export const dataAuthorization23a123bd = new DataAuthorization(
 
 export const dataGrantb42228af = new DataGrant(
     "https://alice.example/agents/c4562da9/b42228af",
-    aliceBob + "/b42228af",
-    aliceBob,
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -86,8 +80,6 @@ export const dataGrantb42228af = new DataGrant(
 
 export const dataGrant95ff7580 = new DataGrant(
     "https://alice.example/agents/c4562da9/95ff7580",
-    aliceBob + "95ff7580",
-    aliceBob,
     aliceID,
     bobID,
     pmShapetrees + "TaskTree",
@@ -102,7 +94,6 @@ export const dataGrant95ff7580 = new DataGrant(
 
 export const accessGrantb6e125b8 = new AccessGrant(
     "https://alice.example/agents/c4562da9/b6e125b8",
-    aliceBob,
     aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
     bobID,
@@ -124,8 +115,6 @@ export const socialAgentRegistrationc4562da9 = new SocialAgentRegistration(
 
 export const dataGrant23hj244 = new DataGrant(
     "23hj244",
-    aliceProjectron + "/23hj244",
-    aliceProjectron,
     aliceID,
     projectronID,
     pmShapetrees + "ProjectTree",
@@ -139,8 +128,6 @@ export const dataGrant23hj244 = new DataGrant(
 
 export const dataGrant40d038ea = new DataGrant(
     "https://alice.example/agents/2f2f3628/40d038ea",
-    aliceProjectron + "/40d038ea",
-    aliceProjectron,
     aliceID,
     projectronID,
     pmShapetrees + "ProjectTree",
@@ -167,8 +154,6 @@ export const dataAuthorization54a1b6a0 = new DataAuthorization(
 
 export const dataGrant0945218b = new DataGrant(
     "https://alice.example/agents/2f2f3628/0945218b",
-    aliceProjectron + "/0945218b",
-    aliceProjectron,
     aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
@@ -267,7 +252,6 @@ export const dataAuthorization0e4cb692ScopeOfAuthSelectedFromRegistry = new Data
 
 export const accessGrant27eae14b = new AccessGrant(
     "https://alice.example/agents/2f2f3628/27eae14b",
-    aliceProjectron,
     aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
     projectronID,

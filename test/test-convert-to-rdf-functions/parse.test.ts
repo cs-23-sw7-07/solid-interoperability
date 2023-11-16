@@ -6,6 +6,9 @@ import {InvalidDate} from "../../src/Errors/InvalidDate";
 import {InvalidAccessMode} from "../../src/Errors/InvalidAccessMode";
 import {NotImplementedYet} from "../../src/Errors/NotImplementedYet";
 import {DataAuthorization} from "../../src/data-management/data-model/authorization/data-authorization";
+import {
+    ApplicationRegistration
+} from "../../src/data-management/data-model/agent-registration/application-registration";
 
 test.each([
     { name: '47e07897', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse.ttl", instance: ExampleInstances.accessAuthorizatione47e07897Parse }
@@ -37,6 +40,18 @@ test.each([
     expect(dataAuthorization).toStrictEqual(arg.instance);
 })
 
+test.each([
+    { name: "Test-parse-ApplicationRegistration-2f2f3628", rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/2f2f3628ApplicationRegistration-parse/2f2f3628.ttl", instance: ExampleInstances.applicationRegistration2f2f3628 }
+])("Test-parse-ApplicationRegistration", async (arg) => {
+    const args: Map<string, any> | Error = await new RdfFactory().parse(arg.rdfFilePath);
+    if (args instanceof Error) {
+        fail(args)
+    }
+    const applicationRegistration: ApplicationRegistration = ApplicationRegistration.makeApplicationRegistration(args);
+
+    expect(applicationRegistration).toStrictEqual(arg.instance);
+})
+
 test('Test-unparseable-RDF', async () => {
     const faultyPath: string = "test/rdfs-examples/parse-tests-rdfs/Faulty.ttl";
     new RdfFactory().parse(faultyPath)
@@ -66,12 +81,3 @@ test('Test-unparseable-not-implemented-pred-RDF', async () => {
         .then(() => fail("Should not be able ot parse file: " + faultyPath))
         .catch((e) => expect(e instanceof NotImplementedYet).toStrictEqual(true));
 })
-
-/*test.each([
-    { name: 'Test-Grantee-fail-RDF', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/0e4cb692DataAuth-parse-grantee-fail.ttl", instance: ExampleInstances.dataAuthorization0e4cb692ScopeOfAuthAllFromAgent},
-    { name: 'Test-Grantee-could-not-infer-agent-RDF', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/0e4cb692DataAuth-parse-grantee-could-not-infer-agent.ttl", instance: ExampleInstances.dataAuthorization0e4cb692ScopeOfAuthSelectedFromRegistry}
-])('Test-fromRdftoAccessAuthorization', async (arg) => {
-    new RdfFactory().parse(arg.rdfFilePath)
-        .then(() => fail("Should not be able ot parse file: " + arg.rdfFilePath))
-        .catch((e) => expect(e instanceof Error).toStrictEqual(true)); // Throws object, because cant open empty file!
-})*/

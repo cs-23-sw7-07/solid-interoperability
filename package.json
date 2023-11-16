@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "jest",
-    "check": "prettier --check src && eslint src test"
+    "check": "prettier --check src && eslint src test",
+    "fmt": "prettier --write src && eslint src test"
   },
   "keywords": [],
   "author": "",

@@ -10,6 +10,8 @@ import { getDate } from "../../Utils/get-date";
 import { fetchResource } from "../../Utils/fetch-resource";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
 import { NotParsable } from "../../../Errors/NotParsable";
+import { AccessGrant } from "../authorization/access-grant";
+import { DataGrant } from "../authorization/data-grant";
 
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
@@ -218,6 +220,40 @@ export class RdfFactory {
         }
         case solidInterop + "applicationDescription": {
           args.set("applicationDescription", quad.object.id);
+          break;
+        }
+        case solidInterop + "registeredAgent": {
+          args.set("registeredAgent", new ApplicationAgent(quad.object.id));
+          break;
+        }
+        case solidInterop + "hasAccessGrant": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
+          args.set("hasAccessGrant", AccessGrant.makeAccessGrant(result));
+          break;
+        }
+        case solidInterop + "hasDataGrant": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
+          if (args.has("hasDataGrant"))
+            args.get("hasDataGrant").push(DataGrant.makeDataGrant(result));
+          else args.set("hasDataGrant", [DataGrant.makeDataGrant(result)]);
+          break;
+        }
+        case solidInterop + "scopeOfGrant": {
+          args.set("scopeOfGrant", getScopeOfAuth(quad.object.id));
+          break;
+        }
+        case solidInterop + "inheritsFromGrant": {
+          const result = await this.parse(quad.object.id);
+          if (result instanceof Error) {
+            throw result;
+          }
+          args.set("inheritsFromGrant", DataGrant.makeDataGrant(result));
           break;
         }
         default: {
