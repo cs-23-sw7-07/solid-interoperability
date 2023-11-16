@@ -1,17 +1,8 @@
 import * as ExampleInstances from "../test-case";
-import {RdfFactory} from "../../src/data-management/data-model/factory/rdfFactory";
-import {AccessAuthorization} from "../../src/data-management/data-model/authorization/access-auhorization";
-import {NotParsable} from "../../src/Errors/NotParsable";
-import {InvalidDate} from "../../src/Errors/InvalidDate";
-import {InvalidAccessMode} from "../../src/Errors/InvalidAccessMode";
-import {NotImplementedYet} from "../../src/Errors/NotImplementedYet";
-import {DataAuthorization} from "../../src/data-management/data-model/authorization/data-authorization";
-import {
-    ApplicationRegistration
-} from "../../src/data-management/data-model/agent-registration/application-registration";
+import {AccessAuthorization, ApplicationRegistration, DataAuthorization, InvalidAccessMode, InvalidDate, NotImplementedYet, NotParsable, RdfFactory} from "../../src/index";
 import { getRDFFromPath } from "../Utils/get-RDF";
 
-function fetchResource(tempResource: string): string {
+function mockFetchResource(tempResource: string): string {
     // This should take in a URL string
     // This should use the fetch API to fetch the actual RDF online from the server
     if (tempResource == "https://projectron.example/#id") {
@@ -33,7 +24,7 @@ function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
             }),
           };
     
-          const response = new Response(getRDFFromPath(fetchResource(input as string)), responseInit);
+          const response = new Response(getRDFFromPath(mockFetchResource(input as string)), responseInit);
           resolve(response);
       });
 }
