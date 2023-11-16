@@ -1,21 +1,16 @@
 import N3 from "n3";
-import { ItoRdf } from "../factory/ItoRdf";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 import { AccessGrant } from "../authorization/access-grant";
+import { Registration } from "../registration";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-/**
- * An abstract class which is used polymophicly where functions which both a `Social Agent Registration` or `Application Agent Resitration` can perform.
- * Has the fields which both the agent types share.
- */
-export abstract class AgentRegistration implements ItoRdf {
-  id: string;
-  registeredBy: SocialAgent;
-  registeredWith: ApplicationAgent;
-  registeredAt: Date;
-  updatedAt: Date;
+export abstract class AgentRegistration extends Registration {
+  /**
+   * An abstract class which is used polymophicly where functions which both a `Social Agent Registration` or `Application Agent Resitration` can perform.
+   * Has the fields which both the agent types share.
+   */
   registeredAgent: Agent;
   hasAccessGrant: AccessGrant;
 
@@ -28,11 +23,14 @@ export abstract class AgentRegistration implements ItoRdf {
     registeredAgent: Agent,
     hasAccessGrant: AccessGrant,
   ) {
-    this.id = id;
-    this.registeredBy = registeredBy;
-    this.registeredWith = registeredWith;
-    this.registeredAt = registeredAt;
-    this.updatedAt = updatedAt;
+    super(
+      id,
+      "AgentRegistration",
+      registeredBy,
+      registeredWith,
+      registeredAt,
+      updatedAt,
+    );
     this.registeredAgent = registeredAgent;
     this.hasAccessGrant = hasAccessGrant;
   }

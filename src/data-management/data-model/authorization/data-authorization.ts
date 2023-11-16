@@ -4,17 +4,16 @@ import { DataRegistration } from "../data-registration/data-registration";
 import { ItoRdf } from "../factory/ItoRdf";
 import { GrantScope } from "./grant-scope";
 import { AccessMode } from "./access-mode";
+import { Rdf } from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-/**
- * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
- * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
- */
-export class DataAuthorization implements ItoRdf {
-  id: string;
-  storedAt: string;
+export class DataAuthorization extends Rdf implements ItoRdf {
+  /**
+   * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
+   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
+   */
   dataOwner: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
@@ -28,7 +27,6 @@ export class DataAuthorization implements ItoRdf {
 
   constructor(
     id: string,
-    storedAt: string,
     dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
@@ -40,8 +38,7 @@ export class DataAuthorization implements ItoRdf {
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
   ) {
-    this.id = id;
-    this.storedAt = storedAt;
+    super(id, "DataAuthorization");
     this.dataOwner = dataOwner;
     this.grantee = grantee;
     this.registeredShapeTree = registeredShapeTree;
@@ -52,6 +49,25 @@ export class DataAuthorization implements ItoRdf {
     this.hasDataInstanceIRIs = hasDataInstanceIRIs;
     this.creatorAccessMode = creatorAccessMode;
     this.inheritsFromAuthorization = inheritsFromAuthorization;
+  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeDataAuthorization(
+    argsForDataAuthorization: Map<string, any>,
+  ): DataAuthorization {
+    return new DataAuthorization(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("hasDataRegistration"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("scopeOfAuthorization"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("hasDataInstanceIRIs"),
+      argsForDataAuthorization.get("creatorAccessMode"),
+      argsForDataAuthorization.get("inheritsFromAuthorization"),
+    );
   }
 
   toRdf(writer: N3.Writer): void {

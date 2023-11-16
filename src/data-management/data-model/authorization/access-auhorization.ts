@@ -2,15 +2,16 @@ import N3 from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 import { ItoRdf } from "../factory/ItoRdf";
 import { DataAuthorization } from "./data-authorization";
+import { Rdf } from "../rdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-/**
- * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
- * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
- */
-export class AccessAuthorization implements ItoRdf {
+export class AccessAuthorization extends Rdf implements ItoRdf {
+  /**
+   * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
+   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
+   */
   grantedBy: SocialAgent;
   grantedAt: Date;
   grantedWith: ApplicationAgent;
@@ -19,6 +20,7 @@ export class AccessAuthorization implements ItoRdf {
   hasDataAuthorization: DataAuthorization[];
   replaces?: AccessAuthorization;
   id: string;
+
   constructor(
     id: string,
     grantedBy: SocialAgent,
@@ -29,6 +31,7 @@ export class AccessAuthorization implements ItoRdf {
     hasDataAuthorization: DataAuthorization[],
     replaces?: AccessAuthorization,
   ) {
+    super(id, "AccessAuthorization");
     this.id = id;
     this.grantedBy = grantedBy;
     this.grantedWith = grantedWith;
@@ -37,6 +40,22 @@ export class AccessAuthorization implements ItoRdf {
     this.hasAccessNeedGroup = hasAccessNeedGroup;
     this.hasDataAuthorization = hasDataAuthorization;
     this.replaces = replaces;
+  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static makeAccessAuthorization(
+    argsForAccessAuthorization: Map<string, any>,
+  ): AccessAuthorization {
+    return new AccessAuthorization(
+      argsForAccessAuthorization.get("id"),
+      argsForAccessAuthorization.get("grantedBy"),
+      argsForAccessAuthorization.get("grantedWith"),
+      argsForAccessAuthorization.get("grantedAt"),
+      argsForAccessAuthorization.get("grantee"),
+      argsForAccessAuthorization.get("hasAccessNeedGroup"),
+      argsForAccessAuthorization.get("hasDataAuthorization"),
+      argsForAccessAuthorization.get("replaces"),
+    );
   }
 
   toRdf(writer: N3.Writer): void {

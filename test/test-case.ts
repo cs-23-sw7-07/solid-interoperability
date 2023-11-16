@@ -1,24 +1,22 @@
-import { ApplicationAgent, SocialAgent } from "../src/data-management/data-model/agent";
-import { ApplicationRegistration } from "../src/data-management/data-model/agent-registration/application-registration";
-import { SocialAgentRegistration } from "../src/data-management/data-model/agent-registration/social-agent-registration";
-import { AccessAuthorization } from "../src/data-management/data-model/authorization/access-auhorization";
-import { AccessGrant } from "../src/data-management/data-model/authorization/access-grant";
-import { AccessMode } from "../src/data-management/data-model/authorization/access-mode";
-import { DataAuthorization } from "../src/data-management/data-model/authorization/data-authorization";
-import { DataGrant } from "../src/data-management/data-model/authorization/data-grant";
-import { GrantScope } from "../src/data-management/data-model/authorization/grant-scope";
-import { DataRegistration } from "../src/data-management/data-model/data-registration/data-registration";
+import {ApplicationAgent, SocialAgent} from "../src/data-management/data-model/agent";
+import {ApplicationRegistration} from "../src/data-management/data-model/agent-registration/application-registration";
+import {SocialAgentRegistration} from "../src/data-management/data-model/agent-registration/social-agent-registration";
+import {AccessAuthorization} from "../src/data-management/data-model/authorization/access-auhorization";
+import {AccessGrant} from "../src/data-management/data-model/authorization/access-grant";
+import {AccessMode} from "../src/data-management/data-model/authorization/access-mode";
+import {DataAuthorization} from "../src/data-management/data-model/authorization/data-authorization";
+import {DataGrant} from "../src/data-management/data-model/authorization/data-grant";
+import {GrantScope} from "../src/data-management/data-model/authorization/grant-scope";
+import {DataRegistration} from "../src/data-management/data-model/data-registration/data-registration";
 
 const pmShapetrees = 'http://data.example/shapetrees/pm#';
 const alice = 'https://alice.example';
 const bob = 'https://bob.example';
 const projectron = 'https://projectron.example';
 const aliceBob = 'https://alice.example/agents/c4562da9';
-const aliceWorkData = 'https://work.alice.example/data';
 const jarvis = 'https://jarvis.example';
 const bobAgents = 'https://bob.example/agents'
 const aliceProjectron = 'https://alice.example/agents/2f2f3628'
-const aliceauthorization = 'https://alice.example/authorization'
 
 const aliceID = new SocialAgent(alice + '/#id')
 const bobID = new SocialAgent(bob + '/#id')
@@ -27,7 +25,6 @@ const projectronID = new ApplicationAgent(projectron + '/#id')
 
 export const dataRegistration8501f084 = new DataRegistration(
     "https://work.alice.example/data/8501f084/",
-    aliceWorkData,
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -37,7 +34,6 @@ export const dataRegistration8501f084 = new DataRegistration(
 
 export const dataRegistrationdf4ab227 = new DataRegistration(
     "https://work.alice.example/data/df4ab227/",
-    aliceWorkData,
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -62,7 +58,6 @@ export const dataGrant2aa21a8c = new DataGrant(
 
 export const dataAuthorization23a123bd = new DataAuthorization(
     "https://alice.example/authorization/23a123bd",
-    aliceauthorization,
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -159,7 +154,6 @@ export const dataGrant40d038ea = new DataGrant(
 
 export const dataAuthorization54a1b6a0 = new DataAuthorization(
     "https://alice.example/authorization/54a1b6a0",
-    aliceauthorization,
     aliceID,
     projectronID,
     pmShapetrees + "ProjectTree",
@@ -189,13 +183,82 @@ export const dataGrant0945218b = new DataGrant(
 
 export const dataAuthorization0e4cb692 = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceauthorization,
     aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.Inherited,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692Parse = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create, AccessMode.Write, AccessMode.Append],
+    GrantScope.Inherited,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ParseSocialAgentGrantee = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    bobID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create, AccessMode.Write, AccessMode.Append],
+    GrantScope.Inherited,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthAllFromAgent = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.AllFromAgent,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthAllFromRegistry = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.AllFromRegistry,
+    projectron + "/#9462959c",
+    undefined,
+    [AccessMode.Update, AccessMode.Delete],
+    dataAuthorization54a1b6a0
+)
+
+export const dataAuthorization0e4cb692ScopeOfAuthSelectedFromRegistry = new DataAuthorization(
+    "https://alice.example/authorization/0e4cb692",
+    aliceID,
+    projectronID,
+    pmShapetrees + "TaskTree",
+    dataRegistrationdf4ab227,
+    [AccessMode.Read, AccessMode.Create],
+    GrantScope.SelectedFromRegistry,
     projectron + "/#9462959c",
     undefined,
     [AccessMode.Update, AccessMode.Delete],
@@ -261,6 +324,18 @@ export const accessAuthorizatione47e07897 = new AccessAuthorization(
     jarvis + "/#4fd1482d",
     [
         dataAuthorization0e4cb692
+    ]
+);
+
+export const accessAuthorizatione47e07897Parse = new AccessAuthorization(
+    "https://alice.example/authorization/47e07897",
+    aliceID,
+    jarvisID,
+    new Date("2020-09-05T06:15:01.000Z"),
+    jarvisID,
+    jarvis + "/#4fd1482d",
+    [
+        dataAuthorization0e4cb692Parse
     ]
 );
 

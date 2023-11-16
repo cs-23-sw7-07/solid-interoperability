@@ -1,4 +1,4 @@
-export class Agent {
+export abstract class Agent {
   webID: string;
 
   constructor(webID: string) {
