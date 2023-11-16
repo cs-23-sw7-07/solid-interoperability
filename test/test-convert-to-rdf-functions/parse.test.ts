@@ -14,18 +14,31 @@ function mockFetchResource(tempResource: string): string {
     }
     return tempResource;
   }
-
+  404
 function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
     return new Promise((resolve) => {
-          const responseInit: ResponseInit = {
-            status: 200,
-            headers: new Headers({
-              'Content-Type': 'text/turtle',
-            }),
-          };
-    
-          const response = new Response(getRDFFromPath(mockFetchResource(input as string)), responseInit);
-          resolve(response);
+        try {
+            const body = getRDFFromPath(mockFetchResource(input as string))
+            const responseInit: ResponseInit = {
+                status: 200,
+                headers: new Headers({
+                  'Content-Type': 'text/turtle',
+                }),
+              };
+        
+              const response = new Response(getRDFFromPath(mockFetchResource(input as string)), responseInit);
+              resolve(response);
+        }
+        catch {
+            const responseInit: ResponseInit = {
+                status: 404,
+              };
+        
+              const response = new Response(null, responseInit);
+              resolve(response);
+        }
+
+          
       });
 }
 
