@@ -10,8 +10,12 @@ export * from "./data-management/data-model/authorization/data-grant"
 export * from "./data-management/data-model/authorization/grant-scope"
 
 export * from "./data-management/data-model/data-registration/data-registration"
+export * from "./data-management/data-model/factory/rdfFactory"
 export * from "./data-management/data-model/agent"
 export * from "./data-management/data-model/rdf"
 export * from "./data-management/data-model/registration"
 
-export * from "./data-management/data-model/factory/rdfFactory"
+export * from "./Errors/InvalidAccessMode"
+export * from "./Errors/InvalidDate"
+export * from "./Errors/NotImplementedYet"
+export * from "./Errors/NotParsable"
