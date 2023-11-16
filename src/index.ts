@@ -19,3 +19,5 @@ export * from "./Errors/InvalidAccessMode"
 export * from "./Errors/InvalidDate"
 export * from "./Errors/NotImplementedYet"
 export * from "./Errors/NotParsable"
+
+export * from "./fetch"
