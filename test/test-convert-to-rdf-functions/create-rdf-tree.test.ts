@@ -1,9 +1,9 @@
 import { join } from 'path';
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 import * as ExampleInstances from '../test-case'
-import { getRDFFromPath } from '../Utils/get-RDF';
-
-
+import { getRDFFromPath } from '../Utils/get-RDF'
+import { test } from '@jest/globals';
+import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access-auhorization';
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
 
@@ -86,4 +86,22 @@ test.each([
     const actual = await new RdfFactory().create(arg.instance)
 
     expect(actual).toBe(expected)
+})
+
+test('AccessAuth-to-AccessGrant', async (path = join(PATH_TO_RDFS_EXAMPLES, "authorization/no-recursive-links/47e07897AccessAuth.ttl")) => {
+    const expected = getRDFFromPath(join(PATH_TO_RDFS_EXAMPLES, "authorization/47e07897MOCKAccessGrant.ttl"))
+
+    const factory = new RdfFactory()
+
+    const params = await factory.parse(path)
+    if (params instanceof Error) {
+        fail(params)
+    }
+    const actual = AccessAuthorization.makeAccessAuthorization(params)
+
+    const content = await factory.create(actual.toAccessGrant())
+    if (content instanceof Error) {
+        fail(content)
+    }
+    expect(content).toBe(expected)
 })
