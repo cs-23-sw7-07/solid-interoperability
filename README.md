@@ -11,4 +11,4 @@
 ## Quick user guide
 Here a quick guide using some of the core features will be showcased.
 ### Creating RDFs
-Creating an instance of the `RdfFactory` you will be able to call `.toRdf()` taking any type which implements `ItoRdf`. These types can be found in `src/data-management-data-model`. This way one can quickly turn the data models into RDFs to post to their desired PODs.
+Creating an instance of the `RdfFactory` you will be able to call `.toRdf()` taking any type which implements `ItoRdf`. These types can be found in `src/data-management/data-model`. This way one can quickly turn the data models into RDFs to post to their desired PODs.
