@@ -7,10 +7,11 @@
 - [x] Can read and parse RDFs into objects such as `Social Agent Registration`
 - [x] Save RDFs to your desired POD
 - [x] Create Registries for your POD
-- [x] Registrer both access and data grants
+- [x] Registrer both access and data authorizations
+- [x] Create access and data grants 
 - [x] And more...
 - [ ] Shape Trees, for now, are not implemented but are important for the specification.
 ## Quick user guide
 Here a quick guide using some of the core features will be showcased.
 ### Creating RDFs
-Creating an instance of the `RdfFactory` you will be able to call `.toRdf()` taking any type which implements `ItoRdf`. These types can be found in `src/data-management/data-model`. This way one can quickly turn the data models into RDFs to post to their desired PODs.
+Creating an instance of the `RdfFactory` you will be able to call `.create()` taking any type which implements `ItoRdf`. These types can be found in `src/data-management/data-model`. This way one can quickly turn the data models into RDFs to post to their desired PODs.
