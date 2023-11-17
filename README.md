@@ -3,4 +3,4 @@
 [![Node.js CI](https://github.com/cs-23-sw7-07/solid-interoperability/actions/workflows/node.js.yml/badge.svg)](https://github.com/cs-23-sw7-07/solid-interoperability/actions/workflows/node.js.yml)
 
 This library contains the following functionality:
-- [x] Nothing yet!
+- [x] Create RDFs for the Solid Interoperability Specification (https://solid.github.io/data-interoperability-panel/specification/)
