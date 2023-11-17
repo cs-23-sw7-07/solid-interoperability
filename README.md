@@ -5,9 +5,11 @@
 ## This library contains the following functionality:
 - [x] Create RDFs for the [Solid Interoperability Specification](https://solid.github.io/data-interoperability-panel/specification/)
 - [x] Can read and parse RDFs into objects such as `Social Agent Registration`
+- [x] Save RDFs to your desired POD
+- [x] Create Registries for your POD
+- [x] Registrer both access and data grants
 - [x] And more...
-- [ ] Thing we won't have
-
+- [ ] Shape Trees, for now, are not implemented but are important for the specification.
 ## Quick user guide
 Here a quick guide using some of the core features will be showcased.
 ### Creating RDFs
