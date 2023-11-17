@@ -5,9 +5,6 @@ import { getRDFFromPath } from '../../src/data-management/Utils/get-RDF'
 import { test } from '@jest/globals';
 import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access-auhorization';
 
-import fs from 'fs';
-import { Writer } from 'n3';
-
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
 
 test(
