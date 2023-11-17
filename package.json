@@ -2,12 +2,18 @@
   "name": "solid-interoperability",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "jest",
     "check": "prettier --check src && eslint src test",
-    "fmt": "prettier --write src && eslint src test"
+    "fmt": "prettier --write src && eslint src test",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "prepublishOnly": "npm run tsc"
   },
   "keywords": [],
   "author": "",
