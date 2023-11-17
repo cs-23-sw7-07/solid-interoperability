@@ -14,7 +14,7 @@ function mockFetchResource(tempResource: string): string {
     }
     return tempResource;
   }
-  404
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
     return new Promise((resolve) => {
         try {
@@ -26,7 +26,7 @@ function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
                 }),
               };
         
-              const response = new Response(getRDFFromPath(mockFetchResource(input as string)), responseInit);
+              const response = new Response(body, responseInit);
               resolve(response);
         }
         catch {
@@ -37,8 +37,6 @@ function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
               const response = new Response(null, responseInit);
               resolve(response);
         }
-
-          
       });
 }
 
