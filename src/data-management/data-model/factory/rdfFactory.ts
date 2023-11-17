@@ -1,17 +1,17 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
-import { getRDFFromPath } from "../../Utils/get-RDF";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { DataAuthorization } from "../authorization/data-authorization";
 import { DataRegistration } from "../data-registration/data-registration";
 import { getAccessmode } from "../../Utils/get-accessmode";
 import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";
 import { getDate } from "../../Utils/get-date";
-import { fetchResource } from "../../Utils/fetch-resource";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
-import { NotParsable } from "../../../Errors/NotParsable";
 import { AccessGrant } from "../authorization/access-grant";
 import { DataGrant } from "../authorization/data-grant";
+import { Fetch } from "../../../fetch";
+import { NotFoundResource } from "../../../Errors/NotFound";
+import { NotParsable } from "../../../Errors/NotParsable";
 
 /**
  * This factory is used for `RDF` creation via. the `createRdf` function.
@@ -56,9 +56,20 @@ export class RdfFactory {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  parse(docPath: string): Promise<Map<string, any> | Error> {
+  parse(fetch: Fetch, docPath: string): Promise<Map<string, any>> {
+    return fetch(docPath)
+      .then((res) => {
+        if (!res.ok && res.status == 404) {
+          throw new NotFoundResource(docPath);
+        }
+        return res.text();
+      })
+      .then((rdf) => this.parseRdfToQuads(rdf, docPath))
+      .then((quads) => this.parseQuads(fetch, quads));
+  }
+
+  private parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
     return new Promise((resolve, reject) => {
-      const rdf: string = getRDFFromPath(docPath);
       const parser = new N3.Parser();
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
@@ -68,22 +79,16 @@ export class RdfFactory {
               "Could not make quads: " + error + " in file: " + docPath,
             ),
           );
-          return;
         } else if (quad) {
           quads.push(quad);
         } else {
-          try {
-            resolve(this.parseQuads(quads));
-          } catch (e) {
-            reject(e);
-            return;
-          }
+          resolve(quads);
         }
       });
     });
   }
 
-  async parseQuads(quads: N3.Quad[]): Promise<Map<string, any>> {
+  async parseQuads(fetch: Fetch, quads: N3.Quad[]): Promise<Map<string, any>> {
     const args: Map<string, any> = new Map<string, any>();
     const solidInterop: string = "http://www.w3.org/ns/solid/interop#";
 
@@ -108,7 +113,8 @@ export class RdfFactory {
         }
         case solidInterop + "grantee": {
           const result: Map<string, any> | Error = await this.parse(
-            fetchResource(quad.object.id),
+            fetch,
+            quad.object.id,
           );
           if (result instanceof Error) {
             throw result;
@@ -134,7 +140,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasDataAuthorization": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }
@@ -157,7 +163,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasDataRegistration": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }
@@ -200,7 +206,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "inheritsFromAuthorization": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }
@@ -227,7 +233,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasAccessGrant": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }
@@ -235,7 +241,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "hasDataGrant": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }
@@ -249,7 +255,7 @@ export class RdfFactory {
           break;
         }
         case solidInterop + "inheritsFromGrant": {
-          const result = await this.parse(quad.object.id);
+          const result = await this.parse(fetch, quad.object.id);
           if (result instanceof Error) {
             throw result;
           }

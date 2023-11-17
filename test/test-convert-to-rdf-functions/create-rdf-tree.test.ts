@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFactory';
 import * as ExampleInstances from '../test-case'
-import { getRDFFromPath } from '../../src/data-management/Utils/get-RDF'
+import { getRDFFromPath } from '../Utils/get-RDF'
 import { test } from '@jest/globals';
 import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access-auhorization';
 
