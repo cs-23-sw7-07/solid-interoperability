@@ -5,8 +5,10 @@
 ## This library contains the following functionality:
 - [x] Create RDFs for the [Solid Interoperability Specification](https://solid.github.io/data-interoperability-panel/specification/)
 - [x] Can read and parse RDFs into objects such as `Social Agent Registration`
-- [ ] And more...
+- [x] And more...
+- [ ] Thing we won't have
 
 ## Quick user guide
 Here a quick guide using some of the core features will be showcased.
 ### Creating RDFs
+Creating an instance of the `RdfFactory` you will be able to call `.toRdf()` taking any type which implements `ItoRdf`. These types can be found in `src/data-management-data-model`. This way one can quickly turn the data models into RDFs to post to their desired PODs.
