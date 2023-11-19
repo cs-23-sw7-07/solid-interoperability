@@ -15,10 +15,10 @@ export class DataAuthorization extends Rdf implements ItoRdf {
    * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
    */
-  dataOwner: SocialAgent;
+  dataOwner?: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
-  hasDataRegistration: DataRegistration;
+  hasDataRegistration?: DataRegistration;
   accessMode: AccessMode[];
   creatorAccessMode?: AccessMode[];
   scopeOfAuthorization: GrantScope;
@@ -28,13 +28,13 @@ export class DataAuthorization extends Rdf implements ItoRdf {
 
   constructor(
     id: string,
-    dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
-    hasDataRegistration: DataRegistration,
     accessMode: AccessMode[],
     scopeOfAuthorization: GrantScope,
     satisfiesAccessNeed: string,
+    dataOwner?: SocialAgent,
+    hasDataRegistration?: DataRegistration,
     hasDataInstanceIRIs?: string[],
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
@@ -95,11 +95,13 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
       namedNode("interop:DataAuthorization"),
     );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:dataOwner"),
-      namedNode(this.dataOwner.getWebID()),
-    );
+    if (this.dataOwner) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:dataOwner"),
+        namedNode(this.dataOwner.getWebID()),
+      );
+    }
     writer.addQuad(
       subjectNode,
       namedNode("interop:grantee"),
@@ -110,12 +112,13 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       namedNode("interop:registeredShapeTree"),
       namedNode(this.registeredShapeTree),
     );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:hasDataRegistration"),
-      namedNode(this.hasDataRegistration.id),
-    );
-
+    if (this.hasDataRegistration) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:hasDataRegistration"),
+        namedNode(this.hasDataRegistration.id),
+      );
+    }
     this.accessMode.forEach((mode) => {
       writer.addQuad(
         subjectNode,
