@@ -11,8 +11,6 @@ const { namedNode } = DataFactory;
  * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#social-agent-registration
  */
 export class SocialAgentRegistration extends AgentRegistration {
-  reciprocalRegistration: string;
-
   constructor(
     id: string,
     registeredBy: SocialAgent,
@@ -20,8 +18,8 @@ export class SocialAgentRegistration extends AgentRegistration {
     registeredAt: Date,
     updatedAt: Date,
     registeredAgent: SocialAgent,
-    hasAccessGrant: AccessGrant,
-    reciprocalRegistration: string,
+    hasAccessGrant: AccessGrant[],
+    public reciprocalRegistration: string,
   ) {
     super(
       id,
@@ -32,7 +30,6 @@ export class SocialAgentRegistration extends AgentRegistration {
       registeredAgent,
       hasAccessGrant,
     );
-    this.reciprocalRegistration = reciprocalRegistration;
   }
 
   public toRdf(writer: N3.Writer): void {

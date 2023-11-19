@@ -11,17 +11,14 @@ export abstract class AgentRegistration extends Registration {
    * An abstract class which is used polymophicly where functions which both a `Social Agent Registration` or `Application Agent Resitration` can perform.
    * Has the fields which both the agent types share.
    */
-  registeredAgent: Agent;
-  hasAccessGrant: AccessGrant;
-
   constructor(
     id: string,
     registeredBy: SocialAgent,
     registeredWith: ApplicationAgent,
     registeredAt: Date,
     updatedAt: Date,
-    registeredAgent: Agent,
-    hasAccessGrant: AccessGrant,
+    public registeredAgent: Agent,
+    public hasAccessGrant: AccessGrant[],
   ) {
     super(
       id,
@@ -31,8 +28,6 @@ export abstract class AgentRegistration extends Registration {
       registeredAt,
       updatedAt,
     );
-    this.registeredAgent = registeredAgent;
-    this.hasAccessGrant = hasAccessGrant;
   }
 
   public toRdf(writer: N3.Writer) {
@@ -63,10 +58,12 @@ export abstract class AgentRegistration extends Registration {
       namedNode("interop:registeredAgent"),
       namedNode(this.registeredAgent.getWebID()),
     );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:hasAccessGrant"),
-      namedNode(this.hasAccessGrant.id),
-    );
+    for (const grant of this.hasAccessGrant) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:hasAccessGrant"),
+        namedNode(grant.id),
+      );
+    }
   }
 }

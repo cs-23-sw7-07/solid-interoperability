@@ -4,6 +4,7 @@ import { ItoRdf } from "../factory/ItoRdf";
 import { DataAuthorization } from "./data-authorization";
 import { Rdf } from "../rdf";
 import { AccessGrant } from "./access-grant";
+import { DataGrant } from "./data-grant";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
@@ -59,14 +60,14 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
     );
   }
 
-  toAccessGrant() {
+  toAccessGrant(id: string, data_grants: DataGrant[]) {
     return new AccessGrant(
-      this.id,
+      id,
       this.grantedBy,
       this.grantedAt,
       this.grantee,
       this.hasAccessNeedGroup,
-      this.hasDataAuthorization.map((dataAuth) => dataAuth.toDataGrant()),
+      data_grants,
     );
   }
 

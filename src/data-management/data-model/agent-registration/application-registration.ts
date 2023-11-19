@@ -22,7 +22,7 @@ export class ApplicationRegistration
     registeredAt: Date,
     updatedAt: Date,
     registeredAgent: ApplicationAgent,
-    hasAccessGrant: AccessGrant,
+    hasAccessGrant: AccessGrant[],
   ) {
     super(
       id,

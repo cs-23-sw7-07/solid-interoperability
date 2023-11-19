@@ -71,9 +71,9 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     );
   }
 
-  toDataGrant(): DataGrant {
+  toDataGrant(id: string, inheritsFromGrant?: DataGrant): DataGrant {
     return new DataGrant(
-      this.id,
+      id,
       this.dataOwner!,
       this.grantee,
       this.registeredShapeTree,
@@ -83,7 +83,7 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       this.satisfiesAccessNeed,
       this.hasDataInstanceIRIs,
       this.creatorAccessMode,
-      this.inheritsFromAuthorization?.toDataGrant(),
+      inheritsFromGrant,
     );
   }
 
