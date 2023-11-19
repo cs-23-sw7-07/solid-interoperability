@@ -4,6 +4,7 @@ import * as ExampleInstances from '../test-case'
 import { getRDFFromPath } from '../Utils/get-RDF'
 import { test } from '@jest/globals';
 import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access-auhorization';
+import { mock_fetch } from '../Utils/mock-fetch';
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
 
@@ -93,7 +94,7 @@ test('AccessAuth-to-AccessGrant', async (path = join(PATH_TO_RDFS_EXAMPLES, "aut
 
     const factory = new RdfFactory()
 
-    const params = await factory.parse(path)
+    const params = await factory.parse(mock_fetch, path)
     if (params instanceof Error) {
         fail(params)
     }

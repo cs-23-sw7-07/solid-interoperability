@@ -18,7 +18,7 @@ export class DataAuthorization extends Rdf implements ItoRdf {
   dataOwner?: SocialAgent;
   grantee: Agent;
   registeredShapeTree: string; // TODO: NEED TO FINDOUT
-  hasDataRegistration?: DataRegistration;
+  hasDataRegistration: DataRegistration;
   accessMode: AccessMode[];
   creatorAccessMode?: AccessMode[];
   scopeOfAuthorization: GrantScope;
@@ -30,11 +30,11 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     id: string,
     grantee: Agent,
     registeredShapeTree: string,
+    hasDataRegistration: DataRegistration,
     accessMode: AccessMode[],
     scopeOfAuthorization: GrantScope,
     satisfiesAccessNeed: string,
     dataOwner?: SocialAgent,
-    hasDataRegistration?: DataRegistration,
     hasDataInstanceIRIs?: string[],
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
@@ -58,13 +58,13 @@ export class DataAuthorization extends Rdf implements ItoRdf {
   ): DataAuthorization {
     return new DataAuthorization(
       argsForDataAuthorization.get("id"),
-      argsForDataAuthorization.get("dataOwner"),
       argsForDataAuthorization.get("grantee"),
       argsForDataAuthorization.get("registeredShapeTree"),
       argsForDataAuthorization.get("hasDataRegistration"),
       argsForDataAuthorization.get("accessMode"),
       argsForDataAuthorization.get("scopeOfAuthorization"),
       argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("dataOwner"),
       argsForDataAuthorization.get("hasDataInstanceIRIs"),
       argsForDataAuthorization.get("creatorAccessMode"),
       argsForDataAuthorization.get("inheritsFromAuthorization"),
@@ -74,7 +74,7 @@ export class DataAuthorization extends Rdf implements ItoRdf {
   toDataGrant(): DataGrant {
     return new DataGrant(
       this.id,
-      this.dataOwner,
+      this.dataOwner!,
       this.grantee,
       this.registeredShapeTree,
       this.hasDataRegistration,

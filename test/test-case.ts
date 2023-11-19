@@ -54,13 +54,13 @@ export const dataGrant2aa21a8c = new DataGrant(
 
 export const dataAuthorization23a123bd = new DataAuthorization(
     "https://alice.example/authorization/23a123bd",
-    aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.SelectedFromRegistry,
     projectron + "/#ac54ff1e",
+    aliceID,
     ["https://work.alice.example/data/8501f084/16e1eae9", "https://work.alice.example/data/8501f084/886785d2"],
     [AccessMode.Update, AccessMode.Delete],
 );
@@ -141,13 +141,13 @@ export const dataGrant40d038ea = new DataGrant(
 
 export const dataAuthorization54a1b6a0 = new DataAuthorization(
     "https://alice.example/authorization/54a1b6a0",
-    aliceID,
     projectronID,
     pmShapetrees + "ProjectTree",
     dataRegistration8501f084,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.All,
     projectron + "/#ac54ff1e",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
 );
@@ -168,13 +168,13 @@ export const dataGrant0945218b = new DataGrant(
 
 export const dataAuthorization0e4cb692 = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.Inherited,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
@@ -182,13 +182,13 @@ export const dataAuthorization0e4cb692 = new DataAuthorization(
 
 export const dataAuthorization0e4cb692Parse = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create, AccessMode.Write, AccessMode.Append],
     GrantScope.Inherited,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
@@ -196,13 +196,13 @@ export const dataAuthorization0e4cb692Parse = new DataAuthorization(
 
 export const dataAuthorization0e4cb692ParseSocialAgentGrantee = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     bobID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create, AccessMode.Write, AccessMode.Append],
     GrantScope.Inherited,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
@@ -210,13 +210,13 @@ export const dataAuthorization0e4cb692ParseSocialAgentGrantee = new DataAuthoriz
 
 export const dataAuthorization0e4cb692ScopeOfAuthAllFromAgent = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.AllFromAgent,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
@@ -224,13 +224,13 @@ export const dataAuthorization0e4cb692ScopeOfAuthAllFromAgent = new DataAuthoriz
 
 export const dataAuthorization0e4cb692ScopeOfAuthAllFromRegistry = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.AllFromRegistry,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
@@ -238,13 +238,13 @@ export const dataAuthorization0e4cb692ScopeOfAuthAllFromRegistry = new DataAutho
 
 export const dataAuthorization0e4cb692ScopeOfAuthSelectedFromRegistry = new DataAuthorization(
     "https://alice.example/authorization/0e4cb692",
-    aliceID,
     projectronID,
     pmShapetrees + "TaskTree",
     dataRegistrationdf4ab227,
     [AccessMode.Read, AccessMode.Create],
     GrantScope.SelectedFromRegistry,
     projectron + "/#9462959c",
+    aliceID,
     undefined,
     [AccessMode.Update, AccessMode.Delete],
     dataAuthorization54a1b6a0
