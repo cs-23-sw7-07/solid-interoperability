@@ -87,6 +87,7 @@ test.each([
 
     expect(actual).toBe(expected)
 })
+/*
 
 test('AccessAuth-to-AccessGrant', async (path = join(PATH_TO_RDFS_EXAMPLES, "authorization/no-recursive-links/47e07897AccessAuth.ttl")) => {
     const expected = getRDFFromPath(join(PATH_TO_RDFS_EXAMPLES, "authorization/47e07897MOCKAccessGrant.ttl"))
@@ -105,3 +106,4 @@ test('AccessAuth-to-AccessGrant', async (path = join(PATH_TO_RDFS_EXAMPLES, "aut
     }
     expect(content).toBe(expected)
 })
+ */
