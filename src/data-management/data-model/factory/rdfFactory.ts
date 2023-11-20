@@ -145,15 +145,13 @@ export class RdfFactory {
             throw result;
           }
           if (args.has("hasDataAuthorization"))
-            throw new NotImplementedYet()
-            /* args
+            args
               .get("hasDataAuthorization")
-              .push(DataAuthorization.makeDataAuthorization(result)); */
+              .push(DataAuthorization.makeDataAuthorization(result));
           else
-            throw new NotImplementedYet()
-            /* args.set("hasDataAuthorization", [
+            args.set("hasDataAuthorization", [
               DataAuthorization.makeDataAuthorization(result),
-            ]); */
+            ]);
           break;
         }
         case solidInterop + "dataOwner": {
@@ -212,11 +210,10 @@ export class RdfFactory {
           if (result instanceof Error) {
             throw result;
           }
-          throw new NotImplementedYet()
-          /* args.set(
+          args.set(
             "inheritsFromAuthorization",
             DataAuthorization.makeDataAuthorization(result),
-          ); */
+          );
           break;
         }
         case solidInterop + "updatedAt": {
