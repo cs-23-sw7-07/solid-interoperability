@@ -9,7 +9,6 @@ import { DataGrant } from "./data-grant";
 import { ItoDataGrant, IDataGrantBuilder } from "./dataGrantBuilder/DataGrantBuilder";
 import { ImakeDataAuth } from "./dataAuthFactory"
 
-
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
