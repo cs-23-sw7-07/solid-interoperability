@@ -1,16 +1,18 @@
 import N3 from "n3";
-import { Agent, SocialAgent } from "../agent";
-import { DataRegistration } from "../data-registration/data-registration";
-import { ItoRdf } from "../factory/ItoRdf";
-import { GrantScope } from "./grant-scope";
-import { AccessMode } from "./access-mode";
-import { Rdf } from "../rdf";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../data-registration/data-registration";
+import { ItoRdf } from "../../factory/ItoRdf";
+import { GrantScope } from "../grant-scope";
+import { AccessMode } from "../access/access-mode";
+import { Rdf } from "../../rdf";
 import { DataGrant } from "./data-grant";
+import { ItoDataGrant } from "./ItoDataGrant";
+import { IDataGrantBuilder } from "./IDataGrantBuilder";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export abstract class DataAuthorization extends Rdf implements ItoRdf {
+export abstract class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
   grantee: Agent; // shex:reference <#Agent>;
   registeredShapeTree: string; // shex:reference sts:ShapeTree;
   satisfiesAccessNeed?: string; // shex:reference <#AccessNeed>;
@@ -26,8 +28,7 @@ export abstract class DataAuthorization extends Rdf implements ItoRdf {
     this.creatorAccessMode = creatorAccessMode
     this.scopeOfAuthorization = scopeOfAuthorization
   }
-
-  abstract toDataGrant(): DataGrant[]
+  abstract toDataGrant(builder: IDataGrantBuilder): DataGrant[]
 
   toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
@@ -80,7 +81,6 @@ export abstract class DataAuthorization extends Rdf implements ItoRdf {
       namedNode(this.scopeOfAuthorization),
     );
   }
-
 }
 
 export class DataAuthorizationAll extends DataAuthorization {
@@ -112,10 +112,14 @@ export class DataAuthorizationAll extends DataAuthorization {
     super.toRdf(writer)
   }
 
-  toDataGrants(id: string, data_registrations: DataRegistration[]){
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
+  }
+
+  /* toDataGrants(id: string, data_registrations: DataRegistration[]){
     return data_registrations.map(registration => new DataGrant(id, registration.registeredBy, this.grantee, this.registeredShapeTree, registration, this.accessMode, GrantScope.AllFromRegistry, this.))
 
-  }
+  } */
 }
 
 class DataAuthorizationAllFromAgent extends DataAuthorization {
@@ -158,6 +162,10 @@ class DataAuthorizationAllFromAgent extends DataAuthorization {
       namedNode("interop:dataOwner"),
       namedNode(this.dataOwner.getWebID()),
     );
+  }
+
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
   }
 }
 
@@ -213,6 +221,10 @@ export class DataAuthorizationAllFromRegistry extends DataAuthorization {
         namedNode(this.hasDataRegistration.id),
       );
     }
+  }
+
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
   }
 }
 
@@ -287,6 +299,10 @@ export class DataAuthorizationSelectedFromRegistry extends DataAuthorization {
       });
     }
   }
+
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export class DataAuthorizationInherited extends DataAuthorization {
@@ -356,5 +372,9 @@ export class DataAuthorizationInherited extends DataAuthorization {
         namedNode(this.inheritsFromAuthorization.id),
       );
     }
+  }
+
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
   }
 }

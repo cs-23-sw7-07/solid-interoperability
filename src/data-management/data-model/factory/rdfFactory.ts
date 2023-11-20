@@ -1,14 +1,14 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
 import { ApplicationAgent, SocialAgent } from "../agent";
-import { DataAuthorization } from "../authorization/data-authorization-copy";
+import { DataAuthorization } from "../authorization/data/data-authorization";
 import { DataRegistration } from "../data-registration/data-registration";
 import { getAccessmode } from "../../Utils/get-accessmode";
 import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";
 import { getDate } from "../../Utils/get-date";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
-import { AccessGrant } from "../authorization/access-grant";
-import { DataGrant } from "../authorization/data-grant";
+import { AccessGrant } from "../authorization/access/access-grant";
+import { DataGrant } from "../authorization/data/data-grant";
 import { Fetch } from "../../../fetch";
 import { NotFoundResource } from "../../../Errors/NotFound";
 import { NotParsable } from "../../../Errors/NotParsable";
@@ -145,13 +145,15 @@ export class RdfFactory {
             throw result;
           }
           if (args.has("hasDataAuthorization"))
-            args
+            throw new NotImplementedYet()
+            /* args
               .get("hasDataAuthorization")
-              .push(DataAuthorization.makeDataAuthorization(result));
+              .push(DataAuthorization.makeDataAuthorization(result)); */
           else
-            args.set("hasDataAuthorization", [
+            throw new NotImplementedYet()
+            /* args.set("hasDataAuthorization", [
               DataAuthorization.makeDataAuthorization(result),
-            ]);
+            ]); */
           break;
         }
         case solidInterop + "dataOwner": {
@@ -210,10 +212,11 @@ export class RdfFactory {
           if (result instanceof Error) {
             throw result;
           }
-          args.set(
+          throw new NotImplementedYet()
+          /* args.set(
             "inheritsFromAuthorization",
             DataAuthorization.makeDataAuthorization(result),
-          );
+          ); */
           break;
         }
         case solidInterop + "updatedAt": {

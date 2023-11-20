@@ -1,4 +1,4 @@
-import { AccessMode } from "../data-model/authorization/access-mode";
+import { AccessMode } from "../data-model/authorization/access/access-mode";
 import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
 
 export function getAccessmode(accessMode: string): AccessMode {

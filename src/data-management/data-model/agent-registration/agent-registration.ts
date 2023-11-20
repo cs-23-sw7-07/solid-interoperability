@@ -1,6 +1,6 @@
 import N3 from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
-import { AccessGrant } from "../authorization/access-grant";
+import { AccessGrant } from "../authorization/access/access-grant";
 import { Registration } from "../registration";
 
 const { DataFactory } = N3;

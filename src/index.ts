@@ -2,11 +2,11 @@ export * from "./data-management/data-model/agent-registration/agent-registratio
 export * from "./data-management/data-model/agent-registration/application-registration";
 export * from "./data-management/data-model/agent-registration/social-agent-registration";
 
-export * from "./data-management/data-model/authorization/access-auhorization";
-export * from "./data-management/data-model/authorization/access-grant";
-export * from "./data-management/data-model/authorization/access-mode";
-export * from "./data-management/data-model/authorization/data-authorization";
-export * from "./data-management/data-model/authorization/data-grant";
+export * from "./data-management/data-model/authorization/access/access-auhorization";
+export * from "./data-management/data-model/authorization/access/access-grant";
+export * from "./data-management/data-model/authorization/access/access-mode";
+export * from "./data-management/data-model/authorization/data/dataAuthExport";
+export * from "./data-management/data-model/authorization/data/data-grant";
 export * from "./data-management/data-model/authorization/grant-scope";
 
 export * from "./data-management/data-model/data-registration/data-registration";

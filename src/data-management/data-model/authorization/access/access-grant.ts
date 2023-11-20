@@ -1,8 +1,8 @@
 import N3 from "n3";
-import { Agent, SocialAgent } from "../agent";
-import { ItoRdf } from "../factory/ItoRdf";
-import { DataGrant } from "./data-grant";
-import { Rdf } from "../rdf";
+import { Agent, SocialAgent } from "../../agent";
+import { ItoRdf } from "../../factory/ItoRdf";
+import { DataGrant } from "../data/data-grant";
+import { Rdf } from "../../rdf";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
