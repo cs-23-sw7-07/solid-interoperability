@@ -1,7 +1,7 @@
 export class DataInstance {
-    IRI: string
+  IRI: string;
 
-    constructor(IRI: string) {
-        this.IRI = IRI
-    }
+  constructor(IRI: string) {
+    this.IRI = IRI;
+  }
 }

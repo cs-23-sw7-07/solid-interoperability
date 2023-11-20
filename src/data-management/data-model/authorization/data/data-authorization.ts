@@ -54,14 +54,14 @@ export class DataAuthorization extends Rdf implements ItoRdf {
   }
 
   async toDataGrant(builder: IDataGrantBuilder): Promise<DataGrant[]> {
-    let grants: DataGrant[] = [];
+    const grants: DataGrant[] = [];
 
     switch (this.scopeOfAuthorization) {
-      case GrantScope.All, GrantScope.AllFromAgent:
-        let regs =
-          await builder.getAllDataRegistrations(this.registeredShapeTree, this.dataOwner)
-
-        for (const reg of regs) {
+      case (GrantScope.All, GrantScope.AllFromAgent):
+        for (const reg of await builder.getAllDataRegistrations(
+          this.registeredShapeTree,
+          this.dataOwner,
+        )) {
           grants.push(
             new DataGrant(
               builder.generateId(),
@@ -74,7 +74,8 @@ export class DataAuthorization extends Rdf implements ItoRdf {
               this.satisfiesAccessNeed,
               undefined,
               this.creatorAccessMode,
-            ));
+            ),
+          );
         }
         break;
       case GrantScope.AllFromRegistry:
@@ -90,7 +91,8 @@ export class DataAuthorization extends Rdf implements ItoRdf {
             this.satisfiesAccessNeed,
             undefined,
             this.creatorAccessMode,
-          ));
+          ),
+        );
         break;
       case GrantScope.SelectedFromRegistry:
         grants.push(
@@ -103,13 +105,17 @@ export class DataAuthorization extends Rdf implements ItoRdf {
             this.accessMode,
             GrantScope.SelectedFromRegistry,
             this.satisfiesAccessNeed,
-            builder.getDataInstances(this.hasDataRegistration!.registeredShapeTree),
+            builder.getDataInstances(
+              this.hasDataRegistration!.registeredShapeTree,
+            ),
             this.creatorAccessMode,
-          ));
+          ),
+        );
         break;
       case GrantScope.Inherited:
-        const InheritedGrants = builder.getInheritedDataGrants(this)
-        for (const inheritedGrant of await InheritedGrants) {
+        for (const inheritedGrant of await builder.getInheritedDataGrants(
+          this,
+        )) {
           grants.push(
             new DataGrant(
               builder.generateId(),
@@ -122,14 +128,15 @@ export class DataAuthorization extends Rdf implements ItoRdf {
               this.satisfiesAccessNeed,
               undefined,
               this.creatorAccessMode,
-              inheritedGrant
-            ));
+              inheritedGrant,
+            ),
+          );
         }
         break;
       default:
-        throw new Error("No scope of grant is defined in the given file")
+        throw new Error("No scope of grant is defined in the given file");
     }
-    return grants
+    return grants;
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
