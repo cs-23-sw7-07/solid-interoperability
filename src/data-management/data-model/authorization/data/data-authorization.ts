@@ -28,13 +28,13 @@ export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
 
   constructor(
     id: string,
-    dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
-    hasDataRegistration: DataRegistration,
     accessMode: AccessMode[],
     scopeOfAuthorization: GrantScope,
     satisfiesAccessNeed: string,
+    dataOwner?: SocialAgent,
+    hasDataRegistration?: DataRegistration,
     hasDataInstanceIRIs?: string[],
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
