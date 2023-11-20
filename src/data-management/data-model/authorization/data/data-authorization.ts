@@ -105,9 +105,7 @@ export class DataAuthorization extends Rdf implements ItoRdf {
             this.accessMode,
             GrantScope.SelectedFromRegistry,
             this.satisfiesAccessNeed,
-            builder.getDataInstances(
-              this.hasDataRegistration!.registeredShapeTree,
-            ),
+            this.hasDataInstanceIRIs,
             this.creatorAccessMode,
           ),
         );
