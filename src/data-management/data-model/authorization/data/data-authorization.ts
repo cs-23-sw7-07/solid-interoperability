@@ -7,12 +7,11 @@ import { AccessMode } from "../access/access-mode";
 import { Rdf } from "../../rdf";
 import { DataGrant } from "./data-grant";
 import { ItoDataGrant, IDataGrantBuilder } from "./dataGrantBuilder/DataGrantBuilder";
-import { ImakeDataAuth } from "./dataAuthFactory"
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export abstract class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant, ImakeDataAuth {
+export abstract class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
   grantee: Agent; // shex:reference <#Agent>;
   registeredShapeTree: string; // shex:reference sts:ShapeTree;
   satisfiesAccessNeed?: string; // shex:reference <#AccessNeed>;
@@ -28,8 +27,33 @@ export abstract class DataAuthorization extends Rdf implements ItoRdf, ItoDataGr
     this.creatorAccessMode = creatorAccessMode
     this.scopeOfAuthorization = scopeOfAuthorization
   }
+
+  static makeDataAuthorization(args: Map<string, any>) {
+      if (args.has('scopeOfGrant')) {
+        let scopeOfGrant = args.get('scopeOfGrant')
+        switch (scopeOfGrant) {
+          case GrantScope.All:
+            DataAuthorizationAll.makeDataAuthorizationAll(args)
+            break;
+          case GrantScope.AllFromAgent:
+            DataAuthorizationAllFromAgent.makeDataAuthorizationAllFromAgent(args)
+            break;
+          case GrantScope.AllFromRegistry:
+            DataAuthorizationAllFromRegistry.makeDataAuthorizationAllFromRegistry(args)
+            break;
+          case GrantScope.SelectedFromRegistry:
+            DataAuthorizationSelectedFromRegistry.makeDataAuthorizationSelectedFromRegistry(args)
+            break;
+          case GrantScope.Inherited:
+            DataAuthorizationInherited.makeDataAuthorizationInherited(args)
+            break;
+        }
+      } else {
+        throw new Error('No scope of grant supplied in making the data authroization')
+      }
+  }
+
   abstract toDataGrant(builder: IDataGrantBuilder): DataGrant[];
-  abstract makeDataAuthorization(): DataAuthorization;
 
   toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
@@ -117,10 +141,6 @@ export class DataAuthorizationAll extends DataAuthorization {
     throw new Error("Method not implemented.");
   }
 
-  makeDataAuthorization(): DataAuthorization {
-    throw new Error("Method not implemented.");
-  }
-
   /* toDataGrants(id: string, data_registrations: DataRegistration[]){
     return data_registrations.map(registration => new DataGrant(id, registration.registeredBy, this.grantee, this.registeredShapeTree, registration, this.accessMode, GrantScope.AllFromRegistry, this.))
 
@@ -170,10 +190,6 @@ class DataAuthorizationAllFromAgent extends DataAuthorization {
   }
 
   toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
-    throw new Error("Method not implemented.");
-  }
-
-  makeDataAuthorization(): DataAuthorization {
     throw new Error("Method not implemented.");
   }
 }
@@ -233,10 +249,6 @@ export class DataAuthorizationAllFromRegistry extends DataAuthorization {
   }
 
   toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
-    throw new Error("Method not implemented.");
-  }
-
-  makeDataAuthorization(): DataAuthorization {
     throw new Error("Method not implemented.");
   }
 }
@@ -316,10 +328,6 @@ export class DataAuthorizationSelectedFromRegistry extends DataAuthorization {
   toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
     throw new Error("Method not implemented.");
   }
-
-  makeDataAuthorization(): DataAuthorization {
-    throw new Error("Method not implemented.");
-  }
 }
 
 export class DataAuthorizationInherited extends DataAuthorization {
@@ -392,10 +400,6 @@ export class DataAuthorizationInherited extends DataAuthorization {
   }
 
   toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
-    throw new Error("Method not implemented.");
-  }
-
-  makeDataAuthorization(): DataAuthorization {
     throw new Error("Method not implemented.");
   }
 }
