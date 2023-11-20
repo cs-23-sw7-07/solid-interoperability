@@ -4,12 +4,13 @@ import { DataRegistration } from "../../data-registration/data-registration";
 import { ItoRdf } from "../../factory/ItoRdf";
 import { GrantScope } from "../grant-scope";
 import { Rdf } from "../../rdf";
-import { AccessMode } from "./data-grant";
+import { AccessMode, DataGrant } from "./data-grant";
+import { ItoDataGrant, IDataGrantBuilder } from "./dataGrantBuilder/DataGrantBuilder";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export class DataAuthorization extends Rdf implements ItoRdf {
+export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
   /**
    * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
@@ -49,6 +50,10 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     this.hasDataInstanceIRIs = hasDataInstanceIRIs;
     this.creatorAccessMode = creatorAccessMode;
     this.inheritsFromAuthorization = inheritsFromAuthorization;
+  }
+  
+  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
+    throw new Error("Method not implemented.");
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
