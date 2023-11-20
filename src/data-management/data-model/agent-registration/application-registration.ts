@@ -2,7 +2,7 @@ import N3 from "n3";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
 import { ItoRdf } from "../factory/ItoRdf";
-import { AccessGrant } from "../authorization/access-grant";
+import { AccessGrant } from "../authorization/access/access-grant";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;

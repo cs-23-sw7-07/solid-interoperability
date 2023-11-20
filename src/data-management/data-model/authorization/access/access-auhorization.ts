@@ -1,10 +1,10 @@
 import N3 from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../agent";
-import { ItoRdf } from "../factory/ItoRdf";
-import { DataAuthorization } from "./data-authorization-copy";
-import { Rdf } from "../rdf";
+import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
+import { ItoRdf } from "../../factory/ItoRdf";
+import { Rdf } from "../../rdf";
 import { AccessGrant } from "./access-grant";
-import { DataGrant } from "./data-grant";
+import { DataGrant } from "../data/data-grant";
+import { DataAuthorization } from "../data/data-authorization";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;

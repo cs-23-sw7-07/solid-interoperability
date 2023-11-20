@@ -1,10 +1,10 @@
 import N3 from "n3";
-import { Agent, SocialAgent } from "../agent";
-import { DataRegistration } from "../data-registration/data-registration";
-import { ItoRdf } from "../factory/ItoRdf";
-import { GrantScope } from "./grant-scope";
-import { AccessMode } from "./access-mode";
-import { Rdf } from "../rdf";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../data-registration/data-registration";
+import { ItoRdf } from "../../factory/ItoRdf";
+import { GrantScope } from "../grant-scope";
+import { AccessMode } from "../access/access-mode";
+import { Rdf } from "../../rdf";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;

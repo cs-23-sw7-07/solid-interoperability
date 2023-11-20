@@ -1,4 +1,4 @@
-import { AccessMode } from "../authorization/access-mode";
+import { AccessMode } from "../authorization/access/access-mode";
 import { AccessNecessity } from "./AccessNecessity";
 
 /**
