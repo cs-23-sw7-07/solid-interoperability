@@ -3,7 +3,7 @@ import { RdfFactory } from '../../src/data-management/data-model/factory/rdfFact
 import * as ExampleInstances from '../test-case'
 import { getRDFFromPath } from '../Utils/get-RDF'
 import { test } from '@jest/globals';
-import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access/access-auhorization';
+import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access/access-authorization';
 import { mock_fetch } from '../Utils/mock-fetch';
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")

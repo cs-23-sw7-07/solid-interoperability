@@ -138,13 +138,13 @@ export class DataAuthorization extends Rdf implements ItoRdf {
   ): DataAuthorization {
     return new DataAuthorization(
       argsForDataAuthorization.get("id"),
-      argsForDataAuthorization.get("dataOwner"),
       argsForDataAuthorization.get("grantee"),
       argsForDataAuthorization.get("registeredShapeTree"),
-      argsForDataAuthorization.get("hasDataRegistration"),
       argsForDataAuthorization.get("accessMode"),
       argsForDataAuthorization.get("scopeOfAuthorization"),
       argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("hasDataRegistration"),
       argsForDataAuthorization.get("hasDataInstanceIRIs"),
       argsForDataAuthorization.get("creatorAccessMode"),
       argsForDataAuthorization.get("inheritsFromAuthorization"),
