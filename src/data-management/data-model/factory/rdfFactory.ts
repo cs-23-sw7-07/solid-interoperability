@@ -1,7 +1,7 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
 import { ApplicationAgent, SocialAgent } from "../agent";
-import { DataAuthorization } from "../authorization/data-authorization";
+import { DataAuthorization } from "../authorization/data-authorization-copy";
 import { DataRegistration } from "../data-registration/data-registration";
 import { getAccessmode } from "../../Utils/get-accessmode";
 import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";

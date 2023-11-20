@@ -10,82 +10,24 @@ import { DataGrant } from "./data-grant";
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export class DataAuthorization extends Rdf implements ItoRdf {
-  /**
-   * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
-   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
-   */
-  dataOwner?: SocialAgent;
-  grantee: Agent;
-  registeredShapeTree: string; // TODO: NEED TO FINDOUT
-  hasDataRegistration: DataRegistration;
-  accessMode: AccessMode[];
-  creatorAccessMode?: AccessMode[];
-  scopeOfAuthorization: GrantScope;
-  satisfiesAccessNeed: string; // TODO: NEED TO FINDOUT
-  hasDataInstanceIRIs?: string[];
-  inheritsFromAuthorization?: DataAuthorization;
-
-  constructor(
-    id: string,
-    grantee: Agent,
-    registeredShapeTree: string,
-    hasDataRegistration: DataRegistration,
-    accessMode: AccessMode[],
-    scopeOfAuthorization: GrantScope,
-    satisfiesAccessNeed: string,
-    dataOwner?: SocialAgent,
-    hasDataInstanceIRIs?: string[],
-    creatorAccessMode?: AccessMode[],
-    inheritsFromAuthorization?: DataAuthorization,
-  ) {
-    super(id, "DataAuthorization");
-    this.dataOwner = dataOwner;
+export abstract class DataAuthorization extends Rdf implements ItoRdf {
+  grantee: Agent; // shex:reference <#Agent>;
+  registeredShapeTree: string; // shex:reference sts:ShapeTree;
+  satisfiesAccessNeed?: string; // shex:reference <#AccessNeed>;
+  accessMode: AccessMode[]; // @<#AccessModes>+
+  creatorAccessMode?: AccessMode[]; // @<#AccessModes>*
+  scopeOfAuthorization: GrantScope
+  constructor(id: string, type: string, grantee: Agent, registeredShapeTree: string, accessMode: AccessMode[], scopeOfAuthorization: GrantScope, satisfiesAccessNeed?: string, creatorAccessMode?: AccessMode[]) {
+    super(id, type)
     this.grantee = grantee;
     this.registeredShapeTree = registeredShapeTree;
-    this.hasDataRegistration = hasDataRegistration;
-    this.accessMode = accessMode;
-    this.scopeOfAuthorization = scopeOfAuthorization;
     this.satisfiesAccessNeed = satisfiesAccessNeed;
-    this.hasDataInstanceIRIs = hasDataInstanceIRIs;
-    this.creatorAccessMode = creatorAccessMode;
-    this.inheritsFromAuthorization = inheritsFromAuthorization;
+    this.accessMode = accessMode;
+    this.creatorAccessMode = creatorAccessMode
+    this.scopeOfAuthorization = scopeOfAuthorization
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeDataAuthorization(
-    argsForDataAuthorization: Map<string, any>,
-  ): DataAuthorization {
-    return new DataAuthorization(
-      argsForDataAuthorization.get("id"),
-      argsForDataAuthorization.get("grantee"),
-      argsForDataAuthorization.get("registeredShapeTree"),
-      argsForDataAuthorization.get("hasDataRegistration"),
-      argsForDataAuthorization.get("accessMode"),
-      argsForDataAuthorization.get("scopeOfAuthorization"),
-      argsForDataAuthorization.get("satisfiesAccessNeed"),
-      argsForDataAuthorization.get("dataOwner"),
-      argsForDataAuthorization.get("hasDataInstanceIRIs"),
-      argsForDataAuthorization.get("creatorAccessMode"),
-      argsForDataAuthorization.get("inheritsFromAuthorization"),
-    );
-  }
-
-  toDataGrant(id: string, inheritsFromGrant?: DataGrant): DataGrant {
-    return new DataGrant(
-      id,
-      this.dataOwner!,
-      this.grantee,
-      this.registeredShapeTree,
-      this.hasDataRegistration,
-      this.accessMode,
-      this.scopeOfAuthorization,
-      this.satisfiesAccessNeed,
-      this.hasDataInstanceIRIs,
-      this.creatorAccessMode,
-      inheritsFromGrant,
-    );
-  }
+  abstract toDataGrant(): DataGrant[]
 
   toRdf(writer: N3.Writer): void {
     const subjectNode = namedNode(this.id);
@@ -93,37 +35,25 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     writer.addQuad(
       subjectNode,
       namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-      namedNode("interop:DataAuthorization"),
+      namedNode("interop:DataAuthorization")
     );
-    if (this.dataOwner) {
-      writer.addQuad(
-        subjectNode,
-        namedNode("interop:dataOwner"),
-        namedNode(this.dataOwner.getWebID()),
-      );
-    }
+
     writer.addQuad(
       subjectNode,
       namedNode("interop:grantee"),
-      namedNode(this.grantee.getWebID()),
+      namedNode(this.grantee.getWebID())
     );
     writer.addQuad(
       subjectNode,
       namedNode("interop:registeredShapeTree"),
-      namedNode(this.registeredShapeTree),
+      namedNode(this.registeredShapeTree)
     );
-    if (this.hasDataRegistration) {
-      writer.addQuad(
-        subjectNode,
-        namedNode("interop:hasDataRegistration"),
-        namedNode(this.hasDataRegistration.id),
-      );
-    }
+
     this.accessMode.forEach((mode) => {
       writer.addQuad(
         subjectNode,
         namedNode("interop:accessMode"),
-        namedNode(mode),
+        namedNode(mode)
       );
     });
 
@@ -132,9 +62,16 @@ export class DataAuthorization extends Rdf implements ItoRdf {
         writer.addQuad(
           subjectNode,
           namedNode("interop:creatorAccessMode"),
-          namedNode(mode),
+          namedNode(mode)
         );
       });
+    }
+    if (!this.satisfiesAccessNeed) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:satisfiesAccessNeed"),
+        namedNode(this.satisfiesAccessNeed!)
+      );
     }
 
     writer.addQuad(
@@ -142,12 +79,200 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       namedNode("interop:scopeOfAuthorization"),
       namedNode(this.scopeOfAuthorization),
     );
+  }
+
+}
+
+export class DataAuthorizationAll extends DataAuthorization {
+  constructor(
+    id: string,
+    grantee: Agent,
+    registeredShapeTree: string,
+    accessMode: AccessMode[],
+    satisfiesAccessNeed?: string,
+    creatorAccessMode?: AccessMode[]
+  ) {
+    super(id, "DataAuthorizationAll", grantee, registeredShapeTree, accessMode, GrantScope.All, satisfiesAccessNeed, creatorAccessMode);
+  }
+
+  static makeDataAuthorizationAll(
+    argsForDataAuthorization: Map<string, any>
+  ): DataAuthorizationAll {
+    return new DataAuthorizationAll(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("creatorAccessMode")
+    );
+  }
+
+  override toRdf(writer: N3.Writer): void {
+    super.toRdf(writer)
+  }
+
+  toDataGrants(id: string, data_registrations: DataRegistration[]){
+    return data_registrations.map(registration => new DataGrant(id, registration.registeredBy, this.grantee, this.registeredShapeTree, registration, this.accessMode, GrantScope.AllFromRegistry, this.))
+
+  }
+}
+
+class DataAuthorizationAllFromAgent extends DataAuthorization {
+  dataOwner: SocialAgent;
+
+  constructor(
+    id: string,
+    grantee: Agent,
+    registeredShapeTree: string,
+    accessMode: AccessMode[],
+    dataOwner: SocialAgent,
+    satisfiesAccessNeed?: string,
+    creatorAccessMode?: AccessMode[]
+  ) {
+    super(id, "DataAuthorizationAllFromAgent", grantee, registeredShapeTree, accessMode, GrantScope.AllFromAgent, satisfiesAccessNeed, creatorAccessMode);
+    this.dataOwner = dataOwner;
+  }
+
+  static makeDataAuthorizationAllFromAgent(
+    argsForDataAuthorization: Map<string, any>
+  ): DataAuthorizationAllFromAgent {
+    return new DataAuthorizationAllFromAgent(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("creatorAccessMode")
+    );
+  }
+
+  toRdf(writer: N3.Writer): void {
+    super.toRdf(writer)
+
+    const subjectNode = namedNode(this.id);
 
     writer.addQuad(
       subjectNode,
-      namedNode("interop:satisfiesAccessNeed"),
-      namedNode(this.satisfiesAccessNeed),
+      namedNode("interop:dataOwner"),
+      namedNode(this.dataOwner.getWebID()),
     );
+  }
+}
+
+export class DataAuthorizationAllFromRegistry extends DataAuthorization {
+  dataOwner: SocialAgent;
+  hasDataRegistration: DataRegistration;
+
+  constructor(
+    id: string,
+    grantee: Agent,
+    registeredShapeTree: string,
+    accessMode: AccessMode[],
+    dataOwner: SocialAgent,
+    hasDataRegistration: DataRegistration,
+    satisfiesAccessNeed?: string,
+    creatorAccessMode?: AccessMode[]
+  ) {
+    super(id, "DataAuthorizationAllFromRegistry", grantee, registeredShapeTree, accessMode, GrantScope.AllFromRegistry, satisfiesAccessNeed, creatorAccessMode);
+    this.dataOwner = dataOwner;
+    this.hasDataRegistration = hasDataRegistration;
+  }
+
+  static makeDataAuthorizationAllFromRegistry(
+    argsForDataAuthorization: Map<string, any>
+  ): DataAuthorizationAllFromRegistry {
+    return new DataAuthorizationAllFromRegistry(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("hasDataRegistration"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("creatorAccessMode")
+    );
+  }
+
+  override toRdf(writer: N3.Writer): void {
+    super.toRdf(writer)
+
+    const subjectNode = namedNode(this.id);
+
+    writer.addQuad(
+      subjectNode,
+      namedNode("interop:dataOwner"),
+      namedNode(this.dataOwner.getWebID()),
+    );
+
+    if (this.hasDataRegistration) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:hasDataRegistration"),
+        namedNode(this.hasDataRegistration.id),
+      );
+    }
+  }
+}
+
+export class DataAuthorizationSelectedFromRegistry extends DataAuthorization {
+  dataOwner: SocialAgent;
+  hasDataRegistration: DataRegistration;
+  hasDataInstanceIRIs: string[];
+
+  constructor(
+    id: string,
+    grantee: Agent,
+    registeredShapeTree: string,
+    accessMode: AccessMode[],
+    dataOwner: SocialAgent,
+    hasDataRegistration: DataRegistration,
+    hasDataInstanceIRIs: string[],
+    satisfiesAccessNeed?: string,
+    creatorAccessMode?: AccessMode[]
+  ) {
+    super(id, "DataAuthorizationSelectedFromRegistry", grantee, registeredShapeTree, accessMode, GrantScope.SelectedFromRegistry, satisfiesAccessNeed, creatorAccessMode);
+    this.dataOwner = dataOwner;
+    this.hasDataRegistration = hasDataRegistration;
+    this.hasDataInstanceIRIs = hasDataInstanceIRIs;
+  }
+
+  static makeDataAuthorizationSelectedFromRegistry(
+    argsForDataAuthorization: Map<string, any>
+  ): DataAuthorizationSelectedFromRegistry {
+    return new DataAuthorizationSelectedFromRegistry(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("hasDataRegistration"),
+      argsForDataAuthorization.get("hasDataInstanceIRIs"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("creatorAccessMode")
+    );
+  }
+
+  override toRdf(writer: N3.Writer): void {
+    super.toRdf(writer)
+
+    const subjectNode = namedNode(this.id);
+
+    writer.addQuad(
+      subjectNode,
+      namedNode("interop:dataOwner"),
+      namedNode(this.dataOwner.getWebID()),
+    );
+
+    if (this.hasDataRegistration) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:hasDataRegistration"),
+        namedNode(this.hasDataRegistration.id),
+      );
+    }
+
 
     if (
       this.hasDataInstanceIRIs != undefined &&
@@ -160,6 +285,65 @@ export class DataAuthorization extends Rdf implements ItoRdf {
           namedNode(IRI),
         );
       });
+    }
+  }
+}
+
+export class DataAuthorizationInherited extends DataAuthorization {
+  dataOwner: SocialAgent;
+  hasDataRegistration?: DataRegistration;
+  inheritsFromAuthorization: DataAuthorization;
+
+  constructor(
+    id: string,
+    grantee: Agent,
+    registeredShapeTree: string,
+    accessMode: AccessMode[],
+    dataOwner: SocialAgent,
+    inheritsFromAuthorization: DataAuthorization,
+    hasDataRegistration?: DataRegistration,
+    satisfiesAccessNeed?: string,
+    creatorAccessMode?: AccessMode[]
+  ) {
+    super(id, "DataAuthorizationInherited", grantee, registeredShapeTree, accessMode, GrantScope.Inherited, satisfiesAccessNeed, creatorAccessMode);
+    this.dataOwner = dataOwner;
+    this.inheritsFromAuthorization = inheritsFromAuthorization;
+    this.hasDataRegistration = hasDataRegistration;
+  }
+
+  static makeDataAuthorizationInherited(
+    argsForDataAuthorization: Map<string, any>
+  ): DataAuthorizationInherited {
+    return new DataAuthorizationInherited(
+      argsForDataAuthorization.get("id"),
+      argsForDataAuthorization.get("grantee"),
+      argsForDataAuthorization.get("registeredShapeTree"),
+      argsForDataAuthorization.get("accessMode"),
+      argsForDataAuthorization.get("dataOwner"),
+      argsForDataAuthorization.get("inheritsFromAuthorization"),
+      argsForDataAuthorization.get("hasDataRegistration"),
+      argsForDataAuthorization.get("satisfiesAccessNeed"),
+      argsForDataAuthorization.get("creatorAccessMode")
+    );
+  }
+
+  override toRdf(writer: N3.Writer): void {
+    super.toRdf(writer)
+
+    const subjectNode = namedNode(this.id);
+
+    writer.addQuad(
+      subjectNode,
+      namedNode("interop:dataOwner"),
+      namedNode(this.dataOwner.getWebID()),
+    );
+
+    if (this.hasDataRegistration) {
+      writer.addQuad(
+        subjectNode,
+        namedNode("interop:hasDataRegistration"),
+        namedNode(this.hasDataRegistration.id),
+      );
     }
 
     if (
