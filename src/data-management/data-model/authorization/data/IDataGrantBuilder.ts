@@ -25,9 +25,4 @@ export interface IDataGrantBuilder {
    * This can be implemented using the `.toDataGrant` method on all `DataAuthorization` objects.
    */
   getInheritedDataGrants(auth: DataAuthorization): Promise<DataGrant[]>;
-
-  /**
-   * @returns should return a list of `DataInstance(s)` drawn from the shape tree.
-   */
-  getDataInstances(registeredShapeTree: string): DataInstance[];
 }
