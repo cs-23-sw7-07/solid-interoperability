@@ -5,12 +5,13 @@ import { ItoRdf } from "../../factory/ItoRdf";
 import { GrantScope } from "../grant-scope";
 import { Rdf } from "../../rdf";
 import { AccessMode, DataGrant } from "./data-grant";
-import { ItoDataGrant, IDataGrantBuilder } from "./dataGrantBuilder/DataGrantBuilder";
+import { DataInstance } from "./data-instance";
+import { IDataGrantBuilder } from "./IDataGrantBuilder";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
+export class DataAuthorization extends Rdf implements ItoRdf {
   /**
    * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
@@ -23,7 +24,7 @@ export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
   creatorAccessMode?: AccessMode[];
   scopeOfAuthorization: GrantScope;
   satisfiesAccessNeed: string; // TODO: NEED TO FINDOUT
-  hasDataInstanceIRIs?: string[];
+  hasDataInstanceIRIs?: DataInstance[];
   inheritsFromAuthorization?: DataAuthorization;
 
   constructor(
@@ -35,7 +36,7 @@ export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
     satisfiesAccessNeed: string,
     dataOwner?: SocialAgent,
     hasDataRegistration?: DataRegistration,
-    hasDataInstanceIRIs?: string[],
+    hasDataInstanceIRIs?: DataInstance[],
     creatorAccessMode?: AccessMode[],
     inheritsFromAuthorization?: DataAuthorization,
   ) {
@@ -51,9 +52,84 @@ export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
     this.creatorAccessMode = creatorAccessMode;
     this.inheritsFromAuthorization = inheritsFromAuthorization;
   }
-  
-  toDataGrant(builder: IDataGrantBuilder): DataGrant[] {
-    throw new Error("Method not implemented.");
+
+  async toDataGrant(builder: IDataGrantBuilder): Promise<DataGrant[]> {
+    let grants: DataGrant[] = [];
+
+    switch (this.scopeOfAuthorization) {
+      case GrantScope.All, GrantScope.AllFromAgent:
+        let regs =
+          await builder.getAllDataRegistrations(this.registeredShapeTree, this.dataOwner)
+
+        for (const reg of regs) {
+          grants.push(
+            new DataGrant(
+              builder.generateId(),
+              reg.registeredBy,
+              this.grantee,
+              this.registeredShapeTree,
+              reg,
+              this.accessMode,
+              GrantScope.AllFromRegistry,
+              this.satisfiesAccessNeed,
+              undefined,
+              this.creatorAccessMode,
+            ));
+        }
+        break;
+      case GrantScope.AllFromRegistry:
+        grants.push(
+          new DataGrant(
+            builder.generateId(),
+            this.hasDataRegistration!.registeredBy,
+            this.grantee,
+            this.registeredShapeTree,
+            this.hasDataRegistration!,
+            this.accessMode,
+            GrantScope.AllFromRegistry,
+            this.satisfiesAccessNeed,
+            undefined,
+            this.creatorAccessMode,
+          ));
+        break;
+      case GrantScope.SelectedFromRegistry:
+        grants.push(
+          new DataGrant(
+            builder.generateId(),
+            this.dataOwner!,
+            this.grantee,
+            this.registeredShapeTree,
+            this.hasDataRegistration!,
+            this.accessMode,
+            GrantScope.SelectedFromRegistry,
+            this.satisfiesAccessNeed,
+            builder.getDataInstances(this.hasDataRegistration!.registeredShapeTree),
+            this.creatorAccessMode,
+          ));
+        break;
+      case GrantScope.Inherited:
+        const InheritedGrants = builder.getInheritedDataGrants(this)
+        for (const inheritedGrant of await InheritedGrants) {
+          grants.push(
+            new DataGrant(
+              builder.generateId(),
+              this.hasDataRegistration!.registeredBy,
+              this.grantee,
+              this.hasDataRegistration!.registeredShapeTree,
+              this.hasDataRegistration!,
+              this.accessMode,
+              GrantScope.AllFromRegistry,
+              this.satisfiesAccessNeed,
+              undefined,
+              this.creatorAccessMode,
+              inheritedGrant
+            ));
+        }
+        break;
+      default:
+        throw new Error("No scope of grant is defined in the given file")
+    }
+    return grants
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -142,11 +218,11 @@ export class DataAuthorization extends Rdf implements ItoRdf, ItoDataGrant {
       this.hasDataInstanceIRIs !== undefined &&
       this.scopeOfAuthorization == GrantScope.SelectedFromRegistry
     ) {
-      this.hasDataInstanceIRIs.forEach((IRI) => {
+      this.hasDataInstanceIRIs.forEach((dataInstance) => {
         writer.addQuad(
           subjectNode,
           namedNode("interop:hasDataInstance"),
-          namedNode(IRI),
+          namedNode(dataInstance.IRI),
         );
       });
     }

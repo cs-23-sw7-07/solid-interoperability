@@ -5,6 +5,7 @@ import { ItoRdf } from "../../factory/ItoRdf";
 import { GrantScope } from "../grant-scope";
 import { AccessMode } from "../access/access-mode";
 import { Rdf } from "../../rdf";
+import { DataInstance } from "./data-instance";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
@@ -22,7 +23,7 @@ export class DataGrant extends Rdf implements ItoRdf {
   creatorAccessMode?: AccessMode[];
   scopeOfGrant: GrantScope;
   satisfiesAccessNeed: string; // TODO: NEED TO FINDOUT
-  hasDataInstanceIRIs?: string[];
+  hasDataInstanceIRIs?: DataInstance[];
   inheritsFromGrant?: DataGrant;
 
   constructor(
@@ -34,7 +35,7 @@ export class DataGrant extends Rdf implements ItoRdf {
     accessMode: AccessMode[],
     scopeOfGrant: GrantScope,
     satisfiesAccessNeed: string,
-    hasDataInstanceIRIs?: string[],
+    hasDataInstanceIRIs?: DataInstance[],
     creatorAccessMode?: AccessMode[],
     inheritsFromGrant?: DataGrant,
   ) {
@@ -130,11 +131,11 @@ export class DataGrant extends Rdf implements ItoRdf {
       this.hasDataInstanceIRIs != undefined &&
       this.scopeOfGrant == GrantScope.SelectedFromRegistry
     ) {
-      this.hasDataInstanceIRIs.forEach((IRI) => {
+      this.hasDataInstanceIRIs.forEach((dataInstance) => {
         writer.addQuad(
           subjectNode,
           namedNode("interop:hasDataInstance"),
-          namedNode(IRI),
+          namedNode(dataInstance.IRI),
         );
       });
     }
