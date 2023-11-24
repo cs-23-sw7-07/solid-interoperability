@@ -36,7 +36,7 @@ export class RdfFactory {
    * @returns a `Promise` which if furfulled contains a turtle file, otherwise an error which needs handling
    *
    */
-  create(object: ItoRdf, prefixes?: object): Promise<string | Error> {
+  create(object: ItoRdf, prefixes?: object): Promise<string> {
     const finalPrefix = {
       prefixes: { ...prefixes, ...RdfFactory.PREFIXES.prefixes },
     };
@@ -263,7 +263,8 @@ export class RdfFactory {
           break;
         }
         default: {
-          throw new NotImplementedYet(JSON.stringify(quad, null, 4));
+          console.log(JSON.stringify(quad, null, 4))
+          // throw new NotImplementedYet(JSON.stringify(quad, null, 4));
         }
       }
     }

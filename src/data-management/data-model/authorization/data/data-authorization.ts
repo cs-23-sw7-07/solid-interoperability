@@ -57,7 +57,8 @@ export class DataAuthorization extends Rdf implements ItoRdf {
     const grants: DataGrant[] = [];
 
     switch (this.scopeOfAuthorization) {
-      case (GrantScope.All, GrantScope.AllFromAgent):
+      case GrantScope.All:
+      case GrantScope.AllFromAgent:
         for (const reg of await builder.getAllDataRegistrations(
           this.registeredShapeTree,
           this.dataOwner,
