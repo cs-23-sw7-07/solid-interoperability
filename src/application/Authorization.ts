@@ -1,6 +1,7 @@
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import {URL} from "url";
 import {DataInstance} from "./SolidDataInstance";
+import {ISocialAgent} from "./SocialAgent";
 
 export interface IAuthorization {
   readonly socialAgent: ISocialAgent;

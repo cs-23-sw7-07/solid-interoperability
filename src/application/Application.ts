@@ -1,13 +1,9 @@
-import { fetch } from "solid-auth-fetcher";
 import { URL } from "url";
-import N3, { DataFactory } from "n3";
 import { DataInstance } from "./SolidDataInstance";
-import { NotImplementedYet } from "../Errors/NotImplementedYet";
-import * as url from "url";
-import { Rdf } from "../data-management/data-model/rdf";
 import {IAuthorization, IAuthorizationStore, IAuthService} from "./Authorization";
 import {Type} from "typedoc";
 import {getAuthAgent} from "../authentication/authentication";
+
 
 /**
  * Interface for Solid Applications.
@@ -123,6 +119,23 @@ export class Application implements IApplication {
     // Yield each instance.
     for (const x of list) {
       yield x;
+    }
+  }
+
+  /**
+   * Returns an express router that sends the profile document of the application when the request asks for
+   * "text/turtle" as content type.
+   */
+  get Router(){
+    return (req: any, res: any, next: any) => {
+      for (const type of req.accepts()){
+        if (type.includes("turtle")){
+          // TODO: Send Profile Document
+          res.send("TURTLE")
+          return
+        }
+      }
+      next()
     }
   }
 }

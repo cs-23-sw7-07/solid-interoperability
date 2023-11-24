@@ -6,6 +6,7 @@ import literal = DataFactory.literal;
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import { Rdf } from "../data-management/data-model/rdf";
 import Constructor = jest.Constructor;
+import {ISocialAgent} from "./SocialAgent";
 
 const A = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 

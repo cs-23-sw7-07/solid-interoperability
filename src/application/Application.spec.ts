@@ -3,7 +3,6 @@ import {
 } from "./Application";
 import { expect } from "@jest/globals";
 import {Authorization, AuthorizationStore, AuthService, IAuthorization} from "./Authorization";
-import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import { readFileSync } from "fs";
 import * as path from "path";
 import { v4 as uuid } from "uuid";
@@ -68,7 +67,7 @@ describe("Application", () => {
   });
 
   it('should retrieve Solid Data Instance', () => {
-
+    // TODO: Check some that some data in a solid pod is parsed correctly
   });
 });
 
