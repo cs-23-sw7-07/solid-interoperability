@@ -1,28 +1,42 @@
 import {
   Application,
-  AuthorizationStore,
-  IAuthorization,
-  IAuthService,
-  ISolidDataInstance,
-  SolidDataInstance,
 } from "./Application";
 import { expect } from "@jest/globals";
-import { Authorization } from "./Authorization";
+import {Authorization, AuthorizationStore, AuthService, IAuthorization} from "./Authorization";
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
+import { readFileSync } from "fs";
+import * as path from "path";
+import { v4 as uuid } from "uuid";
+import { DataInstance } from "./SolidDataInstance";
+import {SocialAgent} from "./SocialAgent";
+
+export const ALICE_WEBID = new URL(
+  "http://localhost:3000/alice-pod/profile/card#me",
+);
+export const ALICE_POD = new URL("http://localhost:3000/alice-pod/");
+
+function readPodResource(_path: string) {
+  return readFileSync(
+    path.resolve(__dirname, "../../test/resources/data", _path),
+    { encoding: "utf-8" },
+  );
+}
+
+class TestInstance {
+  id: string;
+  constructor(public member: object) {
+    this.id = uuid();
+  }
+  method1(arg1: number): boolean {
+    return arg1 > 0;
+  }
+}
 
 describe("Application", () => {
-  const authService: IAuthService = {
-    request(req: RequestInfo, init?: RequestInit): Promise<Response> {
-      throw new NotImplementedYet();
-    },
-  };
+  const authService = new AuthService();
+  const socialAgent = new SocialAgent(ALICE_WEBID, ALICE_POD)
   const auths = new Array<IAuthorization>();
-  auths.push(
-    new Authorization(
-      new URL("http://localhost:3000/alice-pod/profile/card#me"),
-      authService,
-    ),
-  );
+  auths.push(new Authorization(socialAgent, authService));
   const authStore = new AuthorizationStore(auths);
 
   it("Can register", () => {
@@ -38,19 +52,26 @@ describe("Application", () => {
 
     expect(auths.length).toBeGreaterThan(0);
   });
+
+  it("should store Solid Data Instance", async () => {
+    const app = new Application(authService, authStore);
+    const instance = DataInstance.new(new TestInstance({}), auths[0].socialAgent);
+    const uuid = instance.id;
+
+    await app.store(ALICE_WEBID, instance);
+
+    // Check that the data is stored.
+    // If this fails in the future, make sure that it should contain <member>
+    expect(
+        readPodResource("alice-pod/Application/TestInstance/" + uuid + "$.ttl")
+    ).toContain("<member>");
+  });
+
+  it('should retrieve Solid Data Instance', () => {
+
+  });
 });
 
 describe("Data instance", () => {
-  class TestInstance implements ISolidDataInstance {
-    constructor(public member: object) {}
-    method1(arg1: number): boolean {
-      return arg1 > 0;
-    }
-  }
-  it("should be serializable", () => {
-    const inst = new TestInstance({ hello: "Hi" });
-    const testRegistry = new URL("http://localhost:3000/alice-pod/test-app/")
-
-    console.log(SolidDataInstance.serialize(inst, testRegistry));
-  });
+  it("should be serializable", () => {});
 });

@@ -1,128 +1,130 @@
-import * as http from "http";
 import { fetch } from "solid-auth-fetcher";
-import { URL } from "url"
-import { v4 as uuidv4} from "uuid"
+import { URL } from "url";
+import N3, { DataFactory } from "n3";
+import { DataInstance } from "./SolidDataInstance";
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
-import N3, {DataFactory} from "n3";
-import namedNode = DataFactory.namedNode;
-import literal = DataFactory.literal;
+import * as url from "url";
+import { Rdf } from "../data-management/data-model/rdf";
+import {IAuthorization, IAuthorizationStore, IAuthService} from "./Authorization";
+import {Type} from "typedoc";
+import {getAuthAgent} from "../authentication/authentication";
 
-const A = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
-export interface IApplication {}
-
-export interface ISolidDataInstance {}
-
-export class SolidDataInstance {
-  static serialize(instance: ISolidDataInstance, dataRegistry: URL) {
-    const proto = Object.getPrototypeOf(instance)
-    const properties = Object.getOwnPropertyDescriptors(proto)
-    const name = properties["constructor"]["value"].name
-
-    // Create ShapeTree from class Definitions
-    const shape = {}
-    const writer = new N3.Writer()
-    const id = uuidv4()
-    const registryURL = new URL(name + "/" + id, dataRegistry)
-
-    writer.addQuad(
-        namedNode(registryURL.toString()),
-        A,
-        literal(name)
-    )
-
-
-    for (const member of Object.getOwnPropertyNames(instance)){
-      // @ts-ignore
-      shape[member] = instance[member]
-      writer.addQuad(
-          namedNode(registryURL.toString()),
-          namedNode(member),
-          // @ts-ignore
-          namedNode(instance[member])
-      )
-    }
-
-
-    // Create data instance RDF from object.
-    const obj = {
-
-    }
-    let result = ""
-    writer.end((e, r) =>{
-        if (e != undefined){
-          throw new Error("Could not serialize object.")
-        }
-        result = r ?? "";
-    })
-    return result
-  }
-
-  static deserialize(instance: string): ISolidDataInstance {
-    return {};
-  }
+/**
+ * Interface for Solid Applications.
+ */
+export interface IApplication {
+  store<T>(webId: URL, instance: DataInstance<T>): Promise<void>;
+  dataInstances<T extends Type>(webId: URL, type: T): AsyncGenerator<DataInstance<unknown>>;
 }
 
-export interface IAuthorization {
-  get WebId(): URL;
-  get DataInstances(): ISolidDataInstance[];
+/**
+ * @member name The name of the application.
+ * @member profile The path to the application's profile document.
+ */
+interface IApplicationOptions {
+  name?: string;
+  profile?: string
 }
 
-export interface IAuthService {
-  request(req: RequestInfo, init?: RequestInit): Promise<Response>;
-}
-
-export class AuthService implements IAuthService {
-  requestAccess(webId: URL): void {}
-  queryAccess(webId: URL) {}
-
-  request(req: RequestInfo, init?: RequestInit): Promise<Response> {
-    throw new NotImplementedYet();
-  }
-}
-
-export interface IAuthorizationStore {
-  get Authorizations(): IAuthorization[];
-  addAuthorization(auth: IAuthorization): void;
-}
-
-export class AuthorizationStore implements IAuthorizationStore {
-  constructor(private auths: IAuthorization[]) {}
-
-  get Authorizations(): IAuthorization[] {
-    return this.auths;
-  }
-
-  addAuthorization(auth: IAuthorization): void {
-    this.auths.push(auth);
-  }
-}
 
 export class Application implements IApplication {
+
+  /**
+   * The main interface for Solid application. The {@link Application} API contains the necessary functionality to create a
+   * solid application. To create a Solid application, simply instantiate an {@link Application} and plug it into your express
+   * router. The {@link Application}
+   *
+   * @param authService
+   * @param authenticationStore
+   * @param options
+   */
   constructor(
     private authService: IAuthService,
     private authenticationStore: IAuthorizationStore,
+    private options?: IApplicationOptions,
   ) {}
 
+  /**
+   * Returns the name of this application.
+   */
+  get Name() {
+    // TODO: This should come from the profile document of this application.
+    return this.options?.name ?? "Application";
+  }
+
+  /**
+   * Register with the authorization agent of the agent.
+   */
   async register(): Promise<void> {}
 
+  /**
+   * Retrieve all registered authorizations.
+   */
   get Authorizations(): IAuthorization[] {
     return this.authenticationStore.Authorizations;
   }
 
+  /**
+   * Retrieve the {@link Authorization} for a specific agent.
+   * @param webId The WebId of the agent.
+   */
   getAuthorization(webId: URL): IAuthorization | undefined {
-    return this.Authorizations.find((x) => x.WebId == webId);
+    // Maybe this should be a database?
+    return this.Authorizations.find((x) => x.socialAgent.webId == webId);
   }
 
-  store(webId: URL, data: ISolidDataInstance){
-    fetch(webId.toString())
-        .catch(e => {
-          throw e
-        })
-        .then(profile => {
-          profile
-        })
+  /**
+   * Store data in a Solid pod. The data will be stored in RDF format using an appropriate method of conversion for its
+   * type. The data that is stored must be wrapped in a {@link DataInstance} so that it can be serialized as valid RDF.
+   * So long as the application has a valid authorization, given by an authorization agent of *alice.example.com*, the
+   * app will be able to store `myObj` in alice's pod.
+   *
+   * @example
+   *  class MyData {
+   *      constructor(private obj: object) {}
+   *  }
+   *
+   *  const myObj = new MyData({member: "value"});
+   *  const id = new URL("alice.example.com")
+   *  app.store(id, myObj)
+   *
+   * @param webId The WebId of the agent that owns the pod where the data should be registered.
+   * @param instance A [[DataInstance]] that wraps the data being stored.
+   */
+  async store<T>(webId: URL, instance: DataInstance<T>): Promise<void> {
+    const authAgent = getAuthAgent(webId);
 
-    const pod = new URL("")
-    SolidDataInstance.serialize(data, pod)
+    if (authAgent == undefined)
+      throw new Error(
+        `Social agent with WebID ${webId}, does not have an authorization agent.`,
+      );
+
+    const auth = this.getAuthorization(webId);
+
+    if (auth == undefined) {
+      throw new Error(
+        `Social agent with WebId ${webId} has not authorized this application.`,
+      );
+    }
+    const s = instance.Serialized;
+
+    const uri = new URL(instance.id, instance.DataRegistry);
+    await auth.service.fetch(uri.toString(), {
+      method: "PUT",
+      headers: { "Content-Type": "text/turtle" },
+      body: s,
+    });
+  }
+
+  async *dataInstances<T extends Type>(webId: URL, type:T) {
+    // Get data instances of given type.
+    const list = [DataInstance.empty(type)];
+
+    // Yield each instance.
+    for (const x of list) {
+      yield x;
+    }
   }
 }
+
+
