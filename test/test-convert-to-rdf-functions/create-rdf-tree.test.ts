@@ -88,12 +88,51 @@ test.each([
     expect(actual).toBe(expected)
 })
 
+function mockFetchResource(tempResource: string): string {
+    // This should take in a URL string
+    // This should use the fetch API to fetch the actual RDF online from the server
+    if (tempResource == "https://projectron.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-projection.ttl";
+    } else if (tempResource == "https://bob.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-bob.ttl";
+    } else if (tempResource == "https://jarvis.example/#id") {
+      return "test/rdfs-examples/parse-tests-rdfs/profile-doc-defualt.ttl";
+    }
+    return tempResource;
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
+    return new Promise((resolve) => {
+        try {
+            const body = getRDFFromPath(mockFetchResource(input as string))
+            const responseInit: ResponseInit = {
+                status: 200,
+                headers: new Headers({
+                    'Content-Type': 'text/turtle',
+                }),
+                };
+
+                const response = new Response(body, responseInit);
+                resolve(response);
+        }
+        catch {
+            const responseInit: ResponseInit = {
+                status: 404,
+                };
+
+                const response = new Response(null, responseInit);
+                resolve(response);
+        }
+        });
+   }
+
 test('AccessAuth-to-AccessGrant', async (path = join(PATH_TO_RDFS_EXAMPLES, "authorization/no-recursive-links/47e07897AccessAuth.ttl")) => {
     const expected = getRDFFromPath(join(PATH_TO_RDFS_EXAMPLES, "authorization/47e07897MOCKAccessGrant.ttl"))
 
     const factory = new RdfFactory()
 
-    const params = await factory.parse(path)
+    const params = await factory.parse(fetch, path)
     if (params instanceof Error) {
         fail(params)
     }
