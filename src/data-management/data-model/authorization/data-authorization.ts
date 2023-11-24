@@ -5,7 +5,6 @@ import { ItoRdf } from "../factory/ItoRdf";
 import { GrantScope } from "./grant-scope";
 import { AccessMode } from "./access-mode";
 import { Rdf } from "../rdf";
-import { DataGrant } from "./data-grant";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
@@ -68,22 +67,6 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       argsForDataAuthorization.get("hasDataInstanceIRIs"),
       argsForDataAuthorization.get("creatorAccessMode"),
       argsForDataAuthorization.get("inheritsFromAuthorization"),
-    );
-  }
-
-  toDataGrant(): DataGrant {
-    return new DataGrant(
-      this.id,
-      this.dataOwner,
-      this.grantee,
-      this.registeredShapeTree,
-      this.hasDataRegistration,
-      this.accessMode,
-      this.scopeOfAuthorization,
-      this.satisfiesAccessNeed,
-      this.hasDataInstanceIRIs,
-      this.creatorAccessMode,
-      this.inheritsFromAuthorization?.toDataGrant(),
     );
   }
 

@@ -3,7 +3,6 @@ import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 import { ItoRdf } from "../factory/ItoRdf";
 import { DataAuthorization } from "./data-authorization";
 import { Rdf } from "../rdf";
-import { AccessGrant } from "./access-grant";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
@@ -13,7 +12,6 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
    * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
    */
-  id: string;
   grantedBy: SocialAgent;
   grantedAt: Date;
   grantedWith: ApplicationAgent;
@@ -21,6 +19,7 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
   hasAccessNeedGroup: string;
   hasDataAuthorization: DataAuthorization[];
   replaces?: AccessAuthorization;
+  id: string;
 
   constructor(
     id: string,
@@ -56,17 +55,6 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
       argsForAccessAuthorization.get("hasAccessNeedGroup"),
       argsForAccessAuthorization.get("hasDataAuthorization"),
       argsForAccessAuthorization.get("replaces"),
-    );
-  }
-
-  toAccessGrant() {
-    return new AccessGrant(
-      this.id,
-      this.grantedBy,
-      this.grantedAt,
-      this.grantee,
-      this.hasAccessNeedGroup,
-      this.hasDataAuthorization.map((dataAuth) => dataAuth.toDataGrant()),
     );
   }
 
