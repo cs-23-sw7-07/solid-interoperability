@@ -1,5 +1,5 @@
-import {URL} from "url";
-import {fetch} from "solid-auth-fetcher";
+import { URL } from "url";
+import { fetch } from "solid-auth-fetcher";
 import N3 from "n3";
 
 export function authenticate() {
@@ -21,9 +21,9 @@ export async function getAuthAgent(webId: URL) {
   const profileGraph = await getProfile(webId);
 
   const authAgent = profileGraph.find(
-      (x) =>
-          x.predicate.value ==
-          "http://www.w3.org/ns/solid/interop#hasAuthorizationAgent",
+    (x) =>
+      x.predicate.value ==
+      "http://www.w3.org/ns/solid/interop#hasAuthorizationAgent",
   )?.object.value;
   return authAgent;
 }

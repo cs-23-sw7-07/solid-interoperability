@@ -22,5 +22,5 @@ export * from "./Errors/NotParsable";
 export * from "./Errors/NotFound";
 
 export * from "./fetch";
-export * from "./application/Application"
-export * from "./application/SolidDataInstance"
+export * from "./application/Application";
+export * from "./application/SolidDataInstance";

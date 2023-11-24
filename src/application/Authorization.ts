@@ -1,7 +1,7 @@
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
-import {URL} from "url";
-import {DataInstance} from "./SolidDataInstance";
-import {ISocialAgent} from "./SocialAgent";
+import { URL } from "url";
+import { DataInstance } from "./SolidDataInstance";
+import { ISocialAgent } from "./SocialAgent";
 
 export interface IAuthorization {
   readonly socialAgent: ISocialAgent;
@@ -22,7 +22,6 @@ export class Authorization implements IAuthorization {
   get DataInstances(): DataInstance<unknown>[] {
     throw new NotImplementedYet();
   }
-
 }
 export class AuthorizationStore implements IAuthorizationStore {
   constructor(private auths: IAuthorization[]) {}

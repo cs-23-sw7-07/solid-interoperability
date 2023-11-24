@@ -1,13 +1,16 @@
-import {
-  Application,
-} from "./Application";
+import { Application } from "./Application";
 import { expect } from "@jest/globals";
-import {Authorization, AuthorizationStore, AuthService, IAuthorization} from "./Authorization";
+import {
+  Authorization,
+  AuthorizationStore,
+  AuthService,
+  IAuthorization,
+} from "./Authorization";
 import { readFileSync } from "fs";
 import * as path from "path";
 import { v4 as uuid } from "uuid";
 import { DataInstance } from "./SolidDataInstance";
-import {SocialAgent} from "./SocialAgent";
+import { SocialAgent } from "./SocialAgent";
 
 export const ALICE_WEBID = new URL(
   "http://localhost:3000/alice-pod/profile/card#me",
@@ -33,7 +36,7 @@ class TestInstance {
 
 describe("Application", () => {
   const authService = new AuthService();
-  const socialAgent = new SocialAgent(ALICE_WEBID, ALICE_POD)
+  const socialAgent = new SocialAgent(ALICE_WEBID, ALICE_POD);
   const auths = new Array<IAuthorization>();
   auths.push(new Authorization(socialAgent, authService));
   const authStore = new AuthorizationStore(auths);
@@ -54,7 +57,10 @@ describe("Application", () => {
 
   it("should store Solid Data Instance", async () => {
     const app = new Application(authService, authStore);
-    const instance = DataInstance.new(new TestInstance({}), auths[0].socialAgent);
+    const instance = DataInstance.new(
+      new TestInstance({}),
+      auths[0].socialAgent,
+    );
     const uuid = instance.id;
 
     await app.store(ALICE_WEBID, instance);
@@ -62,11 +68,11 @@ describe("Application", () => {
     // Check that the data is stored.
     // If this fails in the future, make sure that it should contain <member>
     expect(
-        readPodResource("alice-pod/Application/TestInstance/" + uuid + "$.ttl")
+      readPodResource("alice-pod/Application/TestInstance/" + uuid + "$.ttl"),
     ).toContain("<member>");
   });
 
-  it('should retrieve Solid Data Instance', () => {
+  it("should retrieve Solid Data Instance", () => {
     // TODO: Check some that some data in a solid pod is parsed correctly
   });
 });

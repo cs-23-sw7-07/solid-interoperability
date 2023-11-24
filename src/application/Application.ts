@@ -1,16 +1,22 @@
 import { URL } from "url";
 import { DataInstance } from "./SolidDataInstance";
-import {IAuthorization, IAuthorizationStore, IAuthService} from "./Authorization";
-import {Type} from "typedoc";
-import {getAuthAgent} from "../authentication/authentication";
-
+import {
+  IAuthorization,
+  IAuthorizationStore,
+  IAuthService,
+} from "./Authorization";
+import { Type } from "typedoc";
+import { getAuthAgent } from "../authentication/authentication";
 
 /**
  * Interface for Solid Applications.
  */
 export interface IApplication {
   store<T>(webId: URL, instance: DataInstance<T>): Promise<void>;
-  dataInstances<T extends Type>(webId: URL, type: T): AsyncGenerator<DataInstance<unknown>>;
+  dataInstances<T extends Type>(
+    webId: URL,
+    type: T,
+  ): AsyncGenerator<DataInstance<unknown>>;
 }
 
 /**
@@ -19,12 +25,10 @@ export interface IApplication {
  */
 interface IApplicationOptions {
   name?: string;
-  profile?: string
+  profile?: string;
 }
 
-
 export class Application implements IApplication {
-
   /**
    * The main interface for Solid application. The {@link Application} API contains the necessary functionality to create a
    * solid application. To create a Solid application, simply instantiate an {@link Application} and plug it into your express
@@ -112,7 +116,7 @@ export class Application implements IApplication {
     });
   }
 
-  async *dataInstances<T extends Type>(webId: URL, type:T) {
+  async *dataInstances<T extends Type>(webId: URL, type: T) {
     // Get data instances of given type.
     const list = [DataInstance.empty(type)];
 
@@ -126,18 +130,16 @@ export class Application implements IApplication {
    * Returns an express router that sends the profile document of the application when the request asks for
    * "text/turtle" as content type.
    */
-  get Router(){
+  get Router() {
     return (req: any, res: any, next: any) => {
-      for (const type of req.accepts()){
-        if (type.includes("turtle")){
+      for (const type of req.accepts()) {
+        if (type.includes("turtle")) {
           // TODO: Send Profile Document
-          res.send("TURTLE")
-          return
+          res.send("TURTLE");
+          return;
         }
       }
-      next()
-    }
+      next();
+    };
   }
 }
-
-

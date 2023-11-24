@@ -4,9 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import namedNode = DataFactory.namedNode;
 import literal = DataFactory.literal;
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
-import { Rdf } from "../data-management/data-model/rdf";
 import Constructor = jest.Constructor;
-import {ISocialAgent} from "./SocialAgent";
+import { ISocialAgent } from "./SocialAgent";
 
 const A = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 
@@ -84,7 +83,7 @@ export class DataInstance<T> {
     const owner = new WebId(new URL(""));
     return DataInstance.from(obj, owner, id);
      */
-    throw new NotImplementedYet()
+    throw new NotImplementedYet();
   }
   static empty<T>(type: T) {
     // @ts-ignore
