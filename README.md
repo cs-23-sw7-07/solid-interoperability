@@ -4,7 +4,7 @@
 
 ## This library contains the following functionality:
 - [x] Create RDFs for the [Solid Interoperability Specification](https://solid.github.io/data-interoperability-panel/specification/)
-- [x] Can read and parse RDFs into objects such as `Social Agent Registration`
+- [x] Can read and parse RDFs into objects such as `Access Authorization`
 - [x] Save RDFs to your desired POD
 - [x] Create Registries for your POD
 - [x] Registrer both access and data authorizations
