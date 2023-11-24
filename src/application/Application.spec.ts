@@ -33,6 +33,9 @@ class TestInstance {
     return arg1 > 0;
   }
 }
+beforeAll(()=>{
+  
+})
 
 describe("Application", () => {
   const authService = new AuthService();
