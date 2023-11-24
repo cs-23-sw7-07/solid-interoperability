@@ -101,6 +101,7 @@ function mockFetchResource(tempResource: string): string {
     return tempResource;
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
     return new Promise((resolve) => {
         try {
