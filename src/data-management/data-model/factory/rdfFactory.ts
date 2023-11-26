@@ -70,7 +70,11 @@ export class RdfFactory {
 
   private parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
     return new Promise((resolve, reject) => {
-      const parser = new N3.Parser();
+      const parserOptions: { baseIRI?: string } = {};
+        if (docPath) {
+            parserOptions.baseIRI = docPath;
+        }
+      const parser = new N3.Parser({ ...parserOptions });
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
         if (error) {
