@@ -17,6 +17,9 @@ export * from "./data-management/data-model/registration";
 
 export * from "./data-management/Utils/index";
 
+export * from "./data-management/turtle/turtle-parser"
+export * from "./data-management/turtle/turtle-serializer"
+
 export * from "./Errors/InvalidAccessMode";
 export * from "./Errors/InvalidDate";
 export * from "./Errors/NotImplementedYet";
