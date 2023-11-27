@@ -45,13 +45,13 @@ describe("Application", () => {
   const authStore = new AuthorizationStore(auths);
 
   it("Can register", () => {
-    const app = new Application(authService, authStore);
+    const app = new Application();
 
     //TODO: How to test?
   });
 
   it("Can get Authorizations", () => {
-    const app = new Application(authService, authStore);
+    const app = new Application();
 
     const auths = app.Authorizations;
 
@@ -59,7 +59,7 @@ describe("Application", () => {
   });
 
   it("should store Solid Data Instance", async () => {
-    const app = new Application(authService, authStore);
+    const app = new Application();
     const instance = DataInstance.new(
       new TestInstance({}),
       auths[0].socialAgent,

@@ -8,6 +8,7 @@ import {
 import { Type } from "typedoc";
 import { getAuthAgent } from "../authentication/authentication";
 import {NotImplementedYet} from "../Errors/NotImplementedYet";
+import * as fs from "fs";
 
 /**
  * Interface for Solid Applications.
@@ -49,6 +50,16 @@ export class Application implements IApplication {
   get Name() {
     // TODO: This should come from the profile document of this application.
     return this.options?.name ?? "Application";
+  }
+
+  get Profile(){
+    const profile = this.options?.profile
+
+    if (profile == undefined){
+      throw new Error("This application does not have a profile document. Please pass one to the constructor upon " +
+          "instantiation.")
+    }
+    return fs.readFileSync(profile, {encoding: "utf-8"})
   }
 
   /**
@@ -133,8 +144,7 @@ export class Application implements IApplication {
     return (req: any, res: any, next: any) => {
       for (const type of req.accepts()) {
         if (type.includes("turtle")) {
-          // TODO: Send Profile Document
-          res.send("TURTLE");
+          res.send(this.Profile)
           return;
         }
       }
