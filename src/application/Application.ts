@@ -7,6 +7,7 @@ import {
 } from "./Authorization";
 import { Type } from "typedoc";
 import { getAuthAgent } from "../authentication/authentication";
+import {NotImplementedYet} from "../Errors/NotImplementedYet";
 
 /**
  * Interface for Solid Applications.
@@ -39,8 +40,6 @@ export class Application implements IApplication {
    * @param options
    */
   constructor(
-    private authService: IAuthService,
-    private authenticationStore: IAuthorizationStore,
     private options?: IApplicationOptions,
   ) {}
 
@@ -61,7 +60,7 @@ export class Application implements IApplication {
    * Retrieve all registered authorizations.
    */
   get Authorizations(): IAuthorization[] {
-    return this.authenticationStore.Authorizations;
+    throw new NotImplementedYet()
   }
 
   /**
