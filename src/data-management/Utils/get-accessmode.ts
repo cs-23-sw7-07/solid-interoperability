@@ -3,7 +3,7 @@ import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
 
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
-  const solidAcl: string = "https://www.w3.org/ns/auth/acl#";
+  const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
 
   switch (accessMode) {
     case solidAcl + "Read": {
