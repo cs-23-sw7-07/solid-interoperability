@@ -5,9 +5,9 @@
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
 <https://alice.example/authorization/47e07897> a interop:AccessAuthorization;
-    interop:grantedBy <https://alice.example/#id>;
+    interop:grantedBy <Alice-pod/profile/card#me>;
     interop:grantedWith <https://jarvis.example/#id>;
     interop:grantedAt "2020-09-05T06:15:01.000Z"^^xsd:dateTime;
     interop:grantee <https://jarvis.example/#id>;
     interop:hasAccessNeedGroup <https://jarvis.example/#4fd1482d>;
-    interop:hasDataAuthorization <test/rdfs-examples/authorization/no-recursive-links/0e4cb692DataAuth.ttl>.
+    interop:hasDataAuthorization <https://alice.example/authorization/0e4cb692>.

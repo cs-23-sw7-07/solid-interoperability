@@ -13,15 +13,15 @@ export function mock_fetch(input: RequestInfo, init?: RequestInit): Promise<Resp
               };
         
               const response = new Response(body, responseInit);
-              resolve(response);
+              return resolve(response);
         }
-        catch {
+        catch(e) {
             const responseInit: ResponseInit = {
                 status: 404,
               };
         
-              const response = new Response(null, responseInit);
-              resolve(response);
+              const response = new Response((e as Error).message, responseInit);
+              return resolve(response);
         }
       });
 }

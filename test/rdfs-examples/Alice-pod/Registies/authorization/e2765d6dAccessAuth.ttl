@@ -4,11 +4,10 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<https://alice.example/authorization/e2765d6c> a interop:AccessAuthorization;
-    interop:grantedBy <https://alice.example/#id>;
+<Alice-pod/Registies/authorization/e2765d6dAccessAuth> a interop:AccessAuthorization;
+    interop:grantedBy <Alice-pod/profile/card#me>;
     interop:grantedWith <https://jarvis.example/#id>;
-    interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
+    interop:grantedAt "2020-03-04T20:15:47.000Z"^^xsd:dateTime;
     interop:grantee <https://projectron.example/#id>;
     interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f>;
-    interop:hasDataAuthorization <https://alice.example/authorization/54a1b6a0>, <https://alice.example/authorization/0e4cb692>;
-    interop:replaces <https://alice.example/authorization/e2765d6d>.
+    interop:hasDataAuthorization <Alice-pod/Registies/authorization/f54a1b6a0DataAuth>, <Alice-pod/Registies/authorization/f0e4cb692DataAuth>.

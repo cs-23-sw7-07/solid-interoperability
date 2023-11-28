@@ -4,8 +4,8 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<https://alice.example/authorization/0e4cb692> a interop:DataAuthorization;
-    interop:dataOwner <https://alice.example/#id>;
+<Alice-pod/Registies/authorization/f0e4cb692DataAuth> a interop:DataAuthorization;
+    interop:dataOwner <Alice-pod/profile/card#me>;
     interop:grantee <https://projectron.example/#id>;
     interop:registeredShapeTree <http://data.example/shapetrees/pm#TaskTree>;
     interop:hasDataRegistration <https://work.alice.example/data/df4ab227/>;

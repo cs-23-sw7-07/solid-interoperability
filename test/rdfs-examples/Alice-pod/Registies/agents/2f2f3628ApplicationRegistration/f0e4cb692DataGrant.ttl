@@ -4,13 +4,13 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<https://alice.example/agents/2f2f3628/0945218b> a interop:DataGrant;
-    interop:dataOwner <https://alice.example/#id>;
+<Alice-pod/Registies/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant> a interop:DataGrant;
+    interop:dataOwner <Alice-pod/profile/card#me>;
     interop:grantee <https://projectron.example/#id>;
     interop:registeredShapeTree <http://data.example/shapetrees/pm#TaskTree>;
-    interop:hasDataRegistration <https://work.alice.example/data/df4ab227/>;
+    interop:hasDataRegistration <Alice-pod/Data/df4TaskTreeDataRegistration/>;
     interop:satisfiesAccessNeed <https://projectron.example/#9462959c>;
     interop:accessMode acl:Read, acl:Create;
     interop:creatorAccessMode acl:Update, acl:Delete;
     interop:scopeOfGrant interop:Inherited;
-    interop:inheritsFromGrant <https://alice.example/agents/2f2f3628/40d038ea>.
+    interop:inheritsFromGrant <Alice-pod/Registies/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>.
