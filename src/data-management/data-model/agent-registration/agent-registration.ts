@@ -1,10 +1,11 @@
-import N3 from "n3";
+import {Prefixes, Quad, Store} from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../agent";
 import { AccessGrant } from "../authorization/access/access-grant";
 import { Registration } from "../registration";
-
-const { DataFactory } = N3;
-const { namedNode, literal } = DataFactory;
+import { Fetch } from "../../../fetch";
+import {fetch} from "solid-auth-fetcher";
+import {INTEROP} from "../namespace";
+import {createTriple, getResource} from "../RDF/rdf";
 
 export abstract class AgentRegistration extends Registration {
   /**
@@ -13,57 +14,63 @@ export abstract class AgentRegistration extends Registration {
    */
   constructor(
     id: string,
+    type: string,
+    fetch: Fetch, 
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
+    super(
+      id,
+      type,
+      fetch, dataset, prefixes
+    );
+  }
+
+  protected static newQuadsAgent(
+    id: string, 
     registeredBy: SocialAgent,
     registeredWith: ApplicationAgent,
     registeredAt: Date,
     updatedAt: Date,
-    public registeredAgent: Agent,
-    public hasAccessGrant: AccessGrant[],
-  ) {
-    super(
-      id,
-      "AgentRegistration",
-      registeredBy,
-      registeredWith,
-      registeredAt,
-      updatedAt,
-    );
+    registeredAgent: SocialAgent,
+    hasAccessGrant: AccessGrant[]): Quad[] {
+    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
+    const quads = super.newQuadsReg(id, registeredBy, registeredWith, registeredAt, updatedAt)
+    quads.push(triple("registeredAgent", registeredAgent.webID))
+    
+    for (const grant of hasAccessGrant) {
+      quads.push(triple("hasAccessGrant", grant.uri))
+    }
+    return quads;
   }
 
-  public toRdf(writer: N3.Writer) {
-    const subjectNode = namedNode(this.id);
+  async getHasAccessGrants(): Promise<AccessGrant[]> {
+    const grantIRIs = this.getObjectValuesFromPredicate(INTEROP + "hasAccessGrant");
+    if (!grantIRIs) return [];
 
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:registeredBy"),
-      namedNode(this.registeredBy.getWebID()),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:registeredWith"),
-      namedNode(this.registeredWith.getWebID()),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:registeredAt"),
-      literal(this.registeredAt.toISOString(), namedNode("xsd:dateTime")),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:updatedAt"),
-      literal(this.updatedAt.toISOString(), namedNode("xsd:dateTime")),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:registeredAgent"),
-      namedNode(this.registeredAgent.getWebID()),
-    );
-    for (const grant of this.hasAccessGrant) {
-      writer.addQuad(
-        subjectNode,
-        namedNode("interop:hasAccessGrant"),
-        namedNode(grant.id),
-      );
+    let grants: AccessGrant[] = [];
+    for (const uri of grantIRIs) {
+      grants.push(await getResource(AccessGrant, fetch, uri));
     }
+
+    return grants;
+  }
+
+  async AddAccessGrant(value: AccessGrant) {
+    const predicate = INTEROP + "hasAccessGrant";
+    const quad = this.createTriple(predicate, value.uri)
+    await this.add([quad])
+    await this.updateDate()
+  }
+
+  get RegisteredAgent(): Agent {
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent")!;
+    return new ApplicationAgent(webId);
+  }
+
+  set RegisteredAgent(agent: Agent) {
+    const predicate = INTEROP + "registeredAgent"
+    const quad = this.createTriple(predicate, agent.webID)
+    this.update(predicate, [quad])
   }
 }

@@ -1,8 +1,8 @@
-import N3 from "n3";
+import N3, { Prefixes, Store } from "n3";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
-import { ItoRdf } from "../factory/ItoRdf";
 import { AccessGrant } from "../authorization/access/access-grant";
+import { Fetch } from "../../../fetch";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
@@ -13,51 +13,36 @@ const { namedNode } = DataFactory;
  */
 export class ApplicationRegistration
   extends AgentRegistration
-  implements ItoRdf
 {
   constructor(
     id: string,
+    fetch: Fetch, 
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
+    super(
+      id,
+      "ApplicationRegistration",
+      fetch, dataset, prefixes
+    );
+  }
+
+  static async new(
+    id: string,
+    fetch: Fetch,
     registeredBy: SocialAgent,
     registeredWith: ApplicationAgent,
     registeredAt: Date,
     updatedAt: Date,
-    registeredAgent: ApplicationAgent,
-    hasAccessGrant: AccessGrant[],
+    registeredAgent: SocialAgent,
+    hasAccessGrant: AccessGrant[]
   ) {
-    super(
-      id,
-      registeredBy,
-      registeredWith,
-      registeredAt,
-      updatedAt,
-      registeredAgent,
-      hasAccessGrant,
-    );
-  }
+    const agentReg = new ApplicationRegistration(id, fetch)
+    
+    const quads = super.newQuadsAgent(id, registeredBy, registeredWith, registeredAt, updatedAt, registeredAgent, hasAccessGrant);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeApplicationRegistration(
-    argsApplicationRegistration: Map<string, any>,
-  ): ApplicationRegistration {
-    return new ApplicationRegistration(
-      argsApplicationRegistration.get("id"),
-      argsApplicationRegistration.get("registeredBy"),
-      argsApplicationRegistration.get("registeredWith"),
-      argsApplicationRegistration.get("registeredAt"),
-      argsApplicationRegistration.get("updatedAt"),
-      argsApplicationRegistration.get("registeredAgent"),
-      argsApplicationRegistration.get("hasAccessGrant"),
-    );
-  }
+    await agentReg.add(quads)
 
-  public toRdf(writer: N3.Writer): void {
-    const subjectNode = namedNode(this.id);
-
-    writer.addQuad(
-      subjectNode,
-      namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-      namedNode("interop:ApplicationRegistration"),
-    );
-    super.toRdf(writer);
+    return agentReg
   }
 }

@@ -1,29 +1,34 @@
-import N3 from "n3";
+import N3, { Prefixes, Store } from "n3";
+import { DatasetCore } from "@rdfjs/types";
 import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
 import { ItoRdf } from "../../factory/ItoRdf";
-import { Rdf } from "../../rdf";
+import { Rdf } from "../../RDF/rdf";
 import { AccessGrant } from "./access-grant";
 import { DataGrant } from "../data/data-grant";
 import { DataAuthorization } from "../data/data-authorization";
+import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
+import { Fetch } from "../../../../fetch";
+import { INTEROP } from "../../namespace";
+import { Access } from "./access";
 
 const { DataFactory } = N3;
 const { namedNode, literal } = DataFactory;
 
-export class AccessAuthorization extends Rdf implements ItoRdf {
+export class AccessAuthorization extends Access {
   /**
    * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
    */
-  id: string;
-  grantedBy: SocialAgent;
-  grantedAt: Date;
-  grantedWith: ApplicationAgent;
-  grantee: Agent;
-  hasAccessNeedGroup: string;
-  hasDataAuthorization: DataAuthorization[];
-  replaces?: AccessAuthorization;
-
   constructor(
+    id: string,
+    fetch: Fetch, 
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
+    super(id, "AccessAuthorization", fetch, dataset, prefixes);
+  }
+
+  static async new(
     id: string,
     grantedBy: SocialAgent,
     grantedWith: ApplicationAgent,
@@ -31,93 +36,41 @@ export class AccessAuthorization extends Rdf implements ItoRdf {
     grantee: Agent,
     hasAccessNeedGroup: string, //Needs to Access Need Group class
     hasDataAuthorization: DataAuthorization[],
-    replaces?: AccessAuthorization,
-  ) {
-    super(id, "AccessAuthorization");
-    this.id = id;
-    this.grantedBy = grantedBy;
-    this.grantedWith = grantedWith;
-    this.grantedAt = grantedAt;
-    this.grantee = grantee;
-    this.hasAccessNeedGroup = hasAccessNeedGroup;
-    this.hasDataAuthorization = hasDataAuthorization;
-    this.replaces = replaces;
-  }
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  static makeAccessAuthorization(
-    argsForAccessAuthorization: Map<string, any>,
-  ): AccessAuthorization {
-    return new AccessAuthorization(
-      argsForAccessAuthorization.get("id"),
-      argsForAccessAuthorization.get("grantedBy"),
-      argsForAccessAuthorization.get("grantedWith"),
-      argsForAccessAuthorization.get("grantedAt"),
-      argsForAccessAuthorization.get("grantee"),
-      argsForAccessAuthorization.get("hasAccessNeedGroup"),
-      argsForAccessAuthorization.get("hasDataAuthorization"),
-      argsForAccessAuthorization.get("replaces"),
-    );
+    replaces?: AccessAuthorization,) {
+    const auth = new AccessAuthorization(id, fetch)
+    const triple = (predicate: string, object: string | Date) => auth.createTriple(INTEROP + predicate, object);
+    const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
+    quads.push(triple("grantedWith", grantedWith.webID))
+    for (const dataAuth of hasDataAuthorization) {
+      quads.push(triple("hasDataAuthorization", dataAuth.uri))
+    }
+    if (replaces) {
+      quads.push(triple("replaces", replaces.uri))
+    }
+    return auth;
   }
 
   toAccessGrant(id: string, data_grants: DataGrant[]) {
-    return new AccessGrant(
+    return AccessGrant.new(
       id,
-      this.grantedBy,
-      this.grantedAt,
-      this.grantee,
-      this.hasAccessNeedGroup,
+      this.GrantedBy,
+      this.GrantedAt,
+      this.Grantee,
+      this.HasAccessNeedGroup,
       data_grants,
     );
   }
 
-  toRdf(writer: N3.Writer): void {
-    const subjectNode = namedNode(this.id);
 
-    writer.addQuad(
-      subjectNode,
-      namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-      namedNode("interop:AccessAuthorization"),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:grantedBy"),
-      namedNode(this.grantedBy.getWebID()),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:grantedWith"),
-      namedNode(this.grantedWith.getWebID()),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:grantedAt"),
-      literal(this.grantedAt.toISOString(), namedNode("xsd:dateTime")),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:grantee"),
-      namedNode(this.grantee.getWebID()),
-    );
-    writer.addQuad(
-      subjectNode,
-      namedNode("interop:hasAccessNeedGroup"),
-      namedNode(this.hasAccessNeedGroup),
-    );
+  get GrantedWith(): ApplicationAgent {
+    throw new NotImplementedYet();
+  }
 
-    this.hasDataAuthorization.forEach((data_authorization) => {
-      writer.addQuad(
-        subjectNode,
-        namedNode("interop:hasDataAuthorization"),
-        namedNode(data_authorization.id),
-      );
-    });
-    if (this.replaces !== undefined) {
-      writer.addQuad(
-        subjectNode,
-        namedNode("interop:replaces"),
-        namedNode(this.replaces.id),
-      );
-    }
+  get HasDataAuthorization(): DataAuthorization[] {
+    throw new NotImplementedYet();
+  }
+
+  get Replaces(): AccessAuthorization | undefined {
+    throw new NotImplementedYet();
   }
 }

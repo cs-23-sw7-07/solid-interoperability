@@ -9,7 +9,7 @@ const { Store, Parser, DataFactory } = N3;
  */
 export class ParserResult {
     constructor(
-        public dataset: DatasetCore,
+        public dataset: Store,
         public prefixes: Prefixes,
     ) {}
 }

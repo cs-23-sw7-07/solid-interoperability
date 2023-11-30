@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "jest create-rdf-tree",
+    "test": "jest puvi",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
@@ -32,8 +32,10 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@inrupt/internal-test-env": "^2.4.1",
     "@inrupt/solid-client-authn-node": "^1.17.3",
     "n3": "^1.17.1",
-    "solid-auth-fetcher": "^1.5.4"
+    "solid-auth-fetcher": "^1.5.4",
+    "solid-node-client": "^2.1.10"
   }
 }
