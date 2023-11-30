@@ -11,9 +11,9 @@ const A = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 
 export class DataInstance<T> {
   private constructor(
-    private data: T,
-    private owner: ISocialAgent,
-    readonly id: string,
+      public data: T,
+      private owner: ISocialAgent,
+      readonly id: string,
   ) {}
 
   static new<T>(data: T, owner: ISocialAgent) {
@@ -74,7 +74,7 @@ export class DataInstance<T> {
   ): Promise<DataInstance<unknown>> {
     /*
 
-    const graph = await Rdf.parse(instance);
+    const graph = await Rdf.ts.parse(instance);
 
     const prototype = Object.getPrototypeOf(type)
     const obj = {};

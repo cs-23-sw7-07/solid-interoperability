@@ -1,14 +1,12 @@
 import { URL } from "url";
 import { DataInstance } from "./SolidDataInstance";
-import {
-  IAuthorization,
-  IAuthorizationStore,
-  IAuthService,
-} from "./Authorization";
+import {Authorization, AuthorizationStore, IAuthorization} from "./Authorization";
 import { Type } from "typedoc";
-import { getAuthAgent } from "../authentication/authentication";
+import {getAuthAgent, getProfile} from "../authentication/authentication";
 import {NotImplementedYet} from "../Errors/NotImplementedYet";
 import * as fs from "fs";
+import {SocialAgent} from "./SocialAgent";
+import {ProfileDocument} from "./Rdf";
 
 /**
  * Interface for Solid Applications.
@@ -28,6 +26,8 @@ export interface IApplication {
 interface IApplicationOptions {
   name?: string;
   profile?: string;
+  authStore?: AuthorizationStore;
+  authService: URL;
 }
 
 export class Application implements IApplication {
@@ -65,7 +65,14 @@ export class Application implements IApplication {
   /**
    * Register with the authorization agent of the agent.
    */
-  async register(): Promise<void> {}
+  async register(webId: URL): Promise<void> {
+    let authStore = this.options?.authStore
+    if (authStore == undefined){
+      authStore = new AuthorizationStore()
+    }
+    const profile = await ProfileDocument.fetch(webId)
+    authStore.addAuthorization(profile.AuthorizationAgent)
+  }
 
   /**
    * Retrieve all registered authorizations.
@@ -80,7 +87,7 @@ export class Application implements IApplication {
    */
   getAuthorization(webId: URL): IAuthorization | undefined {
     // Maybe this should be a database?
-    return this.Authorizations.find((x) => x.socialAgent.webId == webId);
+    return this.Authorizations.find((x) => x.socialAgent.WebId == webId.toString());
   }
 
   /**
@@ -116,14 +123,8 @@ export class Application implements IApplication {
         `Social agent with WebId ${webId} has not authorized this application.`,
       );
     }
-    const s = instance.Serialized;
 
-    const uri = new URL(instance.id, instance.DataRegistry);
-    await auth.service.fetch(uri.toString(), {
-      method: "PUT",
-      headers: { "Content-Type": "text/turtle" },
-      body: s,
-    });
+    await auth.store(instance);
   }
 
   async *dataInstances<T extends Type>(webId: URL, type: T) {
@@ -150,5 +151,9 @@ export class Application implements IApplication {
       }
       next();
     };
+  }
+
+  getSocialAgents(webId: URL): SocialAgent {
+    throw new NotImplementedYet()
   }
 }

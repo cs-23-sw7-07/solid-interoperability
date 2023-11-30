@@ -77,6 +77,10 @@ describe("Application", () => {
 
   it("should retrieve Solid Data Instance", () => {
     // TODO: Check some that some data in a solid pod is parsed correctly
+    const app = new Application();
+    const id = "123456789";
+
+    const dataInstance = await app.get(ALICE_WEBID, id)
   });
 });
 
