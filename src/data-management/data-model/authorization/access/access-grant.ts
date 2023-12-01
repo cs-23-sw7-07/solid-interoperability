@@ -1,16 +1,11 @@
-import N3, { Prefixes, Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
+import { Prefixes, Store } from "n3";
 import { Agent, SocialAgent } from "../../agent";
-import { ItoRdf } from "../../factory/ItoRdf";
-import { DataGrant } from "../data/data-grant";
-import { Rdf } from "../../RDF/rdf";
+import { DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
 import { Access } from "./access";
 import { INTEROP } from "../../namespace";
+import {getResources} from "../../RDF/rdf";
 
-const { DataFactory } = N3;
-const { namedNode, literal } = DataFactory;
 
 export class AccessGrant extends Access {
   /**
@@ -24,7 +19,7 @@ export class AccessGrant extends Access {
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, "AccessGrant", fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static async new(
@@ -43,23 +38,11 @@ export class AccessGrant extends Access {
     return grant;
   }
 
-  public get GrantedBy(): SocialAgent {
-    throw new NotImplementedYet("")
-  }
-
-  public get GrantedAt(): Date {
-    throw new NotImplementedYet("")
-  }
-
-  public get Grantee(): Agent {
-    throw new NotImplementedYet("")
-  }
-
-  public get HasAccessNeedGroup(): string {
-    throw new NotImplementedYet("")
-  }
-
-  public get HasDataGrant(): DataGrant[] {
-    throw new NotImplementedYet("")
+  public async getHasDataGrant(): Promise<DataGrant[]> {
+    const uris = this.getObjectValuesFromPredicate("hasDataGrant");
+    if (uris) {
+      return await getResources(DataGrant, this.fetch, uris)
+    }
+    return []
   }
 }

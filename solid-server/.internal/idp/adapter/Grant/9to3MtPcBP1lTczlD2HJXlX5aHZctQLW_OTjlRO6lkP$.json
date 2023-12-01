@@ -1,0 +1,1 @@
+{"key":"idp/adapter/Grant/9to3MtPcBP1lTczlD2HJXlX5aHZctQLW_OTjlRO6lkP","payload":{"expires":"2023-12-08T09:16:48.011Z","payload":{"iat":1700817408,"exp":1702027008,"accountId":"http://localhost:3000/bob-pod/profile/card#me","clientId":"7u8wyaDgAdSAFoqAHXPfS","kind":"Grant","jti":"9to3MtPcBP1lTczlD2HJXlX5aHZctQLW_OTjlRO6lkP","openid":{"scope":"openid offline_access webid"}}}}

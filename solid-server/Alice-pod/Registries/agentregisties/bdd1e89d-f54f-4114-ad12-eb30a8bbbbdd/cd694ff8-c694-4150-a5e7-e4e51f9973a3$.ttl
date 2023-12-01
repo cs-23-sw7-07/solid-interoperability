@@ -1,0 +1,14 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<http://localhost:3000/Alice-pod/Registries/agentregisties/bdd1e89d-f54f-4114-ad12-eb30a8bbbbdd/cd694ff8-c694-4150-a5e7-e4e51f9973a3> a interop:DataGrant;
+    interop:dataOwner <http://localhost:3000/Alice-pod/profile/card#me>;
+    interop:grantee <http://localhost:3000/Alice-pod/profile/card#me>;
+    interop:registeredShapeTree <http://shapetrees.example/solid/Project>;
+    interop:hasDataRegistration <http://localhost:3000/Alice-pod/data/9fec198c-9616-4544-b393-3b5943dbb481/>;
+    interop:satisfiesAccessNeed <http://localhost:3001/projectron/#need-project>;
+    interop:accessMode acl:Read, acl:Write;
+    interop:scopeOfGrant interop:AllFromRegistry.

@@ -1,19 +1,18 @@
-import { Rdf, createTriple } from "./RDF/rdf";
-import { ApplicationAgent, SocialAgent } from "./agent";
-import { INTEROP } from "./namespace";
-import { Fetch } from "../../fetch";
-import { getDate } from "../Utils";
-import { Prefixes, Quad, Store } from "n3";
+import {createTriple, Rdf} from "./RDF/rdf";
+import {ApplicationAgent, SocialAgent} from "./agent";
+import {INTEROP} from "./namespace";
+import {Fetch} from "../../fetch";
+import {getDate} from "../Utils";
+import {Prefixes, Quad, Store} from "n3";
 
 export abstract class Registration extends Rdf {
   constructor(
     id: string,
-    type: string,
     fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, type, fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   protected static newQuadsReg(
@@ -23,13 +22,12 @@ export abstract class Registration extends Rdf {
     registeredAt: Date,
     updatedAt: Date): Quad[] {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
-    const quads = [
+    return [
       triple("registeredBy", registeredBy.webID),
       triple("registeredWith", registeredWith.webID),
       triple("registeredAt", registeredAt),
       triple("updatedAt", updatedAt)
-    ]
-    return quads;
+    ];
   }
 
 

@@ -2,8 +2,6 @@ import { Prefixes, Store } from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
 import { DataRegistration } from "../../data-registration/data-registration";
 import { Rdf, createTriple, getResource } from "../../RDF/rdf";
-import { DataInstance } from "./data-instance";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access/access-mode";
 import { INTEROP } from "../../namespace";
@@ -12,12 +10,11 @@ import { getAccessmode } from "../../../Utils";
 export class Data extends Rdf {
   constructor(
     id: string,
-    type: string,
     fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, type, fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static newQuads(

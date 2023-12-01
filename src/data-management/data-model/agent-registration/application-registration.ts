@@ -1,11 +1,10 @@
-import N3, { Prefixes, Store } from "n3";
-import { ApplicationAgent, SocialAgent } from "../agent";
+import { Prefixes, Store } from "n3";
+import {Agent, ApplicationAgent, SocialAgent} from "../agent";
 import { AgentRegistration } from "./agent-registration";
 import { AccessGrant } from "../authorization/access/access-grant";
 import { Fetch } from "../../../fetch";
-
-const { DataFactory } = N3;
-const { namedNode } = DataFactory;
+import {createTriple} from "../RDF/rdf";
+import {INTEROP} from "../namespace";
 
 /**
  * A class which has the fields to conform to the `Application Agent Registration` graph defined in the Solid interoperability specification.
@@ -22,7 +21,6 @@ export class ApplicationRegistration
   ) {
     super(
       id,
-      "ApplicationRegistration",
       fetch, dataset, prefixes
     );
   }
@@ -32,17 +30,27 @@ export class ApplicationRegistration
     fetch: Fetch,
     registeredBy: SocialAgent,
     registeredWith: ApplicationAgent,
-    registeredAt: Date,
-    updatedAt: Date,
-    registeredAgent: SocialAgent,
+    registeredAgent: ApplicationAgent,
     hasAccessGrant: AccessGrant[]
   ) {
     const agentReg = new ApplicationRegistration(id, fetch)
-    
-    const quads = super.newQuadsAgent(id, registeredBy, registeredWith, registeredAt, updatedAt, registeredAgent, hasAccessGrant);
+    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
 
+    const quads = super.newQuadsAgent(id, registeredBy, registeredWith, new Date(), new Date(), hasAccessGrant);
+    quads.push(triple("registeredAgent", registeredAgent.webID))
     await agentReg.add(quads)
 
     return agentReg
+  }
+
+  get RegisteredAgent(): ApplicationAgent {
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent")!;
+    return new ApplicationAgent(webId);
+  }
+
+  set RegisteredAgent(agent: ApplicationAgent) {
+    const predicate = INTEROP + "registeredAgent"
+    const quad = this.createTriple(predicate, agent.webID)
+    this.update(predicate, [quad])
   }
 }

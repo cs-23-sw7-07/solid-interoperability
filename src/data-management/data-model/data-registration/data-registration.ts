@@ -1,13 +1,9 @@
-import N3, { Prefixes, Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
-import {Agent, ApplicationAgent, SocialAgent} from "../agent";
+import { Prefixes, Store } from "n3";
+import {Agent, SocialAgent} from "../agent";
 import { Registration } from "../registration";
 import { Fetch } from "../../../fetch";
-import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
 import {INTEROP} from "../namespace";
-
-const { DataFactory } = N3;
-const { namedNode, literal } = DataFactory;
+import {createTriple} from "../RDF/rdf";
 
 export class DataRegistration extends Registration {
   /**
@@ -41,10 +37,27 @@ export class DataRegistration extends Registration {
   ) {
     super(
       id,
-      "DataRegistration",
       fetch, dataset, prefixes
     );
   }
+
+  static new(
+      id: string,
+      fetch: Fetch,
+      registeredBy: SocialAgent,
+      registeredWith: Agent,
+      registeredAt: Date,
+      updatedAt: Date,
+      registeredShapeTree: string,
+  ) {
+    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
+    const quads = super.newQuadsReg(id, registeredBy, registeredWith, registeredAt, updatedAt)
+
+    quads.push(triple("registeredShapeTree", registeredShapeTree))
+
+    return new DataRegistration(id, fetch, new Store(quads));
+  }
+
 
   get RegisteredShapeTree(): string {
     return this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree")!
@@ -56,5 +69,4 @@ export class DataRegistration extends Registration {
     await this.update(predicate, [quad])
     await this.updateDate()
   }
-
 }

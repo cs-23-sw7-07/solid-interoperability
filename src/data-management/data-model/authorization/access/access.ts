@@ -1,9 +1,9 @@
-import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { Rdf, createTriple } from "../../RDF/rdf";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
+import {Prefixes, Store} from "n3";
+import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
+import {createTriple, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {getDate} from "../../../Utils";
 
 export abstract class Access extends Rdf {
   /**
@@ -12,12 +12,11 @@ export abstract class Access extends Rdf {
    */
   constructor(
     id: string,
-    type: string,
-    fetch: Fetch, 
+    fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, type, fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static newQuadsAccess(
@@ -27,32 +26,31 @@ export abstract class Access extends Rdf {
     grantee: Agent,
     hasAccessNeedGroup: string) {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
-    const quads = [
+    return [
       triple("grantedBy", grantedBy.webID),
       triple("grantedAt", grantedAt),
       triple("grantee", grantee.webID),
       triple("hasAccessNeedGroup", hasAccessNeedGroup)
-    ]
-    return quads;
+    ];
   }
 
   get GrantedBy(): SocialAgent {
-    throw new NotImplementedYet();
+    return new SocialAgent(this.getObjectValueFromPredicate("grantedBy")!)
   }
 
   get GrantedWith(): ApplicationAgent {
-    throw new NotImplementedYet();
+    return new ApplicationAgent(this.getObjectValueFromPredicate("grantedWith")!)
   }
 
   get GrantedAt(): Date {
-    throw new NotImplementedYet();
+    return getDate(this.getObjectValueFromPredicate("grantedAt")!)
   }
 
   get Grantee(): Agent {
-    throw new NotImplementedYet();
+    return new ApplicationAgent(this.getObjectValueFromPredicate("grantee")!)
   }
 
   get HasAccessNeedGroup(): string {
-    throw new NotImplementedYet();
+    return this.getObjectValueFromPredicate("hasAccessNeedGroup")!
   }
 }

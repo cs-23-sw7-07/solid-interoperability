@@ -5,12 +5,11 @@ export * from "./data-management/data-model/agent-registration/social-agent-regi
 export * from "./data-management/data-model/authorization/access/access-authorization";
 export * from "./data-management/data-model/authorization/access/access-grant";
 export * from "./data-management/data-model/authorization/access/access-mode";
-export * from "./data-management/data-model/authorization/data/dataAuthExport";
+export * from "./data-management/data-model/authorization/data";
 export * from "./data-management/data-model/authorization/data/data-grant";
 export * from "./data-management/data-model/authorization/grant-scope";
 
 export * from "./data-management/data-model/data-registration/data-registration";
-export * from "./data-management/data-model/factory/rdfFactory";
 export * from "./data-management/data-model/agent";
 export * from "./data-management/data-model/RDF/rdf";
 export * from "./data-management/data-model/registration";

@@ -2,7 +2,6 @@ import { SocialAgent } from "../../agent";
 import { DataRegistration } from "../../data-registration/data-registration";
 import { DataAuthorization } from "./data-authorization";
 import { DataGrant } from "./data-grant";
-import { DataInstance } from "./data-instance";
 
 export interface IDataGrantBuilder {
   /**

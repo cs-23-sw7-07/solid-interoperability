@@ -1,18 +1,13 @@
-import N3, { Prefixes, Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
+import { Prefixes, Store } from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { ItoRdf } from "../../factory/ItoRdf";
-import { Rdf } from "../../RDF/rdf";
 import { AccessGrant } from "./access-grant";
-import { DataGrant } from "../data/data-grant";
-import { DataAuthorization } from "../data/data-authorization";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
+import { DataGrant } from "../data";
+import { DataAuthorization } from "../data";
 import { Fetch } from "../../../../fetch";
 import { INTEROP } from "../../namespace";
 import { Access } from "./access";
+import {getResource, getResources} from "../../RDF/rdf";
 
-const { DataFactory } = N3;
-const { namedNode, literal } = DataFactory;
 
 export class AccessAuthorization extends Access {
   /**
@@ -25,7 +20,7 @@ export class AccessAuthorization extends Access {
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, "AccessAuthorization", fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static async new(
@@ -61,16 +56,19 @@ export class AccessAuthorization extends Access {
     );
   }
 
-
-  get GrantedWith(): ApplicationAgent {
-    throw new NotImplementedYet();
+  async getHasDataAuthorization(): Promise<DataAuthorization[]> {
+    const uris = this.getObjectValuesFromPredicate("hasDataAuthorization");
+    if (uris) {
+      return await getResources(DataAuthorization, this.fetch, uris)
+    }
+    return []
   }
 
-  get HasDataAuthorization(): DataAuthorization[] {
-    throw new NotImplementedYet();
-  }
-
-  get Replaces(): AccessAuthorization | undefined {
-    throw new NotImplementedYet();
+  async getReplaces(): Promise<AccessAuthorization | undefined> {
+    const uri = this.getObjectValueFromPredicate("replaces");
+    if (uri) {
+      return await getResource(AccessAuthorization, this.fetch, uri)
+    }
+    return undefined
   }
 }

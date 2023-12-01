@@ -1,9 +1,7 @@
 import { Prefixes, Store } from "n3";
 import { Agent, SocialAgent } from "../../agent";
 import { DataRegistration } from "../../data-registration/data-registration";
-import { GrantScope } from "../grant-scope";;
-import { DataInstance } from "./data-instance";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
+import { GrantScope } from "../grant-scope";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access/access-mode";
 import { Data } from "./data";
@@ -22,11 +20,12 @@ export class DataAuthorization extends Data {
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, "DataAuthorization", fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static new(
     id: string,
+    fetch: Fetch,
     dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
@@ -47,7 +46,7 @@ export class DataAuthorization extends Data {
       quads.push(triple("inheritsFromAuthorization", inheritsFromAuthorization.uri))
     }
 
-    return quads;
+    return new DataAuthorization(id, fetch, new Store(quads));
   }
 
   public get ScopeOfAuthorization(): GrantScope {

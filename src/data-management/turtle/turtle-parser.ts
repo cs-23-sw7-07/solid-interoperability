@@ -1,6 +1,4 @@
-import N3, { Prefixes } from "n3";
-import { Quad, DatasetCore } from "@rdfjs/types";
-const { Store, Parser, DataFactory } = N3;
+import {DataFactory, Parser, Prefixes, Quad, Store} from "n3";
 
 /**
  * The result of parseTurtle function.

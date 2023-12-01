@@ -1,21 +1,13 @@
-import N3, { Prefixes, Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
+import { Prefixes, Store } from "n3";
 import { Agent, SocialAgent } from "../../agent";
 import { DataRegistration } from "../../data-registration/data-registration";
-import { ItoRdf } from "../../factory/ItoRdf";
 import { GrantScope } from "../grant-scope";
 import { AccessMode } from "../access/access-mode";
-import {Rdf, createTriple, getResource} from "../../RDF/rdf";
-import { DataInstance } from "./data-instance";
-import { NotImplementedYet } from "../../../../Errors/NotImplementedYet";
+import {createTriple, getResource} from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { Data } from "./data";
 import { INTEROP } from "../../namespace";
 import {getScopeOfAuth} from "../../../Utils";
-
-const { DataFactory } = N3;
-const { namedNode } = DataFactory;
-
 export class DataGrant extends Data{
   /**
    * A class which has the fields to conform to the `Data Grant` graph defined in the Solid interoperability specification.
@@ -27,11 +19,12 @@ export class DataGrant extends Data{
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
-    super(id, "DataGrant", fetch, dataset, prefixes);
+    super(id, fetch, dataset, prefixes);
   }
 
   static new(
     id: string,
+    fetch: Fetch,
     dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
@@ -52,15 +45,13 @@ export class DataGrant extends Data{
       quads.push(triple("inheritsFromAuthorization", InheritsFromGrant.uri))
     }
 
-    return quads;
+    return new DataGrant(id, fetch, new Store(quads));
   }
-
 
   public get ScopeOfGrant(): GrantScope {
     const scope = this.getObjectValueFromPredicate("scopeOfGrant")!;
     return getScopeOfAuth(scope);
   }
-
 
   public async getInheritsFromGrant(): Promise<DataGrant> {
     const iri = this.getObjectValueFromPredicate("inheritsFromGrant")!

@@ -1,14 +1,5 @@
-import {ApplicationAgent, SocialAgent} from "../src/data-management/data-model/agent";
-import {ApplicationRegistration} from "../src/data-management/data-model/agent-registration/application-registration";
-import {SocialAgentRegistration} from "../src/data-management/data-model/agent-registration/social-agent-registration";
-import {AccessAuthorization} from "../src/data-management/data-model/authorization/access/access-authorization";
-import {AccessGrant} from "../src/data-management/data-model/authorization/access/access-grant";
-import {AccessMode} from "../src/data-management/data-model/authorization/access/access-mode";
-import {DataAuthorization} from "../src/data-management/data-model/authorization/data/data-authorization";
-import {DataGrant} from "../src/data-management/data-model/authorization/data/data-grant";
-import { DataInstance } from "../src/data-management/data-model/authorization/data/data-instance";
-import {GrantScope} from "../src/data-management/data-model/authorization/grant-scope";
-import {DataRegistration} from "../src/data-management/data-model/data-registration/data-registration";
+import {ApplicationAgent, DataRegistration, SocialAgent} from "../src";
+
 
 const pmShapetrees = 'http://data.example/shapetrees/pm#';
 const projectron = 'https://projectron.example';

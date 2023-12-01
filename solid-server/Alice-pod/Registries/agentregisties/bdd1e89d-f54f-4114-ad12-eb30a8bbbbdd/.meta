@@ -1,0 +1,7 @@
+<http://localhost:3000/Alice-pod/Registries/agentregisties/bdd1e89d-f54f-4114-ad12-eb30a8bbbbdd/> a <http://www.w3.org/ns/solid/interop#ApplicationRegistration>;
+    <http://www.w3.org/ns/solid/interop#registeredBy> <http://localhost:3000/Alice-pod/profile/card#me>;
+    <http://www.w3.org/ns/solid/interop#registeredWith> <http://localhost:3001/agents/aHR0cDovL2xvY2FsaG9zdDozMDAwL0FsaWNlLXBvZC9wcm9maWxlL2NhcmQjbWU=>;
+    <http://www.w3.org/ns/solid/interop#registeredAt> "2023-11-27T10:05:02.713Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>;
+    <http://www.w3.org/ns/solid/interop#updatedAt> "2023-11-27T10:05:02.713Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>;
+    <http://www.w3.org/ns/solid/interop#registeredAgent> <http://localhost:3001/projectron/#id>;
+    <http://www.w3.org/ns/solid/interop#hasAccessGrant> <http://localhost:3000/Alice-pod/Registries/agentregisties/bdd1e89d-f54f-4114-ad12-eb30a8bbbbdd/1eca60b7-2c98-486a-b3af-85a331354b34>.

@@ -1,7 +1,8 @@
-import { DatasetCore } from "@rdfjs/types";
 import { Fetch } from "../../fetch";
 import { serializeTurtle } from "../turtle/turtle-serializer";
 import { ParserResult, parseTurtle } from "../turtle/turtle-parser";
+import {Store} from "n3";
+import {DatasetCore} from "@rdfjs/types";
 
 export async function insertTurtleResource(fetch: Fetch, uri: string, documentRdf: string) {
     await fetch(uri, {
@@ -85,17 +86,19 @@ export async function deleteContainerResource(fetch: Fetch, containerIRI: string
     }
 }
 
-export function readResource(fetch: Fetch, url: string): Promise<string> {
-    return fetch(url).then((res) => {
-        if (res.ok) return res.text();
-        throw new ReadResourceError("Couldn't read the resource at " + url);
-    });
+export async function readResource(fetch: Fetch, url: string): Promise<string> {
+    let res = await fetch(url);
+    if (res.ok) return res.text();
+    throw new ReadResourceError("Couldn't read the resource at " + url);
 }
 
-export function readParseResource(fetch: Fetch, url: string): Promise<ParserResult> {
-    return fetch(url)
-        .then((res) => res.text())
-        .then((res) => parseTurtle(res, url));
+export async function readParseResource(fetch: Fetch, url: string): Promise<ParserResult> {
+    const res = await fetch(url);
+    if (!res.ok) {
+        throw new FetchError(res.statusText + " " + url);
+    }
+    const res_1 = await res.text();
+    return await parseTurtle(res_1, url);
 }
 
 class InsertResourceError extends Error {
@@ -110,8 +113,14 @@ class ReadResourceError extends Error {
     }
 }
 
+class FetchError extends Error {
+    constructor(message: string) {
+        super(message);
+    }
+}
 
-export async function deleteSPARQLUpdate(dataset: Store, subject?: string, predicate?: string): Promise<string> {
+
+export async function deleteSPARQLUpdate(dataset: DatasetCore, subject?: string, predicate?: string): Promise<string> {
     if (subject && predicate) {
         return `
         PREFIX interop: <http://www.w3.org/ns/solid/interop#>
@@ -135,7 +144,7 @@ export async function deleteSPARQLUpdate(dataset: Store, subject?: string, predi
     
 }
 
-export async function insertSPARQLUpdate(dataset: Store): Promise<string> {
+export async function insertSPARQLUpdate(dataset: DatasetCore): Promise<string> {
     return `
         PREFIX interop: <http://www.w3.org/ns/solid/interop#>
         

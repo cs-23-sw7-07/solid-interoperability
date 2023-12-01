@@ -1,5 +1,4 @@
 import N3, { Prefixes, Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
 import { INTEROP } from "../namespace";
 import { Rdf, getResource } from "../RDF/rdf";
 import { Fetch } from "../../../fetch";

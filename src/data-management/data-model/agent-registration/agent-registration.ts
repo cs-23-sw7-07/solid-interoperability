@@ -14,14 +14,12 @@ export abstract class AgentRegistration extends Registration {
    */
   constructor(
     id: string,
-    type: string,
-    fetch: Fetch, 
+    fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
     super(
       id,
-      type,
       fetch, dataset, prefixes
     );
   }
@@ -32,11 +30,9 @@ export abstract class AgentRegistration extends Registration {
     registeredWith: ApplicationAgent,
     registeredAt: Date,
     updatedAt: Date,
-    registeredAgent: SocialAgent,
     hasAccessGrant: AccessGrant[]): Quad[] {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuadsReg(id, registeredBy, registeredWith, registeredAt, updatedAt)
-    quads.push(triple("registeredAgent", registeredAgent.webID))
     
     for (const grant of hasAccessGrant) {
       quads.push(triple("hasAccessGrant", grant.uri))
@@ -63,14 +59,4 @@ export abstract class AgentRegistration extends Registration {
     await this.updateDate()
   }
 
-  get RegisteredAgent(): Agent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent")!;
-    return new ApplicationAgent(webId);
-  }
-
-  set RegisteredAgent(agent: Agent) {
-    const predicate = INTEROP + "registeredAgent"
-    const quad = this.createTriple(predicate, agent.webID)
-    this.update(predicate, [quad])
-  }
 }

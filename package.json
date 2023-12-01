@@ -9,11 +9,12 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "jest puvi",
+    "test": "jest application-registration",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-    "prepublishOnly": "npm run tsc"
+    "prepublishOnly": "npm run tsc",
+    "solid-server": "npx @solid/community-server -c @css:config/file.json -f solid-server/"
   },
   "keywords": [],
   "author": "",

@@ -7,11 +7,10 @@ const { namedNode, literal } = DataFactory;
 export class Rdf {
   protected dataset: Store = new Store();
   protected prefixes: Prefixes = {};
-  
+
   constructor(
     readonly uri: string,
-    readonly type: string,
-    protected fetch: Fetch, 
+    protected fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
@@ -78,7 +77,6 @@ export class Rdf {
         })
   }
 
-
   protected async patchSPARQLUpdate(body: string): Promise<Response> {
     return await this.fetch(this.uri + ".meta", {
       method: "PATCH",
@@ -93,23 +91,35 @@ export class Rdf {
       return res
   });
   }
-  
 }
 
-export function getResource<T extends Rdf>(
-  c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
-  fetch: Fetch,
-  uri: string,
+export async function getResource<T extends Rdf>(
+    c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
+    fetch: Fetch,
+    uri: string,
 ): Promise<T> {
-  return readParseResource(fetch, uri).then(
-    (result) => new c(uri, fetch, result.dataset, result.prefixes),
-  );
+  const url = uri + (uri.endsWith("/") ? ".meta" : "");
+  let result = await readParseResource(fetch, url);
+  return new c(uri, fetch, result.dataset, result.prefixes);
+}
+
+export async function getResources<T extends Rdf>(
+    c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
+    fetch: Fetch,
+    uris: string[],
+): Promise<T[]> {
+  const rdfs = []
+
+  for (const uri of uris) {
+    rdfs.push(await getResource(c, fetch, uri))
+  }
+
+  return rdfs;
 }
 
 
 export function createTriple(subject: string, predicate: string, object: string | Date): Quad {
   let obj;
-  object as string
   if (typeof object == "string") {
     obj = namedNode(object)
   }
