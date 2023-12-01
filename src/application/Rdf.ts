@@ -2,6 +2,9 @@ import {fetch} from "solid-auth-fetcher";
 import N3 from "n3";
 import {URL} from "url";
 import {Authorization, AuthService} from "./Authorization";
+import {ISocialAgent} from "./SocialAgent";
+import {Rdf} from "../data-management/data-model/rdf";
+import {response} from "express";
 
 
 export class Rdf {
@@ -12,7 +15,8 @@ export class Rdf {
     }
 }
 
-export class ProfileDocument extends Rdf{
+export class ProfileDocument extends Rdf implements ISocialAgent{
+   
    static async fetch(webId: URL) {
        const response = await fetch(webId.toString(), {
            headers: { "Content-Type": "text/turtle" },
@@ -24,6 +28,8 @@ export class ProfileDocument extends Rdf{
        return new ProfileDocument(parser.parse(profile));
 
    }
+   /*
+
    get AuthorizationAgent(){
       const agentUrl =  this.Quads.find(
           (x) =>
@@ -36,12 +42,30 @@ export class ProfileDocument extends Rdf{
       const agent = new Authorization(this, new URL(agentUrl))
       return agent;
    }
+    */
    get WebId(){
-       return this.Quads.find(
+       const id =  this.Quads.find(
            (x) =>
                x.object.value ==
                "http://xmlns.com/foaf/0.1/Person",
        )?.subject.value;
+       if (id == undefined){
+           throw new Error("Did not find WebId in profile document.")
+       }
+       return new URL(id);
    }
+   static new(webId: URL, pod: URL){
+       const webIdQuad = new N3.Quad(
+           new N3.NamedNode(webId.toString()),
+           new N3.NamedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+           new N3.NamedNode("http://xmlns.com/foaf/0.1/Person")
+       )
+
+       return new ProfileDocument([webIdQuad])
+   }
+
+    get Pod(): URL {
+        return ;
+    }
 }
 

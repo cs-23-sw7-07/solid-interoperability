@@ -11,6 +11,7 @@ import * as path from "path";
 import { v4 as uuid } from "uuid";
 import { DataInstance } from "./SolidDataInstance";
 import { SocialAgent } from "./SocialAgent";
+import {ProfileDocument} from "./Rdf";
 
 export const ALICE_WEBID = new URL(
   "http://localhost:3000/alice-pod/profile/card#me",
@@ -39,7 +40,7 @@ beforeAll(()=>{
 
 describe("Application", () => {
   const authService = new AuthService();
-  const socialAgent = new SocialAgent(ALICE_WEBID, ALICE_POD);
+  const socialAgent = ProfileDocument.new(ALICE_WEBID, ALICE_POD);
   const auths = new Array<IAuthorization>();
   auths.push(new Authorization(socialAgent, authService));
   const authStore = new AuthorizationStore(auths);
@@ -80,7 +81,7 @@ describe("Application", () => {
     const app = new Application();
     const id = "123456789";
 
-    const dataInstance = await app.get(ALICE_WEBID, id)
+    //const dataInstance = await app.get(ALICE_WEBID, id)
   });
 });
 

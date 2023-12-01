@@ -65,13 +65,17 @@ export class Application implements IApplication {
   /**
    * Register with the authorization agent of the agent.
    */
+
   async register(webId: URL): Promise<void> {
+    throw new NotImplementedYet()
+    /*
     let authStore = this.options?.authStore
     if (authStore == undefined){
       authStore = new AuthorizationStore()
     }
     const profile = await ProfileDocument.fetch(webId)
     authStore.addAuthorization(profile.AuthorizationAgent)
+   */
   }
 
   /**
@@ -87,7 +91,7 @@ export class Application implements IApplication {
    */
   getAuthorization(webId: URL): IAuthorization | undefined {
     // Maybe this should be a database?
-    return this.Authorizations.find((x) => x.socialAgent.WebId == webId.toString());
+    return this.Authorizations.find((x) => x.socialAgent.WebId == webId);
   }
 
   /**

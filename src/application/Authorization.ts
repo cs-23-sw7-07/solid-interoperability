@@ -2,7 +2,6 @@ import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import { URL } from "url";
 import { DataInstance } from "./SolidDataInstance";
 import {ProfileDocument} from "./Rdf";
-import {Type} from "typedoc";
 import {fetch} from "solid-auth-fetcher";
 
 export interface IAuthorization {
@@ -27,14 +26,16 @@ export class Authorization implements IAuthorization {
   }
 
   async store<T>(instance: DataInstance<T>){
-    const registry = this.service.getRegistry(typeof instance.data)
-    await fetch(registry, {
+    const url = this.service.Url.toString()
+    const registration = this.service.getRegistry(typeof instance.data)
+    await fetch(url, {
       method: "PUT",
-      headers: { "Content-Type": "text/turtle", "Link": registry },
+      headers: { "Content-Type": "text/turtle", "Link": registration.toString() },
       body: instance.Serialized,
     });
   }
 }
+
 export class AuthorizationStore implements IAuthorizationStore {
   private readonly auths:IAuthorization[] = []
   constructor(auths?: IAuthorization[]) {
@@ -53,16 +54,19 @@ export class AuthorizationStore implements IAuthorizationStore {
 }
 export interface IAuthService {
   fetch(req: RequestInfo, init?: RequestInit): Promise<globalThis.Response>;
-  getRegistry(type: Type): URL;
+  getRegistry(type: string): URL;
+  get Url(): URL;
 }
 export class AuthService implements IAuthService {
 
   async fetch(req: RequestInfo, init?: RequestInit): Promise<globalThis.Response> {
     return fetch(req, init);
   }
-
-  getRegistry(type: Type): URL {
-    const url = new URL("")
+  get Url(){
+    return new URL("example.com")
+  }
+  getRegistry(type: string): URL {
+    const url = new URL("example.com")
     return url;
   }
 }

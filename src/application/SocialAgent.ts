@@ -1,6 +1,8 @@
+import {URL} from "url";
+
 export interface ISocialAgent {
-  readonly webId: URL;
-  readonly pod: URL;
+  get WebId(): URL;
+  get Pod(): URL;
 }
 
 /**
@@ -13,5 +15,13 @@ export class SocialAgent implements ISocialAgent {
     pod?: URL,
   ) {
     this.pod = pod ?? new URL("https://localhost:3000");
+  }
+
+  get Pod(): URL {
+    return this.pod;
+  }
+
+  get WebId(): URL {
+    return this.webId;
   }
 }

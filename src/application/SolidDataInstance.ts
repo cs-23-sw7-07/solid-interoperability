@@ -29,7 +29,7 @@ export class DataInstance<T> {
   }
 
   get DataRegistry() {
-    return new URL(`Application/${this.Name}/`, this.owner.pod);
+    return new URL(`Application/${this.Name}/`, this.owner.Pod);
   }
 
   get Name() {
