@@ -1,0 +1,15 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<Alice-pod/Registies/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant> a interop:DataGrant;
+    interop:dataOwner <Alice-pod/profile/card#me>;
+    interop:grantee <https://projectron.example/#id>;
+    interop:registeredShapeTree <http://data.example/shapetrees/pm#ProjectTree>;
+    interop:hasDataRegistration <Alice-pod/Data/8501f084DataRegistration/>;
+    interop:satisfiesAccessNeed <https://projectron.example/#ac54ff1e>;
+    interop:accessMode acl:Read, acl:Create;
+    interop:creatorAccessMode acl:Update, acl:Delete;
+    interop:scopeOfGrant interop:AllFromRegistry.

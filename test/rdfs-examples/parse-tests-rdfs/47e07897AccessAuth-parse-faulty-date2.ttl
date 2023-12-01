@@ -5,7 +5,7 @@
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
 <https://alice.example/authorization/47e07897> a interop:AccessAuthorization;
-    interop:grantedBy <https://alice.example/#id>;
+    interop:grantedBy <Alice-pod/profile/card#me>;
     interop:grantedWith <https://jarvis.example/#id>;
     interop:grantedAt "monkey"^^xsd:dateTime;
     interop:grantee <https://jarvis.example/#id>;

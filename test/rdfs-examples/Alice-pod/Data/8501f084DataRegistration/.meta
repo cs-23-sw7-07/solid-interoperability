@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<Alice-pod/Data/8501f084DataRegistration/> a interop:DataRegistration;
+    interop:registeredBy <Alice-pod/profile/card#me>;
+    interop:registeredWith <https://jarvis.example/#id>;
+    interop:registeredAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
+    interop:updatedAt "2020-04-04T21:11:33.000Z"^^xsd:dateTime;
+    interop:registeredShapeTree <http://data.example/shapetrees/pm#ProjectTree>.

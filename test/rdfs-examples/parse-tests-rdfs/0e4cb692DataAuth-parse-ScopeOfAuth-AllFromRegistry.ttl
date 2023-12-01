@@ -5,7 +5,7 @@
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
 <https://alice.example/authorization/0e4cb692> a interop:DataAuthorization;
-    interop:dataOwner <https://alice.example/#id>;
+    interop:dataOwner <Alice-pod/profile/card#me>;
     interop:grantee <https://projectron.example/#id>;
     interop:registeredShapeTree <http://data.example/shapetrees/pm#TaskTree>;
     interop:hasDataRegistration <test/rdfs-examples/data/df4ab227DataRegistration/df4ab227.ttl>;

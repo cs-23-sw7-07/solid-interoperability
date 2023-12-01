@@ -2,7 +2,7 @@ import N3 from "n3";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
 import { ItoRdf } from "../factory/ItoRdf";
-import { AccessGrant } from "../authorization/access-grant";
+import { AccessGrant } from "../authorization/access/access-grant";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
@@ -22,7 +22,7 @@ export class ApplicationRegistration
     registeredAt: Date,
     updatedAt: Date,
     registeredAgent: ApplicationAgent,
-    hasAccessGrant: AccessGrant,
+    hasAccessGrant: AccessGrant[],
   ) {
     super(
       id,

@@ -1,14 +1,14 @@
 import N3 from "n3";
 import { ItoRdf } from "./ItoRdf";
 import { ApplicationAgent, SocialAgent } from "../agent";
-import { DataAuthorization } from "../authorization/data-authorization";
+import { DataAuthorization } from "../authorization/data/data-authorization";
 import { DataRegistration } from "../data-registration/data-registration";
 import { getAccessmode } from "../../Utils/get-accessmode";
 import { getScopeOfAuth } from "../../Utils/get-scope-of-auth";
 import { getDate } from "../../Utils/get-date";
 import { NotImplementedYet } from "../../../Errors/NotImplementedYet";
-import { AccessGrant } from "../authorization/access-grant";
-import { DataGrant } from "../authorization/data-grant";
+import { AccessGrant } from "../authorization/access/access-grant";
+import { DataGrant } from "../authorization/data/data-grant";
 import { Fetch } from "../../../fetch";
 import { NotFoundResource } from "../../../Errors/NotFound";
 import { NotParsable } from "../../../Errors/NotParsable";
@@ -36,7 +36,7 @@ export class RdfFactory {
    * @returns a `Promise` which if furfulled contains a turtle file, otherwise an error which needs handling
    *
    */
-  create(object: ItoRdf, prefixes?: object): Promise<string | Error> {
+  create(object: ItoRdf, prefixes?: object): Promise<string> {
     const finalPrefix = {
       prefixes: { ...prefixes, ...RdfFactory.PREFIXES.prefixes },
     };
@@ -65,12 +65,13 @@ export class RdfFactory {
         return res.text();
       })
       .then((rdf) => this.parseRdfToQuads(rdf, docPath))
-      .then((quads) => this.parseQuads(fetch, quads));
+      .then((quads) => this.parseQuads(fetch, quads, docPath));
   }
 
   private parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
     return new Promise((resolve, reject) => {
-      const parser = new N3.Parser();
+      const parserOptions: { baseIRI: string } = {baseIRI: docPath};
+      const parser = new N3.Parser({ ...parserOptions });
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
         if (error) {
@@ -88,15 +89,21 @@ export class RdfFactory {
     });
   }
 
-  async parseQuads(fetch: Fetch, quads: N3.Quad[]): Promise<Map<string, any>> {
+  async parseQuads(fetch: Fetch, quads: N3.Quad[], url: string): Promise<Map<string, any>> {
     const args: Map<string, any> = new Map<string, any>();
     const solidInterop: string = "http://www.w3.org/ns/solid/interop#";
 
     for (const quad of quads) {
+      if (quad.subject.id != url)
+        continue;
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
-          args.set("type", quad.object.id);
-          args.set("id", quad.subject.id);
+          if (args.has("type"))
+            args.get("type").push(quad.object.id);
+          else {
+            args.set("type", [quad.object.id]);
+            args.set("id", quad.subject.id);
+          } 
           break;
         }
         case solidInterop + "grantedBy": {
@@ -119,22 +126,18 @@ export class RdfFactory {
           if (result instanceof Error) {
             throw result;
           }
-
-          switch (result.get("type")) {
-            case solidInterop + "Application": {
+          const types: string[] = result.get("type")
+            if (types.includes(solidInterop + "Application")) {
               args.set("grantee", new ApplicationAgent(quad.object.id));
-              break;
             }
-            case solidInterop + "Agent": {
+            else if (types.includes(solidInterop + "Agent")) {
               args.set("grantee", new SocialAgent(quad.object.id));
-              break;
             }
-            default: {
-              throw new Error("Could not infer agent type");
+            else {
+              // throw new Error("Could not infer agent type " + result.get("type"));
             }
           }
           break;
-        }
         case solidInterop + "hasAccessNeedGroup": {
           args.set("hasAccessNeedGroup", quad.object.id);
           break;
@@ -263,7 +266,8 @@ export class RdfFactory {
           break;
         }
         default: {
-          throw new NotImplementedYet(JSON.stringify(quad, null, 4));
+          console.log(JSON.stringify(quad, null, 4))
+          // throw new NotImplementedYet(JSON.stringify(quad, null, 4));
         }
       }
     }
