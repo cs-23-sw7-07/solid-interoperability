@@ -69,21 +69,24 @@ export class DataInstance<T> {
   }
 
   static async deserialize<T extends Constructor>(
-    instance: string,
-    type: T,
+      instance: string,
+      type: T,
   ): Promise<DataInstance<unknown>> {
     /*
 
-    const graph = await Rdf.ts.parse(instance);
+    const parser = new N3.Parser();
+    const graph = await parser.parse()
 
     const prototype = Object.getPrototypeOf(type)
+    console.log(prototype)
     const obj = {};
 
     const id = "";
     const owner = new WebId(new URL(""));
     return DataInstance.from(obj, owner, id);
+
      */
-    throw new NotImplementedYet();
+    throw new NotImplementedYet()
   }
   static empty<T>(type: T) {
     // @ts-ignore
