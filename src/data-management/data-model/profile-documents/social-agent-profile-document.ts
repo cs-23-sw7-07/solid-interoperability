@@ -17,7 +17,6 @@ export class SocialAgentProfileDocument extends Rdf {
       ) {
         super(
           id,
-          "SocialAgentProfileDocument",
           fetch, dataset, prefixes
         );
       }

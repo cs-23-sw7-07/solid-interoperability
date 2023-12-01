@@ -15,7 +15,6 @@ export class DataRegistryResource extends Rdf {
       ) {
         super(
           id,
-          "ApplicationRegistration",
           fetch, dataset, prefixes
         );
       }

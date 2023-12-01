@@ -13,7 +13,6 @@ export class ApplicationProfileDocument extends Rdf {
       ) {
         super(
           id,
-          "ApplicationProfileDocument",
           fetch, dataset, prefixes
         );
       }

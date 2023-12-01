@@ -14,7 +14,6 @@ export class AccessNeedGroup extends Rdf {
       ) {
         super(
           id,
-          "AccessNeedGroup",
           fetch, dataset, prefixes
         );
       }
