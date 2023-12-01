@@ -26,7 +26,7 @@ export class Authorization implements IAuthorization {
   }
 
   async store<T>(instance: DataInstance<T>){
-    const url = this.service.Url.toString()
+    const url = this.service.Url.toString() + "/pods/" + this.WebId
     const registration = this.service.getRegistry(typeof instance.data)
     await fetch(url, {
       method: "PUT",

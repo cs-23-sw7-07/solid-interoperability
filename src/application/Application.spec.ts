@@ -35,17 +35,21 @@ class TestInstance {
   }
 }
 beforeAll(()=>{
-  
+
 })
 
 describe("Application", () => {
-  const authService = new AuthService(new URL("http://localhost:3001"));
-  const socialAgent = ProfileDocument.new(ALICE_WEBID, ALICE_POD);
-  const auths = new Array<IAuthorization>();
-  auths.push(new Authorization(socialAgent, authService));
-  const authStore = new AuthorizationStore(auths);
+  let app: Application;
+  let auths: IAuthorization[];
 
-  const app = new Application({authStore: authStore});
+  beforeAll(async ()=>{
+    const authService = new AuthService(new URL("http://localhost:3001"));
+    auths = new Array<IAuthorization>();
+    const socialAgent = await ProfileDocument.fetch(ALICE_WEBID);
+    auths.push(new Authorization(socialAgent, authService));
+    const authStore = new AuthorizationStore(auths);
+    app = new Application({authStore: authStore});
+  });
 
   it("Can register", () => {
     app.register(new URL(ALICE_WEBID))

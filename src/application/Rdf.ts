@@ -71,15 +71,6 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
        }
        return new URL(id);
    }
-   static new(webId: URL, pod: URL){
-       const webIdQuad = new N3.Quad(
-           new N3.NamedNode(webId.toString()),
-           new N3.NamedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-           new N3.NamedNode("http://xmlns.com/foaf/0.1/Person")
-       )
-
-       return new ProfileDocument([webIdQuad])
-   }
 
     get Pod(): URL {
        if (this.pod != undefined) {
