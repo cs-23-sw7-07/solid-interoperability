@@ -17,34 +17,33 @@ describe("Agent-registration - test get and set methods/properties", () => {
         await session.logout()
     });
 
-    describe("Application Registration", async () => {
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
+    describe("Application Registration", () => {
+        let id: string;
+        let reg: ApplicationRegistration;
 
+        beforeAll(async () => {
+            id = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
+            reg = await getResource(ApplicationRegistration, session.fetch, id);
+        });
 
         test("Unit test: Application Registration - get RegisteredBy", async () => {
             const expectedRegisteredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-
-            const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
             expect(reg.RegisteredBy).toStrictEqual(expectedRegisteredBy)
         })
 
         test("Unit test: Application Registration - get RegisteredWith", async () => {
-            const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
             const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
-
-            const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
             expect(reg.RegisteredWith).toStrictEqual(registeredWith)
         })
 
-        test("Unit test: Application Registration - get RegisteredBy", async () => {
-            const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
-            const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
+        test("Unit test: Application Registration - get registeredAt", async () => {
+            const registeredAt: Date = new Date("2020-04-04T20:15:47.000Z");
+            expect(reg.RegisteredAt).toStrictEqual(registeredAt)
+        })
 
-            const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
-            expect(reg.RegisteredWith).toStrictEqual(registeredWith)
+        test("Unit test: Application Registration - get updatedAt", async () => {
+            const updatedAt: Date = new Date("2020-04-04T21:11:33.000Z")
+            expect(reg.UpdatedAt).toStrictEqual(updatedAt)
         })
     })
 

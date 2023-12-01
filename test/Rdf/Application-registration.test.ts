@@ -35,41 +35,7 @@ describe("Application-registration-test", () => {
         expect(await addedRegistration.getHasAccessGrants()).toStrictEqual(hasAccessGrant)
     })
 
-    test("Unit test: Application Registration - get RegisteredBy", async () => {
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
-        const expectedRegisteredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
 
-        const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
-        expect(reg.RegisteredBy).toStrictEqual(expectedRegisteredBy)
-    })
-
-    test("Unit test: Application Registration - get RegisteredWith", async () => {
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
-        const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
-
-        const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
-        expect(reg.RegisteredWith).toStrictEqual(registeredWith)
-    })
-
-    test("Unit test: Application Registration - get RegisteredBy", async () => {
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
-        const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
-
-        const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
-        expect(reg.RegisteredWith).toStrictEqual(registeredWith)
-    })
-
-    test("Unit test: Application Registration - get RegisteredBy", async () => {
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
-        const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
-
-        const reg = await getResource(ApplicationRegistration, session.fetch, id)
-
-        expect(reg.RegisteredWith).toStrictEqual(registeredWith)
-    })
 
 
 
