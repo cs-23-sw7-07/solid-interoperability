@@ -1,10 +1,9 @@
 import {fetch} from "solid-auth-fetcher";
 import N3 from "n3";
 import {URL} from "url";
-import {Authorization, AuthService} from "./Authorization";
 import {ISocialAgent} from "./SocialAgent";
-import {Rdf} from "../data-management/data-model/rdf";
-import {response} from "express";
+import {NotImplementedYet} from "../Errors/NotImplementedYet";
+import {Authorization, AuthService} from "./Authorization";
 
 
 export class Rdf {
@@ -28,9 +27,8 @@ export class ProfileDocument extends Rdf implements ISocialAgent{
        return new ProfileDocument(parser.parse(profile));
 
    }
-   /*
 
-   get AuthorizationAgent(){
+   get Authorization(){
       const agentUrl =  this.Quads.find(
           (x) =>
               x.predicate.value ==
@@ -39,10 +37,10 @@ export class ProfileDocument extends Rdf implements ISocialAgent{
       if (agentUrl == undefined){
           throw Error("The identity described by this profile document does not have any authorization agent.")
       }
-      const agent = new Authorization(this, new URL(agentUrl))
+      const agent = new Authorization(this, new AuthService(new URL(agentUrl)))
       return agent;
    }
-    */
+
    get WebId(){
        const id =  this.Quads.find(
            (x) =>
@@ -65,7 +63,7 @@ export class ProfileDocument extends Rdf implements ISocialAgent{
    }
 
     get Pod(): URL {
-        return ;
+        throw new NotImplementedYet()
     }
 }
 

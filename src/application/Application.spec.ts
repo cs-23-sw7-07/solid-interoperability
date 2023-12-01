@@ -39,28 +39,27 @@ beforeAll(()=>{
 })
 
 describe("Application", () => {
-  const authService = new AuthService();
+  const authService = new AuthService(new URL("http://localhost:3001"));
   const socialAgent = ProfileDocument.new(ALICE_WEBID, ALICE_POD);
   const auths = new Array<IAuthorization>();
   auths.push(new Authorization(socialAgent, authService));
   const authStore = new AuthorizationStore(auths);
 
-  it("Can register", () => {
-    const app = new Application();
+  const app = new Application({authStore: authStore});
 
-    //TODO: How to test?
+  it("Can register", () => {
+    app.register(new URL(ALICE_WEBID))
+    expect(app.authStore.Authorizations.length).toBe(1)
   });
 
   it("Can get Authorizations", () => {
-    const app = new Application();
-
     const auths = app.Authorizations;
 
     expect(auths.length).toBeGreaterThan(0);
   });
 
   it("should store Solid Data Instance", async () => {
-    const app = new Application();
+
     const instance = DataInstance.new(
       new TestInstance({}),
       auths[0].socialAgent,

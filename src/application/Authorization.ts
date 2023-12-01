@@ -59,14 +59,16 @@ export interface IAuthService {
 }
 export class AuthService implements IAuthService {
 
+  constructor(private url: URL) {}
+
   async fetch(req: RequestInfo, init?: RequestInit): Promise<globalThis.Response> {
     return fetch(req, init);
   }
   get Url(){
-    return new URL("example.com")
+    return this.url
   }
   getRegistry(type: string): URL {
-    const url = new URL("example.com")
+    const url = this.url
     return url;
   }
 }

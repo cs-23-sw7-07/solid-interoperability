@@ -1,6 +1,6 @@
 import { URL } from "url";
 import { DataInstance } from "./SolidDataInstance";
-import {Authorization, AuthorizationStore, IAuthorization} from "./Authorization";
+import {Authorization, AuthorizationStore, IAuthorization, IAuthorizationStore} from "./Authorization";
 import { Type } from "typedoc";
 import {getAuthAgent, getProfile} from "../authentication/authentication";
 import {NotImplementedYet} from "../Errors/NotImplementedYet";
@@ -27,10 +27,11 @@ interface IApplicationOptions {
   name?: string;
   profile?: string;
   authStore?: AuthorizationStore;
-  authService: URL;
+  authService?: URL;
 }
 
 export class Application implements IApplication {
+  authStore: IAuthorizationStore
   /**
    * The main interface for Solid application. The {@link Application} API contains the necessary functionality to create a
    * solid application. To create a Solid application, simply instantiate an {@link Application} and plug it into your express
@@ -42,7 +43,10 @@ export class Application implements IApplication {
    */
   constructor(
     private options?: IApplicationOptions,
-  ) {}
+  )
+  {
+    this.authStore = this.options?.authStore ?? new AuthorizationStore()
+  }
 
   /**
    * Returns the name of this application.
@@ -67,22 +71,21 @@ export class Application implements IApplication {
    */
 
   async register(webId: URL): Promise<void> {
-    throw new NotImplementedYet()
-    /*
-    let authStore = this.options?.authStore
+    let authStore = this.authStore
     if (authStore == undefined){
+      //TODO: Save new authstore
       authStore = new AuthorizationStore()
     }
+
     const profile = await ProfileDocument.fetch(webId)
-    authStore.addAuthorization(profile.AuthorizationAgent)
-   */
+    authStore.addAuthorization(profile.Authorization)
   }
 
   /**
    * Retrieve all registered authorizations.
    */
   get Authorizations(): IAuthorization[] {
-    throw new NotImplementedYet()
+    return this.authStore.Authorizations
   }
 
   /**
@@ -91,7 +94,7 @@ export class Application implements IApplication {
    */
   getAuthorization(webId: URL): IAuthorization | undefined {
     // Maybe this should be a database?
-    return this.Authorizations.find((x) => x.socialAgent.WebId == webId);
+    return this.Authorizations.find((x) => x.socialAgent.WebId.toString() == webId.toString());
   }
 
   /**
