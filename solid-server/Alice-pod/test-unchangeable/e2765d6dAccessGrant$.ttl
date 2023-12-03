@@ -5,8 +5,8 @@
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
 <http://localhost:3000/Alice-pod/e2765d6dAccessGrant> a interop:AccessGrant;
-    interop:grantedBy <Alice-pod/profile/card#me>;
+    interop:grantedBy <http://localhost:3000/Alice-pod/profile/card#me>;
     interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
-    interop:grantee <https://projectron.example/#id>;
-    interop:hasAccessNeedGroup <https://projectron.example/#d8219b1f>;
-    interop:hasDataGrant <http://localhost:3000/Alice-pod/Registies/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>, <http://localhost:3000/Alice-pod/Registies/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant>.
+    interop:grantee <http://localhost:3000/test-unchangeable/authorization-agent#id>;
+    interop:hasAccessNeedGroup <http://localhost:3000/test-unchangeable/projectron#d8219b1f>;
+    interop:hasDataGrant <http://localhost:3000/Alice-pod/registies/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>, <http://localhost:3000/Alice-pod/registies/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant>.
