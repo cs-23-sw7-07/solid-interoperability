@@ -5,6 +5,7 @@ import { AccessGrant } from "../authorization/access/access-grant";
 import { Fetch } from "../../../fetch";
 import {createTriple} from "../RDF/rdf";
 import {INTEROP} from "../namespace";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * A class which has the fields to conform to the `Application Agent Registration` graph defined in the Solid interoperability specification.
@@ -44,7 +45,10 @@ export class ApplicationRegistration
   }
 
   get RegisteredAgent(): ApplicationAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent")!;
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
+    if (!webId)
+      throw new SAIViolationMissingTripleError(this, "registeredAgent");
+
     return new ApplicationAgent(webId);
   }
 

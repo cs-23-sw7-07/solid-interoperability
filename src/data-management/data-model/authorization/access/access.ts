@@ -1,9 +1,11 @@
 import {Prefixes, Store} from "n3";
 import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
-import {createTriple, Rdf} from "../../RDF/rdf";
+import {createTriple, getResource, Rdf} from "../../RDF/rdf";
 import {Fetch} from "../../../../fetch";
 import {INTEROP} from "../../namespace";
 import {getDate} from "../../../Utils";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
+import { AccessNeedGroup } from "../access-needs/access-need-group";
 
 export abstract class Access extends Rdf {
   /**
@@ -22,35 +24,52 @@ export abstract class Access extends Rdf {
   static newQuadsAccess(
     id: string,
     grantedBy: SocialAgent,
+    grantedWith: ApplicationAgent,
     grantedAt: Date,
     grantee: Agent,
-    hasAccessNeedGroup: string) {
+    hasAccessNeedGroup: AccessNeedGroup) {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     return [
       triple("grantedBy", grantedBy.webID),
+      triple("grantedWith", grantedWith.webID),
       triple("grantedAt", grantedAt),
       triple("grantee", grantee.webID),
-      triple("hasAccessNeedGroup", hasAccessNeedGroup)
+      triple("hasAccessNeedGroup", hasAccessNeedGroup.uri)
     ];
   }
 
   get GrantedBy(): SocialAgent {
-    return new SocialAgent(this.getObjectValueFromPredicate("grantedBy")!)
+    const grantedBy = this.getObjectValueFromPredicate(INTEROP + "grantedBy");
+    if (grantedBy)
+      return new SocialAgent(grantedBy)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantedBy")
   }
 
   get GrantedWith(): ApplicationAgent {
-    return new ApplicationAgent(this.getObjectValueFromPredicate("grantedWith")!)
+    const grantedWith = this.getObjectValueFromPredicate(INTEROP + "grantedWith");
+    if (grantedWith)
+      return new ApplicationAgent(grantedWith)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantedWith")
   }
 
   get GrantedAt(): Date {
-    return getDate(this.getObjectValueFromPredicate("grantedAt")!)
+    const grantedAt = this.getObjectValueFromPredicate(INTEROP + "grantedAt");
+    if (grantedAt)
+      return getDate(grantedAt)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantedAt")
   }
 
   get Grantee(): Agent {
-    return new ApplicationAgent(this.getObjectValueFromPredicate("grantee")!)
+    const grantee = this.getObjectValueFromPredicate(INTEROP + "grantee");
+    if (grantee)
+      return new ApplicationAgent(grantee)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantee")
   }
 
-  get HasAccessNeedGroup(): string {
-    return this.getObjectValueFromPredicate("hasAccessNeedGroup")!
+  public async getHasAccessNeedGroup(): Promise<AccessNeedGroup> {
+    const uri = this.getObjectValueFromPredicate(INTEROP + "hasAccessNeedGroup");
+    if (uri)
+      return await getResource(AccessNeedGroup, this.fetch, uri)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasAccessNeedGroup")
   }
 }

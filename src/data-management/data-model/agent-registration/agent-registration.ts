@@ -6,6 +6,7 @@ import { Fetch } from "../../../fetch";
 import {fetch} from "solid-auth-fetcher";
 import {INTEROP} from "../namespace";
 import {createTriple, getResource} from "../RDF/rdf";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 export abstract class AgentRegistration extends Registration {
   /**
@@ -42,7 +43,8 @@ export abstract class AgentRegistration extends Registration {
 
   async getHasAccessGrants(): Promise<AccessGrant[]> {
     const grantIRIs = this.getObjectValuesFromPredicate(INTEROP + "hasAccessGrant");
-    if (!grantIRIs) return [];
+    if (!grantIRIs)
+      throw new SAIViolationMissingTripleError(this, "hasAccessGrant");
 
     let grants: AccessGrant[] = [];
     for (const uri of grantIRIs) {

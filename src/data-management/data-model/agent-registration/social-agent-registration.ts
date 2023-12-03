@@ -4,6 +4,7 @@ import { Fetch } from "../../../fetch";
 import { INTEROP } from "../namespace";
 import {Agent, ApplicationAgent, SocialAgent} from "../agent";
 import { AccessGrant } from "../authorization/access/access-grant";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * A class which has the fields to conform to the `Social Agent Registration` graph defined in the Solid interoperability specification.
@@ -43,7 +44,10 @@ export class SocialAgentRegistration extends AgentRegistration {
   }
 
   get RegisteredAgent(): SocialAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent")!;
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
+    if (!webId)
+      throw new SAIViolationMissingTripleError(this, "registeredAgent");
+    
     return new SocialAgent(webId);
   }
 
@@ -54,6 +58,10 @@ export class SocialAgentRegistration extends AgentRegistration {
   }
 
   get ReciprocalRegistration(): string {
-    return this.getObjectValueFromPredicate(INTEROP + "reciprocalRegistration")!;
+    const reciprocalRegistration = this.getObjectValueFromPredicate(INTEROP + "reciprocalRegistration")!;
+    if (!reciprocalRegistration)
+      throw new SAIViolationMissingTripleError(this, "registeredAgent");
+
+    return reciprocalRegistration;
   }
 }

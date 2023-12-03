@@ -4,6 +4,7 @@ import {INTEROP} from "./namespace";
 import {Fetch} from "../../fetch";
 import {getDate} from "../Utils";
 import {Prefixes, Quad, Store} from "n3";
+import {SAIViolationMissingTripleError} from "../../Errors";
 
 export abstract class Registration extends Rdf {
   constructor(
@@ -32,8 +33,11 @@ export abstract class Registration extends Rdf {
 
 
   get RegisteredBy(): SocialAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredBy")!;
-    return new SocialAgent(webId)
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredBy");
+    if (webId)
+      return new SocialAgent(webId)
+
+    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredBy")
   }
 
   async setRegisteredBy(agent: SocialAgent) {
@@ -44,8 +48,11 @@ export abstract class Registration extends Rdf {
   }
 
   get RegisteredWith(): ApplicationAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredWith")!;
-    return new ApplicationAgent(webId)
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredWith");
+    if (webId)
+      return new ApplicationAgent(webId)
+    
+    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredWith")
   }
 
   async setRegisteredWith(agent: ApplicationAgent) {
@@ -56,7 +63,11 @@ export abstract class Registration extends Rdf {
   }
 
   get RegisteredAt(): Date {
-    return getDate(this.getObjectValueFromPredicate(INTEROP + "registeredAt")!)
+    const date = this.getObjectValueFromPredicate(INTEROP + "registeredAt")
+    if (date)
+      return getDate(date)
+
+    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredAt")
   }
 
   async setRegisteredAt(date: Date) {
@@ -67,7 +78,11 @@ export abstract class Registration extends Rdf {
   }
 
   get UpdatedAt(): Date {
-    return getDate(this.getObjectValueFromPredicate(INTEROP + "updatedAt")!)
+    const date = this.getObjectValueFromPredicate(INTEROP + "updatedAt")
+    if (date)
+      return getDate(date)
+
+    throw new SAIViolationMissingTripleError(this, INTEROP + "updatedAt")
   }
 
   protected async updateDate() {

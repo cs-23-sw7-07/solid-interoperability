@@ -4,10 +4,7 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<https://alice.example/agents/2f2f3628/> a interop:ApplicationRegistration;
-    interop:registeredBy <Alice-pod/profile/card#me>;
-    interop:registeredWith <https://jarvis.example/#id>;
+<http://localhost:3000/Alice-pod/test-unchangeable/wrong-rdfs/wrongApplicationRegistration1/> a interop:ApplicationRegistration;
     interop:registeredAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
     interop:updatedAt "2020-04-04T21:11:33.000Z"^^xsd:dateTime;
-    interop:registeredAgent <https://projectron.example/#id>;
-    interop:hasAccessGrant <https://alice.example/agents/2f2f3628/27eae14b>.
+    interop:registeredAgent <http://localhost:3000/test-unchangeable/projectron#id>.

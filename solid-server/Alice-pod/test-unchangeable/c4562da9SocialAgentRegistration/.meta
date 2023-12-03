@@ -1,0 +1,14 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<http://localhost:3000/Alice-pod/test-unchangeable/c4562da9SocialAgentRegistration/> a interop:SocialAgentRegistration;
+    interop:registeredBy <http://localhost:3000/Alice-pod/profile/card#me>;
+    interop:registeredWith <http://localhost:3000/test-unchangeable/authorization-agent123#id>;
+    interop:registeredAt "2020-04-04T12:12:12.000Z"^^xsd:dateTime;
+    interop:updatedAt "2020-04-04T22:12:32.000Z"^^xsd:dateTime;
+    interop:registeredAgent <https://bob.example/#id>;
+    interop:hasAccessGrant <http://localhost:3000/Alice-pod/test-unchangeable/c4562da9SocialAgentRegistration/b6e125b8AccessGrant>;
+    interop:reciprocalRegistration <https://bob.example/agents/255aa181/>.

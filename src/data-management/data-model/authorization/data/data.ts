@@ -1,11 +1,12 @@
 import { Prefixes, Store } from "n3";
 import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { DataRegistration } from "../../data-registration/data-registration";
 import { Rdf, createTriple, getResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access/access-mode";
 import { INTEROP } from "../../namespace";
 import { getAccessmode } from "../../../Utils";
+import { AccessNeed } from "../access-needs/access-need";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 export class Data extends Rdf {
   constructor(
@@ -19,32 +20,21 @@ export class Data extends Rdf {
 
   static newQuads(
     id: string,
-    dataOwner: SocialAgent,
     grantee: Agent,
     registeredShapeTree: string,
-    hasDataRegistration: DataRegistration,
+    satisfiesAccessNeed: AccessNeed,
     accessMode: AccessMode[],
-    satisfiesAccessNeed: string,
     creatorAccessMode?: AccessMode[],
-    hasDataInstanceIRIs?: string[],
   ) {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = [
-      triple("dataOwner", dataOwner.webID),
       triple("grantee", grantee.webID),
       triple("registeredShapeTree", registeredShapeTree),
-      triple("hasDataRegistration", hasDataRegistration.uri),
-      triple("satisfiesAccessNeed", satisfiesAccessNeed)
+      triple("satisfiesAccessNeed", satisfiesAccessNeed.uri)
     ]
 
     for (const mode of accessMode) {
       quads.push(triple("accessMode", mode))
-    }
-
-    if (hasDataInstanceIRIs) {
-      for (const iri of hasDataInstanceIRIs) {
-        quads.push(triple("hasDataInstanceIRI", iri))
-      }
     }
 
     if (creatorAccessMode) {
@@ -56,52 +46,42 @@ export class Data extends Rdf {
     return quads;
   }
 
-  public get DataOwner(): SocialAgent | undefined {
-    const dataOwner = this.getObjectValueFromPredicate("dataOwner")
-    if (dataOwner) {
-      return new SocialAgent(dataOwner)
-    }
-    return undefined
-
-  }
 
   public get Grantee(): Agent {
-    return new ApplicationAgent(this.getObjectValueFromPredicate("grantee")!)
+    const grantee = this.getObjectValueFromPredicate(INTEROP + "grantee");
+    if (grantee)
+      return new ApplicationAgent(grantee);
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantee");
   }
 
   public get RegisteredShapeTree(): string {
-    return this.getObjectValueFromPredicate("registeredShapeTree")!
+    const registeredShapeTree = this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree");
+    if (registeredShapeTree)
+      return registeredShapeTree;
+    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredShapeTree");
   }
 
-  public async getHasDataRegistration(): Promise<DataRegistration | undefined> {
-    const iri = this.getObjectValueFromPredicate("hasDataRegistration")
-    if (iri) {
-      return await getResource(DataRegistration, this.fetch, iri);
-    }
-    return undefined
+  public async getSatisfiesAccessNeed(): Promise<AccessNeed> {
+    const uri = this.getObjectValueFromPredicate("satisfiesAccessNeed");
+    if (uri)
+      return await getResource(AccessNeed, this.fetch, uri);
+    throw new SAIViolationMissingTripleError(this, INTEROP + "satisfiesAccessNeed");
   }
+
 
   public get AccessMode(): AccessMode[] {
     const modes = this.getObjectValuesFromPredicate("accessMode")
     if (modes) {
       return modes.map(mode => getAccessmode(mode));
     }
-    return []
+    throw new SAIViolationMissingTripleError(this, INTEROP + "accessMode");
   }
 
-  public get CreatorAccessMode(): AccessMode[] | undefined {
-    const modes = this.getObjectValuesFromPredicate("accessMode")
+  public get CreatorAccessMode(): AccessMode[] {
+    const modes = this.getObjectValuesFromPredicate("creatorAccessMode  ")
     if (modes) {
       return modes.map(mode => getAccessmode(mode));
     }
     return []
-  }
-
-  public get SatisfiesAccessNeed(): string {
-    return this.getObjectValueFromPredicate("satisfiesAccessNeed")!
-  }
-
-  public get HasDataInstanceIRIs(): string[] | undefined {
-    return this.getObjectValuesFromPredicate("hasDataInstanceIRI")
   }
 }

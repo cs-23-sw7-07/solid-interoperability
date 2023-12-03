@@ -1,7 +1,7 @@
 export abstract class Agent {
   webID: string;
 
-  constructor(webID: string) {
+  protected constructor(webID: string) {
     this.webID = webID;
   }
 

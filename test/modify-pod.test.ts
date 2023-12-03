@@ -30,13 +30,13 @@ describe("modify-pod-test", () => {
     })
 
     test("Unit test: get a Application Registration resource, check it has the fields", async () => {
-        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "test-unchangedable/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
-        const id: string = pod + "test-unchangedable/2f2f3628ApplicationRegistration/";
+        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "test-unchangeable/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
+        const id: string = pod + "test-unchangeable/2f2f3628ApplicationRegistration/";
         const registeredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-        const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/authorization-agent#id");
+        const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangeable/authorization-agent#id");
         const registeredAt: Date = new Date("2020-04-04T20:15:47.000Z");
         const updatedAt: Date = new Date("2020-04-04T21:11:33.000Z")
-        const registeredAgent: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangedable/projectron#id");
+        const registeredAgent: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangeable/projectron#id");
         const hasAccessGrant: AccessGrant[] = [accessGrant];
 
         const reg = await getResource(ApplicationRegistration, session.fetch, id)

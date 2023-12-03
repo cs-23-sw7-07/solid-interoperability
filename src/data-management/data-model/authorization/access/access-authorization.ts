@@ -7,6 +7,8 @@ import { Fetch } from "../../../../fetch";
 import { INTEROP } from "../../namespace";
 import { Access } from "./access";
 import {getResource, getResources} from "../../RDF/rdf";
+import { AccessNeedGroup } from "../access-needs/access-need-group";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 
 export class AccessAuthorization extends Access {
@@ -29,13 +31,12 @@ export class AccessAuthorization extends Access {
     grantedWith: ApplicationAgent,
     grantedAt: Date,
     grantee: Agent,
-    hasAccessNeedGroup: string, //Needs to Access Need Group class
+    hasAccessNeedGroup: AccessNeedGroup,
     hasDataAuthorization: DataAuthorization[],
     replaces?: AccessAuthorization,) {
     const auth = new AccessAuthorization(id, fetch)
     const triple = (predicate: string, object: string | Date) => auth.createTriple(INTEROP + predicate, object);
-    const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
-    quads.push(triple("grantedWith", grantedWith.webID))
+    const quads = super.newQuadsAccess(id, grantedBy, grantedWith, grantedAt, grantee, hasAccessNeedGroup);
     for (const dataAuth of hasDataAuthorization) {
       quads.push(triple("hasDataAuthorization", dataAuth.uri))
     }
@@ -45,27 +46,28 @@ export class AccessAuthorization extends Access {
     return auth;
   }
 
-  toAccessGrant(id: string, data_grants: DataGrant[]) {
+  public async toAccessGrant(id: string, data_grants: DataGrant[]) {
     return AccessGrant.new(
       id,
       this.GrantedBy,
+      this.GrantedWith,
       this.GrantedAt,
       this.Grantee,
-      this.HasAccessNeedGroup,
+      await this.getHasAccessNeedGroup(),
       data_grants,
     );
   }
 
   async getHasDataAuthorization(): Promise<DataAuthorization[]> {
-    const uris = this.getObjectValuesFromPredicate("hasDataAuthorization");
+    const uris = this.getObjectValuesFromPredicate(INTEROP + "hasDataAuthorization");
     if (uris) {
       return await getResources(DataAuthorization, this.fetch, uris)
     }
-    return []
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataAuthorization")
   }
 
   async getReplaces(): Promise<AccessAuthorization | undefined> {
-    const uri = this.getObjectValueFromPredicate("replaces");
+    const uri = this.getObjectValueFromPredicate(INTEROP + "replaces");
     if (uri) {
       return await getResource(AccessAuthorization, this.fetch, uri)
     }

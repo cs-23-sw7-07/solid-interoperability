@@ -1,10 +1,12 @@
 import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
+import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
 import { DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
 import { Access } from "./access";
 import { INTEROP } from "../../namespace";
 import {getResources} from "../../RDF/rdf";
+import { AccessNeedGroup } from "../access-needs/access-need-group";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 
 export class AccessGrant extends Access {
@@ -25,13 +27,14 @@ export class AccessGrant extends Access {
   static async new(
     id: string,
     grantedBy: SocialAgent,
+    grantedWith: ApplicationAgent,
     grantedAt: Date,
     grantee: Agent,
-    hasAccessNeedGroup: string, //Needs to Access Need Group class
+    hasAccessNeedGroup: AccessNeedGroup,
     hasDataGrant: DataGrant[],) {
     const grant = new AccessGrant(id, fetch)
     const triple = (predicate: string, object: string | Date) => grant.createTriple(INTEROP + predicate, object);
-    const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
+    const quads = super.newQuadsAccess(id, grantedBy, grantedWith, grantedAt, grantee, hasAccessNeedGroup);
     for (const dataGrant of hasDataGrant) {
       quads.push(triple("hasDataGrant", dataGrant.uri))
     }
@@ -39,10 +42,10 @@ export class AccessGrant extends Access {
   }
 
   public async getHasDataGrant(): Promise<DataGrant[]> {
-    const uris = this.getObjectValuesFromPredicate("hasDataGrant");
+    const uris = this.getObjectValuesFromPredicate(INTEROP + "hasDataGrant");
     if (uris) {
       return await getResources(DataGrant, this.fetch, uris)
     }
-    return []
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataGrant")
   }
 }

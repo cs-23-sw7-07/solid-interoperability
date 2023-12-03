@@ -19,10 +19,6 @@ export * from "./data-management/Utils/index";
 export * from "./data-management/turtle/turtle-parser"
 export * from "./data-management/turtle/turtle-serializer"
 
-export * from "./Errors/InvalidAccessMode";
-export * from "./Errors/InvalidDate";
-export * from "./Errors/NotImplementedYet";
-export * from "./Errors/NotParsable";
-export * from "./Errors/NotFound";
+export * from "./Errors/index"
 
 export * from "./fetch";
