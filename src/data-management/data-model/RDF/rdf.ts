@@ -93,28 +93,28 @@ export class Rdf {
   }
 }
 
-export async function newResource<T extends Rdf>(
-  c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
-  fetch: Fetch,
-  uri: string,
-  type: string,
-  quads: Quad[],
-): Promise<T> {
-const url = uri;
+// export async function newResource<T extends Rdf>(
+//   c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
+//   fetch: Fetch,
+//   uri: string,
+//   type: string,
+//   quads: Quad[],
+// ): Promise<T> {
+// const url = uri;
 
-await insertEmptyResource(fetch, uri)
+// await insertEmptyResource(fetch, uri)
 
 
-await insertSPARQLUpdate(new Store(quads))
-        .then(body => this.patchSPARQLUpdate(body))
-        .then(_ => {
-          for (const quad of quads) {
-            this.dataset.add(quad)
-          }
-        })
+// await insertSPARQLUpdate(new Store(quads))
+//         .then(body => this.patchSPARQLUpdate(body))
+//         .then(_ => {
+//           for (const quad of quads) {
+//             this.dataset.add(quad)
+//           }
+//         })
 
-return new c(uri, fetch, result.dataset, result.prefixes);
-}
+// return new c(uri, fetch, result.dataset, result.prefixes);
+// }
 
 export async function getResource<T extends Rdf>(
     c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },

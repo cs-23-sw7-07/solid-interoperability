@@ -39,7 +39,7 @@ export class AccessGrant extends Access {
       quads.push(triple("hasDataGrant", dataGrant.uri))
     }
     quads.push(triple(TYPE_A, INTEROP + "AccessGrant"));
-    await grant.newResource(quads);
+    // await grant.newResource(quads);
     return grant;
   }
 
