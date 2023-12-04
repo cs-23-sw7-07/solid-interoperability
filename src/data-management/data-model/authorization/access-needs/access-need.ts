@@ -57,7 +57,7 @@ export class AccessNeed extends Rdf {
         );
 
         if (inheritUri) {
-            return await getResource(AccessNeed, fetch, inheritUri);
+            return await getResource(AccessNeed, this.fetch, inheritUri);
         }
         return undefined;
     }

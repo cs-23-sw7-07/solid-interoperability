@@ -42,8 +42,8 @@ export async function createRegistriesSet(
     profileDocument: SocialAgentProfileDocument,
 ) {
     const registriesContainer = pod + "Registries/";
-    const agentRegistryContainer = registriesContainer + "agentregisties/";
-    const authorizationRegistryContainer = registriesContainer + "accessregisties/";
+    const agentRegistryContainer = registriesContainer + "agentregistries/";
+    const authorizationRegistryContainer = registriesContainer + "accessregistries/";
     const dataRegistryContainer = pod + "data/";
 
     await createContainer(fetch, registriesContainer);

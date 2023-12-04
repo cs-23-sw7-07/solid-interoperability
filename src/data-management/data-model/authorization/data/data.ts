@@ -4,7 +4,7 @@ import { Rdf, createTriple, getResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access/access-mode";
 import { INTEROP } from "../../namespace";
-import { getAccessmode } from "../../../Utils";
+import {accessModeFromEnum, getAccessmode} from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 
@@ -34,12 +34,12 @@ export class Data extends Rdf {
     ]
 
     for (const mode of accessMode) {
-      quads.push(triple("accessMode", mode))
+      quads.push(triple("accessMode", accessModeFromEnum(mode)))
     }
 
     if (creatorAccessMode) {
       for (const mode of creatorAccessMode) {
-        quads.push(triple("creatorAccessMode", mode))
+        quads.push(triple("creatorAccessMode", accessModeFromEnum(mode)))
       }
     }
 
@@ -62,7 +62,7 @@ export class Data extends Rdf {
   }
 
   public async getSatisfiesAccessNeed(): Promise<AccessNeed> {
-    const uri = this.getObjectValueFromPredicate("satisfiesAccessNeed");
+    const uri = this.getObjectValueFromPredicate(INTEROP + "satisfiesAccessNeed");
     if (uri)
       return await getResource(AccessNeed, this.fetch, uri);
     throw new SAIViolationMissingTripleError(this, INTEROP + "satisfiesAccessNeed");
@@ -70,7 +70,7 @@ export class Data extends Rdf {
 
 
   public get AccessMode(): AccessMode[] {
-    const modes = this.getObjectValuesFromPredicate("accessMode")
+    const modes = this.getObjectValuesFromPredicate(INTEROP + "accessMode")
     if (modes) {
       return modes.map(mode => getAccessmode(mode));
     }
@@ -78,7 +78,7 @@ export class Data extends Rdf {
   }
 
   public get CreatorAccessMode(): AccessMode[] {
-    const modes = this.getObjectValuesFromPredicate("creatorAccessMode  ")
+    const modes = this.getObjectValuesFromPredicate(INTEROP + "creatorAccessMode")
     if (modes) {
       return modes.map(mode => getAccessmode(mode));
     }

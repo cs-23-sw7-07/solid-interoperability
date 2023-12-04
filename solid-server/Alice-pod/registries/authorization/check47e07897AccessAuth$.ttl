@@ -6,8 +6,8 @@
 
 <https://alice.example/authorization/47e07897> a interop:AccessAuthorization;
     interop:grantedBy <http://localhost:3000/Alice-pod/profile/card#me>;
-    interop:grantedWith <http://localhost:3000/test-unchangeable/authorization-agent#id>;
+    interop:grantedWith <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
     interop:grantedAt "2020-09-05T06:15:01.000Z"^^xsd:dateTime;
-    interop:grantee <http://localhost:3000/test-unchangeable/authorization-agent#id>;
+    interop:grantee <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
     interop:hasAccessNeedGroup <https://jarvis.example/#4fd1482d>;
     interop:hasDataAuthorization <https://alice.example/authorization/0e4cb692>.

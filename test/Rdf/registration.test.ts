@@ -20,7 +20,7 @@ describe("registration - test get and set methods/properties", () => {
         let reg: ApplicationRegistration;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/";
             reg = await getResource(ApplicationRegistration, session.fetch, id);
         });
 
@@ -30,7 +30,7 @@ describe("registration - test get and set methods/properties", () => {
         })
 
         test("Unit test: Application Registration - get RegisteredWith", () => {
-            const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangeable/authorization-agent#id");
+            const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id");
             expect(reg.RegisteredWith).toStrictEqual(registeredWith)
         })
 
@@ -49,7 +49,7 @@ describe("registration - test get and set methods/properties", () => {
         let reg: SocialAgentRegistration;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/c4562da9SocialAgentRegistration/";
+            const id = pod + "registries/agents/c4562da9SocialAgentRegistration/";
             reg = await getResource(SocialAgentRegistration, session.fetch, id);
         });
 

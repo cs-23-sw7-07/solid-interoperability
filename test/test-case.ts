@@ -12,7 +12,7 @@ const jarvisID = new ApplicationAgent(jarvis + '/#id')
 const projectronID = new ApplicationAgent(projectron + '/#id')
 
 export const dataRegistration8501f084 = new DataRegistration(
-    "Alice-pod/Data/8501f084DataRegistration/",
+    "Alice-pod/data/8501f084DataRegistration/",
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -21,7 +21,7 @@ export const dataRegistration8501f084 = new DataRegistration(
 );
 
 export const dataRegistrationdf4ab227 = new DataRegistration(
-    "Alice-pod/Data/df4TaskTreeDataRegistration/",
+    "Alice-pod/data/df4TaskTreeDataRegistration/",
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -30,7 +30,7 @@ export const dataRegistrationdf4ab227 = new DataRegistration(
 );
 
 export const dataRegistration1234567 = new DataRegistration(
-    "Alice-pod/Data/1234567DataRegistration/",
+    "Alice-pod/data/1234567DataRegistration/",
     aliceID,
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
@@ -52,7 +52,7 @@ export const dataRegistration1234567 = new DataRegistration(
 // );
 
 export const dataGrantb42228af = new DataGrant(
-    "Alice-pod/registies/agents/c4562da9SocialAgentRegistration/b42228afDataGrant",
+    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/b42228afDataGrant",
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -65,7 +65,7 @@ export const dataGrantb42228af = new DataGrant(
 );
 
 export const dataGrant2aa21a8c = new DataGrant(
-    "Alice-pod/registies/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant",
+    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant",
     aliceID,
     bobID,
     pmShapetrees + "Issue",
@@ -73,12 +73,12 @@ export const dataGrant2aa21a8c = new DataGrant(
     [AccessMode.Read, AccessMode.Create],
     GrantScope.SelectedFromRegistry,
     projectron + "/#ac12345",
-    [new DataInstance("Alice-pod/Data/8501f084DataRegistration/16e1eae9")],
+    [new DataInstance("Alice-pod/data/8501f084DataRegistration/16e1eae9")],
     [AccessMode.Update, AccessMode.Delete]
 );
 
 export const dataGrant95ff7580 = new DataGrant(
-    "Alice-pod/registies/agents/c4562da9SocialAgentRegistration/95ff7580DataGrant",
+    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/95ff7580DataGrant",
     aliceID,
     bobID,
     pmShapetrees + "TaskTree",
@@ -92,11 +92,11 @@ export const dataGrant95ff7580 = new DataGrant(
 );
 
 export const accessGrantb6e125b8 = new AccessGrant(
-    "Alice-pod/registies/agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant",
+    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant",
     aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
     bobID,
-    projectron + "/#d8219b1f",
+    projectron + "/#need-group-pm",
     [dataGrant2aa21a8c, dataGrant95ff7580, dataGrantb42228af]
 );
 
@@ -254,7 +254,7 @@ export const accessGrant27eae14b = new AccessGrant(
     aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
     projectronID,
-    projectron + "/#d8219b1f",
+    projectron + "/#need-group-pm",
     [
         dataGrant40d038ea,
         dataGrant0945218b,
@@ -267,7 +267,7 @@ export const accessAuthorizatione2765d6d = new AccessAuthorization(
     jarvisID,
     new Date("2020-03-04T20:15:47.000Z"),
     projectronID,
-    projectron + "/#d8219b1f",
+    projectron + "/#need-group-pm",
     [
         dataAuthorization54a1b6a0
     ]
@@ -279,7 +279,7 @@ export const accessAuthorizatione2765d6c = new AccessAuthorization(
     jarvisID,
     new Date("2020-04-04T20:15:47.000Z"),
     projectronID,
-    projectron + "/#d8219b1f",
+    projectron + "/#need-group-pm",
     [
         dataAuthorization54a1b6a0,
         dataAuthorization0e4cb692,

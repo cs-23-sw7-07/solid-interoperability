@@ -48,7 +48,7 @@ export abstract class AgentRegistration extends Registration {
 
     let grants: AccessGrant[] = [];
     for (const uri of grantIRIs) {
-      grants.push(await getResource(AccessGrant, fetch, uri));
+      grants.push(await getResource(AccessGrant, this.fetch, uri));
     }
 
     return grants;

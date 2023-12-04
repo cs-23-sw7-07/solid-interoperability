@@ -7,7 +7,7 @@ import { createTriple, getResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { Data } from "./data";
 import { INTEROP } from "../../namespace";
-import { getScopeOfAuth } from "../../../Utils";
+import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
 import { SAIViolationError, SAIViolationMissingTripleError } from "../../../../Errors";
 
@@ -42,13 +42,13 @@ export class DataGrant extends Data{
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuads(id, grantee, registeredShapeTree, satisfiesAccessNeed, accessMode, creatorAccessMode);
 
-    quads.push(triple("scopeOfGrant", scopeOfGrant))
+    quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)))
     quads.push(triple("dataOwner", dataOwner.webID))
     quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {
       for (const iri of hasDataInstance) {
-        quads.push(triple("hasDataInstanceIRI", iri))
+        quads.push(triple("hasDataInstance", iri))
       }
     }
 
@@ -60,11 +60,11 @@ export class DataGrant extends Data{
   }
 
   public get DataOwner(): SocialAgent {
-    const dataOwner = this.getObjectValueFromPredicate("dataOwner");
+    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
     if (dataOwner) {
       return new SocialAgent(dataOwner);
     }
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfGrant + " it has no data owner property.");
+    throw new SAIViolationError(this, "Since the scope of grant is " + this.ScopeOfGrant + " it has no data owner property.");
   }
 
   public async getHasDataRegistration(): Promise<DataRegistration> {
@@ -83,22 +83,22 @@ export class DataGrant extends Data{
   }
 
   public get HasDataInstance(): string[] {
-    const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstanceIRI");
+    if (this.ScopeOfGrant != GrantScope.SelectedFromRegistry)
+      throw new SAIViolationError(this, "Since the scope of grant is " + this.ScopeOfGrant + " it has no data instance attacted.");
+    const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
     if (iris)
       return iris;
-    else if (this.ScopeOfGrant == GrantScope.SelectedFromRegistry)
-      throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstanceIRI");
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfGrant + " it has no data instance attacted.");
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstance");
   }
 
   public async getInheritsFromGrant(): Promise<DataGrant> {
-    const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromAuthorization");
+    if (this.ScopeOfGrant != GrantScope.Inherited)
+      throw new SAIViolationError(this, "Since the scope of grant is " + this.ScopeOfGrant + " it has no inherited grant attacted.");
+    const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromGrant");
     if (iri) {
       return await getResource(DataGrant, this.fetch, iri);
     }
-    else if (this.ScopeOfGrant == GrantScope.Inherited)
-      throw new SAIViolationMissingTripleError(this, INTEROP + "inheritsFromAuthorization");
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfGrant + " it has no inherited authorization attacted.");
+    throw new SAIViolationMissingTripleError(this, INTEROP + "inheritsFromAuthorization");
   }
 }
 

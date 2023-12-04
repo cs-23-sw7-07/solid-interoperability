@@ -40,7 +40,7 @@ export class ApplicationProfileDocument extends Rdf {
 
         let groups = [];
         for (const uri of values) {
-            groups.push(await getResource(AccessNeedGroup, fetch, uri));
+            groups.push(await getResource(AccessNeedGroup, this.fetch, uri));
         }
 
         return groups;

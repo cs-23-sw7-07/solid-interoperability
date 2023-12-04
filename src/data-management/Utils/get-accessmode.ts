@@ -36,3 +36,31 @@ export function getAccessmode(accessMode: string): AccessMode {
   }
   return accessModeEnum!;
 }
+
+export function accessModeFromEnum(accessModeEnum: AccessMode): string {
+  const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
+
+  switch (accessModeEnum) {
+    case AccessMode.Read: {
+      return solidAcl + "Read";
+    }
+    case AccessMode.Write: {
+      return solidAcl + "Write";
+    }
+    case AccessMode.Update: {
+      return solidAcl + "Update";
+    }
+    case AccessMode.Create: {
+      return solidAcl + "Create";
+    }
+    case AccessMode.Delete: {
+      return solidAcl + "Delete";
+    }
+    case AccessMode.Append: {
+      return solidAcl + "Append";
+    }
+    default: {
+      throw new InvalidAccessMode("Invalid access mode enum: " + accessModeEnum);
+    }
+  }
+}

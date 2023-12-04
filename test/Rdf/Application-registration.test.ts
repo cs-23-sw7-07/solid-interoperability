@@ -38,7 +38,7 @@ describe("Application-registration-test", () => {
         let reg: ApplicationRegistration;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/";
             reg = await getResource(ApplicationRegistration, session.fetch, id);
         });
 

@@ -4,6 +4,7 @@ import { Fetch } from "../../../fetch";
 import { INTEROP } from "../namespace";
 import { AgentRegistration } from "../agent-registration/agent-registration";
 import { ApplicationAgent } from "../agent";
+import {ApplicationRegistration} from "../agent-registration/application-registration";
 
 
 export class AgentRegistryResource extends Rdf {
@@ -15,7 +16,6 @@ export class AgentRegistryResource extends Rdf {
   ) {
     super(
       id,
-      "AgentRegistry",
       fetch, dataset, prefixes
     );
   }
@@ -30,7 +30,7 @@ export class AgentRegistryResource extends Rdf {
 
     async addRegistration(registration: AgentRegistration) {
         const predicate =
-        registration.RegisteredAgent instanceof ApplicationAgent
+        registration instanceof ApplicationRegistration
                 ? INTEROP + "hasApplicationRegistration"
                 : INTEROP + "hasSocialAgentRegistration";
         const quad = this.createTriple(predicate, registration.uri)

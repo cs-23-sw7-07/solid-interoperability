@@ -26,15 +26,15 @@ export class AccessGrant extends Access {
 
   static async new(
     id: string,
+    fetch: Fetch,
     grantedBy: SocialAgent,
-    grantedWith: ApplicationAgent,
     grantedAt: Date,
     grantee: Agent,
     hasAccessNeedGroup: AccessNeedGroup,
     hasDataGrant: DataGrant[],) {
     const grant = new AccessGrant(id, fetch)
     const triple = (predicate: string, object: string | Date) => grant.createTriple(INTEROP + predicate, object);
-    const quads = super.newQuadsAccess(id, grantedBy, grantedWith, grantedAt, grantee, hasAccessNeedGroup);
+    const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
     for (const dataGrant of hasDataGrant) {
       quads.push(triple("hasDataGrant", dataGrant.uri))
     }

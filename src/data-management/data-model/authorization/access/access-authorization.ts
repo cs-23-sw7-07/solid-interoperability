@@ -36,7 +36,10 @@ export class AccessAuthorization extends Access {
     replaces?: AccessAuthorization,) {
     const auth = new AccessAuthorization(id, fetch)
     const triple = (predicate: string, object: string | Date) => auth.createTriple(INTEROP + predicate, object);
-    const quads = super.newQuadsAccess(id, grantedBy, grantedWith, grantedAt, grantee, hasAccessNeedGroup);
+    const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
+    
+    quads.push(triple("grantedWith", grantedWith.webID));
+    
     for (const dataAuth of hasDataAuthorization) {
       quads.push(triple("hasDataAuthorization", dataAuth.uri))
     }
@@ -49,13 +52,20 @@ export class AccessAuthorization extends Access {
   public async toAccessGrant(id: string, data_grants: DataGrant[]) {
     return AccessGrant.new(
       id,
+      this.fetch,
       this.GrantedBy,
-      this.GrantedWith,
       this.GrantedAt,
       this.Grantee,
       await this.getHasAccessNeedGroup(),
       data_grants,
     );
+  }
+
+  get GrantedWith(): ApplicationAgent {
+    const grantedWith = this.getObjectValueFromPredicate(INTEROP + "grantedWith");
+    if (grantedWith)
+      return new ApplicationAgent(grantedWith)
+    throw new SAIViolationMissingTripleError(this, INTEROP + "grantedWith")
   }
 
   async getHasDataAuthorization(): Promise<DataAuthorization[]> {

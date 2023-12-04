@@ -4,13 +4,13 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<http://localhost:3000/Alice-pod/registies/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant> a interop:DataGrant;
+<http://localhost:3000/Alice-pod/registries/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant> a interop:DataGrant;
     interop:dataOwner <http://localhost:3000/Alice-pod/profile/card#me>;
     interop:grantee <https://bob.example/#id>;
-    interop:registeredShapeTree <http://data.example/shapetrees/pm#Issue>;
-    interop:hasDataRegistration <http://localhost:3000/Alice-pod/Data/1234567DataRegistration/>;
-    interop:satisfiesAccessNeed <http://localhost:3000/test-unchangeable/projectron#ac12345>;
+    interop:registeredShapeTree <http://shapetrees.example/solid/Issue>;
+    interop:hasDataRegistration <http://localhost:3000/Alice-pod/data/1234567DataRegistration/>;
+    interop:satisfiesAccessNeed <http://localhost:3000/Alice-pod/profile-documents/projectron#ac12345>;
     interop:accessMode acl:Read, acl:Create;
     interop:creatorAccessMode acl:Update, acl:Delete;
     interop:scopeOfGrant interop:SelectedFromRegistry;
-    interop:hasDataInstance <http://localhost:3000/Alice-pod/Data/8501f084DataRegistration/16e1eae9>.
+    interop:hasDataInstance <http://localhost:3000/Alice-pod/data/8501f084DataRegistration/16e1eae9>.

@@ -20,12 +20,12 @@ describe("Agent registration - test get and set methods/properties", () => {
         let reg: ApplicationRegistration;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/";
             reg = await getResource(ApplicationRegistration, session.fetch, id);
         });
 
         test("Unit test: Application Registration - getHasAccessGrants", async () => {
-            const grant_iri = pod + "test-unchangeable/2f2f3628ApplicationRegistration/e2765d6dAccessGrant";
+            const grant_iri = pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant";
             const grant = await getResource(AccessGrant, session.fetch, grant_iri)
             const expectedGrants: AccessGrant[] = [grant]
             
@@ -39,12 +39,12 @@ describe("Agent registration - test get and set methods/properties", () => {
         let reg: SocialAgentRegistration;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/c4562da9SocialAgentRegistration/";
+            const id = pod + "registries/agents/c4562da9SocialAgentRegistration/";
             reg = await getResource(SocialAgentRegistration, session.fetch, id);
         });
 
         test("Unit test: Social Registration - getHasAccessGrants", async () => {
-            const grant_iri = pod + "test-unchangeable/c4562da9SocialAgentRegistration/b6e125b8AccessGrant";
+            const grant_iri = pod + "registries/agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant";
             const grant = await getResource(AccessGrant, session.fetch, grant_iri)
             const expectedGrants: AccessGrant[] = [grant]
             
@@ -62,7 +62,7 @@ describe("Agent registration - test get and set methods/properties", () => {
             });
     
             test("Unit test: Application Registration - getHasAccessGrants", async () => {
-                expect(async () => {await reg.getHasAccessGrants()}).toThrow(SAIViolationMissingTripleError)
+                expect(async () => {await reg.getHasAccessGrants()}).rejects.toThrow(SAIViolationMissingTripleError)
             })
         })
     })

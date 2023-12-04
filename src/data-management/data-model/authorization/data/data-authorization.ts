@@ -7,7 +7,7 @@ import { AccessMode } from "../access/access-mode";
 import { Data } from "./data";
 import { createTriple, getResource } from "../../RDF/rdf";
 import { INTEROP } from "../../namespace";
-import { getScopeOfAuth } from "../../../Utils";
+import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
 import { SAIViolationError, SAIViolationMissingTripleError } from "../../../../Errors";
 import { IDataGrantBuilder } from "./IDataGrantBuilder";
@@ -44,7 +44,7 @@ export class DataAuthorization extends Data {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuads(id, grantee, registeredShapeTree, satisfiesAccessNeed, accessMode, creatorAccessMode);
 
-    quads.push(triple("scopeOfAuthorization", scopeOfAuthorization))
+    quads.push(triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)))
 
     if (dataOwner)
       quads.push(triple("dataOwner", dataOwner.webID))
@@ -65,29 +65,6 @@ export class DataAuthorization extends Data {
     return new DataAuthorization(id, fetch, new Store(quads));
   }
 
-  public get DataOwner(): SocialAgent {
-    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
-    if (dataOwner) {
-      return new SocialAgent(dataOwner);
-    }
-    else if (this.ScopeOfAuthorization != GrantScope.All)
-      throw new SAIViolationMissingTripleError(this, INTEROP + "dataOwner");
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data owner property.");
-  }
-
-  public async getHasDataRegistration(): Promise<DataRegistration> {
-    const iri = this.getObjectValueFromPredicate(INTEROP + "hasDataRegistration");
-    if (iri) {
-      return await getResource(DataRegistration, this.fetch, iri);
-    }
-    else {
-      const scope = this.ScopeOfAuthorization;
-      if (scope == GrantScope.AllFromRegistry || scope == GrantScope.SelectedFromRegistry || scope == GrantScope.Inherited)
-        throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataRegistration");
-    }
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data registration attacted.");
-  }
-
   public get ScopeOfAuthorization(): GrantScope {
     const scope = this.getObjectValueFromPredicate(INTEROP + "scopeOfAuthorization");
     if (scope)
@@ -95,23 +72,44 @@ export class DataAuthorization extends Data {
     throw new SAIViolationMissingTripleError(this, INTEROP + "scopeOfAuthorization");
   }
 
+  public get DataOwner(): SocialAgent {
+    if (this.ScopeOfAuthorization == GrantScope.All)
+      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data owner property.");
+    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
+    if (dataOwner) {
+      return new SocialAgent(dataOwner);
+    }
+    throw new SAIViolationMissingTripleError(this, INTEROP + "dataOwner");
+  }
+
+  public async getHasDataRegistration(): Promise<DataRegistration> {
+    const scope = this.ScopeOfAuthorization;
+    if (scope == GrantScope.All || scope == GrantScope.AllFromAgent)
+      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data registration attacted.");
+    const iri = this.getObjectValueFromPredicate(INTEROP + "hasDataRegistration");
+    if (iri) {
+      return await getResource(DataRegistration, this.fetch, iri);
+    }
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataRegistration");
+  }
+
   public get HasDataInstance(): string[] {
-    const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstanceIRI");
+    if (this.ScopeOfAuthorization != GrantScope.SelectedFromRegistry)
+      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data instance attacted.");
+    const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
     if (iris)
       return iris;
-    else if (this.ScopeOfAuthorization == GrantScope.SelectedFromRegistry)
-      throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstanceIRI");
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data instance attacted.");
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstance");
   }
 
   public async getInheritsFromAuthorization(): Promise<DataAuthorization> {
+    if (this.ScopeOfAuthorization != GrantScope.Inherited)
+      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no inherited authorization attacted.");
     const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromAuthorization");
     if (iri) {
       return await getResource(DataAuthorization, this.fetch, iri);
     }
-    else if (this.ScopeOfAuthorization == GrantScope.Inherited)
-      throw new SAIViolationMissingTripleError(this, INTEROP + "inheritsFromAuthorization");
-    throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no inherited authorization attacted.");
+    throw new SAIViolationMissingTripleError(this, INTEROP + "inheritsFromAuthorization");
   }
 
 
@@ -170,7 +168,7 @@ export class DataAuthorization extends Data {
             this.RegisteredShapeTree,
             await this.getSatisfiesAccessNeed(),
             this.AccessMode,
-            GrantScope.AllFromRegistry,
+            GrantScope.SelectedFromRegistry,
             reg.RegisteredBy,
             reg,
             this.CreatorAccessMode,
@@ -192,7 +190,7 @@ export class DataAuthorization extends Data {
               this.RegisteredShapeTree,
               await this.getSatisfiesAccessNeed(),
               this.AccessMode,
-              GrantScope.AllFromRegistry,
+              GrantScope.Inherited,
               reg.RegisteredBy,
               reg,
               this.CreatorAccessMode,

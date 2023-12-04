@@ -40,7 +40,7 @@ export class AccessNeedGroup extends Rdf {
 
         let needs: AccessNeed[] = [];
         for (const uri of needUris) {
-            needs.push(await getResource(AccessNeed, fetch, uri));
+            needs.push(await getResource(AccessNeed, this.fetch, uri));
         }
 
         return needs;

@@ -24,14 +24,12 @@ export abstract class Access extends Rdf {
   static newQuadsAccess(
     id: string,
     grantedBy: SocialAgent,
-    grantedWith: ApplicationAgent,
     grantedAt: Date,
     grantee: Agent,
     hasAccessNeedGroup: AccessNeedGroup) {
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     return [
       triple("grantedBy", grantedBy.webID),
-      triple("grantedWith", grantedWith.webID),
       triple("grantedAt", grantedAt),
       triple("grantee", grantee.webID),
       triple("hasAccessNeedGroup", hasAccessNeedGroup.uri)
@@ -43,13 +41,6 @@ export abstract class Access extends Rdf {
     if (grantedBy)
       return new SocialAgent(grantedBy)
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedBy")
-  }
-
-  get GrantedWith(): ApplicationAgent {
-    const grantedWith = this.getObjectValueFromPredicate(INTEROP + "grantedWith");
-    if (grantedWith)
-      return new ApplicationAgent(grantedWith)
-    throw new SAIViolationMissingTripleError(this, INTEROP + "grantedWith")
   }
 
   get GrantedAt(): Date {

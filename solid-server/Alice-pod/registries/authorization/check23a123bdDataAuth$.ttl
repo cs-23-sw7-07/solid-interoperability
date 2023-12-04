@@ -7,10 +7,10 @@
 <https://alice.example/authorization/23a123bd> a interop:DataAuthorization;
     interop:dataOwner <http://localhost:3000/Alice-pod/profile/card#me>;
     interop:grantee <https://bob.example/#id>;
-    interop:registeredShapeTree <http://data.example/shapetrees/pm#ProjectTree>;
+    interop:registeredShapeTree <http://shapetrees.example/solid/Project>;
     interop:hasDataRegistration <http://localhost:3000/Alice-pod/data/8501f084DataRegistration/>;
     interop:accessMode acl:Read, acl:Create;
     interop:creatorAccessMode acl:Update, acl:Delete;
     interop:scopeOfAuthorization interop:SelectedFromRegistry;
-    interop:satisfiesAccessNeed <http://localhost:3000/test-unchangeable/projectron#ac54ff1e>;
+    interop:satisfiesAccessNeed <http://localhost:3000/Alice-pod/profile-documents/projectron#ac54ff1e>;
     interop:hasDataInstance <http://localhost:3000/Alice-pod/data/8501f084DataRegistration/16e1eae9>, <http://localhost:3000/Alice-pod/data/8501f084DataRegistration/886785d2>.

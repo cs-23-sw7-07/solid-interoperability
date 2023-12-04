@@ -1,6 +1,7 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {AccessAuthorization, ApplicationAgent, ApplicationRegistration, getResource, SAIViolationMissingTripleError, SocialAgent, SocialAgentRegistration} from "../../src";
+import {AccessAuthorization, ApplicationAgent, getResource, SAIViolationMissingTripleError, SocialAgent} from "../../src";
+import { AccessNeedGroup } from "../../src/data-management/data-model/authorization/access-needs/access-need-group";
 
 describe(" - test get and set methods/properties", () => {
     let session: Session;
@@ -16,102 +17,67 @@ describe(" - test get and set methods/properties", () => {
         await session.logout()
     });
 
-    describe("", () => {
+    describe("AccessAuthorization", () => {
         let access: AccessAuthorization;
 
         beforeAll(async () => {
-            const id = pod + "test-unchangeable/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries/authorization/e2765d6cAccessAuthReplace";
             access = await getResource(AccessAuthorization, session.fetch, id);
         });
 
         test("Unit test: AccessAuthorization - get GrantedBy", () => {
-            const expectedRegisteredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-            expect(access.GrantedBy).toStrictEqual(expectedRegisteredBy)
-        })
-
-        test("Unit test: AccessAuthorization - get GrantedWith", () => {
-            const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangeable/authorization-agent#id");
-            expect(access.GrantedWith).toStrictEqual(registeredWith)
+            const expectedGrantedBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+            expect(access.GrantedBy).toStrictEqual(expectedGrantedBy)
         })
 
         test("Unit test: AccessAuthorization - get GrantedAt", () => {
-            const registeredAt: Date = new Date("2020-04-04T20:15:47.000Z");
-            expect(access.GrantedAt).toStrictEqual(registeredAt)
+            const expectedGrantedAt: Date = new Date("2020-12-04T20:15:47.000Z");
+            expect(access.GrantedAt).toStrictEqual(expectedGrantedAt)
         })
 
         test("Unit test: AccessAuthorization - get Grantee", () => {
-            const updatedAt: Date = new Date("2020-04-04T21:11:33.000Z")
-            expect(access.Grantee).toStrictEqual(updatedAt)
+            const expectedGrantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/projectron#id");
+            expect(access.Grantee).toStrictEqual(expectedGrantee)
         })
 
         test("Unit test: AccessAuthorization - getHasAccessNeedGroup", async () => {
-            const updatedAt: Date = new Date("2020-04-04T21:11:33.000Z")
-            expect(await access.getHasAccessNeedGroup()).toStrictEqual(updatedAt)
+            const expectedHasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, "http://localhost:3000/Alice-pod/profile-documents/projectron#need-group-pm");
+            expect(await access.getHasAccessNeedGroup()).toStrictEqual(expectedHasAccessNeedGroup)
         })
     })
 
-    describe("", () => {
-        let reg: SocialAgentRegistration;
+    describe("Missing Predicate in AccessAuthorization", () => {
+        describe("Missing Predicates GrantedBy and GrantedWith", () => {
+            let access: AccessAuthorization;
 
-        beforeAll(async () => {
-            const id = pod + "test-unchangeable/c4562da9SocialAgentRegistration/";
-            reg = await getResource(SocialAgentRegistration, session.fetch, id);
-        });
-
-        test("Unit test:  - get RegisteredBy", () => {
-            const expectedRegisteredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-            const actualRegisteredBy = reg.RegisteredBy
-            expect(actualRegisteredBy).toStrictEqual(expectedRegisteredBy)
-        })
-
-        test("Unit test:  - get RegisteredWith", () => {
-            const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test-unchangeable/authorization-agent123#id");
-            expect(reg.RegisteredWith).toStrictEqual(registeredWith)
-        })
-
-        test("Unit test:  - get registeredAt", () => {
-            const registeredAt: Date = new Date("2020-04-04T12:12:12.000Z");
-            expect(reg.RegisteredAt).toStrictEqual(registeredAt)
-        })
-
-        test("Unit test:  - get updatedAt", () => {
-            const updatedAt: Date = new Date("2020-04-04T22:12:32.000Z")
-            expect(reg.UpdatedAt).toStrictEqual(updatedAt)
-        })
-    })
-
-    describe("Missing Predicate in Registration", () => {
-        describe("Missing Predicates registeredBy and registeredWith", () => {
-            let reg: ApplicationRegistration;
-    
             beforeAll(async () => {
-                const id = pod + "test-unchangeable/wrong-rdfs/wrongApplicationRegistration1/";
-                reg = await getResource(ApplicationRegistration, session.fetch, id);
+                const id = pod + "test-unchangeable/wrong-rdfs/wrongAccessAuth1";
+                access = await getResource(AccessAuthorization, session.fetch, id);
             });
     
-            test("Unit test:  - get registeredBy", () => {
-                expect(() => {reg.RegisteredBy}).toThrow(SAIViolationMissingTripleError)
-            })
-    
-            test("Unit test:  - get registeredWith", () => {
-                expect(() => {reg.RegisteredWith}).toThrow(SAIViolationMissingTripleError)
+            test("Unit test:  - get GrantedBy", () => {
+                expect(() => {access.GrantedBy}).toThrow(SAIViolationMissingTripleError)
             })
         })
 
-        describe("Missing Predicates registeredAt and updatedAt", () => {
-            let reg: ApplicationRegistration;
-    
+        describe("Missing Predicates GrantedAt and Grantee and method getHasAccessNeedGroup", () => {
+            let access: AccessAuthorization;
+
             beforeAll(async () => {
-                const id = pod + "test-unchangeable/wrong-rdfs/wrongApplicationRegistration2/";
-                reg = await getResource(ApplicationRegistration, session.fetch, id);
+                const id = pod + "test-unchangeable/wrong-rdfs/wrongAccessAuth2";
+                access = await getResource(AccessAuthorization, session.fetch, id);
             });
 
-            test("Unit test:  - get registeredAt", () => {
-                expect(() => {reg.RegisteredAt}).toThrow(SAIViolationMissingTripleError)
+            test("Unit test:  - get GrantedAt", () => {
+                expect(() => {access.GrantedAt}).toThrow(SAIViolationMissingTripleError)
             })
     
-            test("Unit test:  - get updatedAt", () => {
-                expect(() => {reg.UpdatedAt}).toThrow(SAIViolationMissingTripleError)
+            test("Unit test:  - get Grantee", () => {
+                expect(() => {access.Grantee}).toThrow(SAIViolationMissingTripleError)
+            })
+
+            test("Unit test:  - getHasAccessNeedGroup", () => {
+                expect(async () => {await access.getHasAccessNeedGroup()}).rejects.toThrow(SAIViolationMissingTripleError)
             })
         })
     })
