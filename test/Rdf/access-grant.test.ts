@@ -2,11 +2,15 @@ import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@i
 import {Session} from "@inrupt/solid-client-authn-node";
 import {
     AccessGrant,
+    AccessNeedGroup,
+    ApplicationAgent,
+    ApplicationRegistration,
     DataAuthorization,
     DataGrant,
     getResource,
     getResources,
-    SAIViolationMissingTripleError
+    SAIViolationMissingTripleError,
+    SocialAgent
 } from "../../src";
 
 describe("AccessGrant - test get and set methods/properties", () => {
@@ -49,5 +53,35 @@ describe("AccessGrant - test get and set methods/properties", () => {
         test("Unit test: AccessGrant - hasDataGrant", () => {
             expect(async () => {await access.getHasDataGrant()}).rejects.toThrow(SAIViolationMissingTripleError)
         })
+    })
+})
+
+describe("Testing pod communication for Access Grant", () => {
+    let session: Session;
+    let pod: string
+
+    beforeAll(async () => {
+        const env = getNodeTestingEnvironment()
+        session = await getAuthenticatedSession(env)
+        pod = await getPodRoot(session);
+    });
+    
+    test("Able to add an Access Grant", async () => {
+        const dataGrant = await getResource(DataGrant, session.fetch, pod + "LOCATIONDataGrant")
+        const id: string = pod + "applicationRegistration1/";
+        const grantedBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+        const grantedAt: Date = new Date();
+        const grantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/MyApp/profile/card#me");
+        const hasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, pod + "LOCATIONAccessNeedGroup");
+        const hasDataGrant: DataGrant[] = [dataGrant];
+
+        await AccessGrant.new(id, session.fetch, grantedBy, grantedAt, grantee, hasAccessNeedGroup, hasDataGrant);
+        
+        const addedGrant = await getResource(AccessGrant, session.fetch, id)
+        expect(addedGrant.uri).toStrictEqual(id)
+        expect(addedGrant.GrantedBy).toStrictEqual(grantedBy)
+        expect(addedGrant.GrantedAt).toStrictEqual(grantedAt)
+        expect(addedGrant.Grantee).toStrictEqual(grantee)
+        expect(addedGrant.getHasDataGrant).toStrictEqual(hasDataGrant)
     })
 })
