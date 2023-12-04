@@ -35,6 +35,22 @@ export async function createContainer(fetch: Fetch, uriContainer: string) {
     }
 }
 
+export async function create(fetch: Fetch, uriContainer: string) {
+    const headers = new Headers({
+        "Content-Type": "text/turtle",
+    });
+
+    const requestOptions: RequestInit = {
+        method: "PUT",
+        headers: headers,
+    };
+
+    const response = await fetch(uriContainer, requestOptions);
+    if (!response.ok) {
+        throw new Error(`failed to create containers ${uriContainer} ${response}`);
+    }
+}
+
 // export function getDescriptionResource(linkHeaderText: string): string | undefined {
 //     const links = LinkHeader.parse(linkHeaderText).refs;
 //     return links.find((link) => link.rel === 'describedby')?.uri;

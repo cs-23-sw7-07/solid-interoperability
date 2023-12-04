@@ -65,6 +65,16 @@ export class Rdf {
           })
   }
 
+  protected newResource(quads: Quad[]) {
+    return insertSPARQLUpdate(new Store(quads))
+        .then(body => this.patchSPARQLUpdate(body, false))
+        .then(_ => {
+          for (const quad of quads) {
+            this.dataset.add(quad)
+          }
+        })
+  }
+
   protected async add(quads: Quad[]): Promise<void>
   protected async add(...quads: Quad[]): Promise<void>
   protected async add(quads: any) {
@@ -77,8 +87,8 @@ export class Rdf {
         })
   }
 
-  protected async patchSPARQLUpdate(body: string): Promise<Response> {
-    return await this.fetch(this.uri + ".meta", {
+  protected async patchSPARQLUpdate(body: string, withMeta: boolean = true): Promise<Response> {
+    return await this.fetch(this.uri + (withMeta ? ".meta" : ""), {
       method: "PATCH",
       body: body,
       headers: {
@@ -86,7 +96,7 @@ export class Rdf {
       },
   }).then((res) => {
       if (!res.ok) {
-          throw new Error(`failed to patch ${this.uri}`);
+          throw new Error(`failed to patch ${this.uri}, body: ${body}, Response: ${res.statusText} ${res.status}`);
       }
       return res
   });

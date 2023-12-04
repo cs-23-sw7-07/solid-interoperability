@@ -153,11 +153,11 @@ describe("DataAuthorization - test get and set methods/properties", () => {
                 return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
             }
 
-            getAllDataRegistrations(registeredShapeTree: string, dataOwner?: SocialAgent): Promise<DataRegistration[]> {
+            getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
                 return Promise.reject([]);
             }
 
-            getInheritedDataGrants(auth: DataAuthorization): Promise<DataGrant[]> {
+            getInheritedDataGrants(_auth: DataAuthorization): Promise<DataGrant[]> {
                 return Promise.reject([]);
             }
 
@@ -168,9 +168,18 @@ describe("DataAuthorization - test get and set methods/properties", () => {
 
             const auth = await getResource(DataAuthorization, session.fetch, pod + "registries/authorization/f54a1b6a0DataAuth");
 
-            const actual = await auth.toDataGrant(new MockBuilder());
-
-            expect(actual[0]).toEqual(expected)
+            const actuals = await auth.toDataGrant(new MockBuilder());
+            expect(actuals.length).toEqual(1);
+            const actual = actuals[0];
+            expect(actual.Grantee).toStrictEqual(expected.Grantee);
+            expect(actual.RegisteredShapeTree).toStrictEqual(expected.RegisteredShapeTree);
+            expect(actual.getSatisfiesAccessNeed()).toStrictEqual(expected.getSatisfiesAccessNeed());
+            expect(actual.AccessMode).toStrictEqual(expected.AccessMode);
+            expect(actual.ScopeOfGrant).toStrictEqual(expected.ScopeOfGrant);
+            expect(actual.DataOwner).toStrictEqual(expected.DataOwner);
+            expect(actual.getHasDataRegistration()).toStrictEqual(expected.getHasDataRegistration());
+            expect(actual.CreatorAccessMode).toStrictEqual(expected.CreatorAccessMode);
+            expect(actual.HasDataInstance).toStrictEqual(expected.HasDataInstance);
         })
     })
 })

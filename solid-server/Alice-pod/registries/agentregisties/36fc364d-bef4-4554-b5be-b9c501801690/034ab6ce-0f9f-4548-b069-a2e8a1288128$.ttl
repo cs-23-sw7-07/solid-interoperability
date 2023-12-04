@@ -1,0 +1,1 @@
+<http://localhost:3000/Alice-pod/Registries/agentregisties/36fc364d-bef4-4554-b5be-b9c501801690/034ab6ce-0f9f-4548-b069-a2e8a1288128> <http://www.w3.org/ns/solid/interop#grantedBy> <http://la.com/Alicea>.

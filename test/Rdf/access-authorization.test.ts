@@ -1,6 +1,14 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {AccessAuthorization, ApplicationAgent, DataAuthorization, getResource, getResources, SAIViolationMissingTripleError} from "../../src";
+import {
+    AccessAuthorization, AccessGrant,
+    ApplicationAgent,
+    DataAuthorization, DataGrant, DataRegistration,
+    getResource,
+    getResources,
+    IDataGrantBuilder,
+    SAIViolationMissingTripleError, SocialAgent
+} from "../../src";
 
 describe("AccessAuthorization - test get and set methods/properties", () => {
     let session: Session;
@@ -69,6 +77,40 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
 
         test("Unit test: AccessAuthorization - getHasDataAuthorization", () => {
             expect(async () => {await access.getHasDataAuthorization()}).rejects.toThrow(SAIViolationMissingTripleError)
+        })
+    })
+
+    describe("Convert from authorization to grant", () => {
+
+        class MockBuilder implements IDataGrantBuilder {
+            generateId(): string {
+                return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
+            }
+
+            getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
+                return Promise.reject([]);
+            }
+
+            getInheritedDataGrants(_auth: DataAuthorization): Promise<DataGrant[]> {
+                return Promise.reject([]);
+            }
+
+        }
+
+        test("Unit test: Access authorization to Access grant", async () => {
+            const expected = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant");
+
+            const uris = [pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
+            const dataGrants: DataGrant[] = await getResources(DataGrant, session.fetch, uris);
+
+            const auth = await getResource(AccessAuthorization, session.fetch, pod + "registries/authorization/e2765d6cAccessAuthReplace");
+
+            const actual = await auth.toAccessGrant(pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100", dataGrants);
+            expect(actual.GrantedBy).toStrictEqual(expected.GrantedBy);
+            expect(actual.GrantedAt).toStrictEqual(expected.GrantedAt);
+            expect(actual.Grantee).toStrictEqual(expected.Grantee);
+            expect(actual.getHasAccessNeedGroup()).toStrictEqual(expected.getHasAccessNeedGroup());
+            expect(actual.getHasDataGrant()).toStrictEqual(expected.getHasDataGrant());
         })
     })
 })

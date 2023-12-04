@@ -1,0 +1,6 @@
+<http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100> <http://www.w3.org/ns/solid/interop#grantedBy> <http://localhost:3000/Alice-pod/profile/card#me>;
+    <http://www.w3.org/ns/solid/interop#grantedAt> "2020-12-04T20:15:47.000Z"^^<xsd:dateTime>;
+    <http://www.w3.org/ns/solid/interop#grantee> <http://localhost:3000/Alice-pod/profile-documents/projectron#id>;
+    <http://www.w3.org/ns/solid/interop#hasAccessNeedGroup> <http://localhost:3000/Alice-pod/profile-documents/projectron#need-group-pm>;
+    <http://www.w3.org/ns/solid/interop#hasDataGrant> <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>, <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant>;
+    <http://www.w3.org/ns/solid/interop#http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/solid/interop#AccessGrant>.

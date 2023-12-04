@@ -3,7 +3,7 @@ import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
 import { DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
 import { Access } from "./access";
-import { INTEROP } from "../../namespace";
+import {INTEROP, TYPE_A} from "../../namespace";
 import {getResources} from "../../RDF/rdf";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
@@ -38,6 +38,8 @@ export class AccessGrant extends Access {
     for (const dataGrant of hasDataGrant) {
       quads.push(triple("hasDataGrant", dataGrant.uri))
     }
+    quads.push(triple(TYPE_A, INTEROP + "AccessGrant"));
+    await grant.newResource(quads);
     return grant;
   }
 
