@@ -11,9 +11,9 @@ const A = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 
 export class DataInstance<T> {
   private constructor(
-      public data: T,
-      private owner: ISocialAgent,
-      readonly id: string,
+    public data: T,
+    private owner: ISocialAgent,
+    readonly id: string,
   ) {}
 
   static new<T>(data: T, owner: ISocialAgent) {
@@ -69,8 +69,8 @@ export class DataInstance<T> {
   }
 
   static async deserialize<T extends Constructor>(
-      instance: string,
-      type: T,
+    instance: string,
+    type: T,
   ): Promise<DataInstance<unknown>> {
     /*
 
@@ -86,7 +86,7 @@ export class DataInstance<T> {
     return DataInstance.from(obj, owner, id);
 
      */
-    throw new NotImplementedYet()
+    throw new NotImplementedYet();
   }
   static empty<T>(type: T) {
     // @ts-ignore

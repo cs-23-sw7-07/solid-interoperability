@@ -1,4 +1,4 @@
-import {URL} from "url";
+import { URL } from "url";
 
 export interface ISocialAgent {
   get WebId(): URL;

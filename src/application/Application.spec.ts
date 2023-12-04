@@ -11,7 +11,7 @@ import * as path from "path";
 import { v4 as uuid } from "uuid";
 import { DataInstance } from "./SolidDataInstance";
 import { SocialAgent } from "./SocialAgent";
-import {ProfileDocument} from "./Rdf";
+import { ProfileDocument } from "./Rdf";
 
 export const ALICE_WEBID = new URL(
   "http://localhost:3000/alice-pod/profile/card#me",
@@ -34,26 +34,24 @@ class TestInstance {
     return arg1 > 0;
   }
 }
-beforeAll(()=>{
-
-})
+beforeAll(() => {});
 
 describe("Application", () => {
   let app: Application;
   let auths: IAuthorization[];
 
-  beforeAll(async ()=>{
+  beforeAll(async () => {
     const authService = new AuthService(new URL("http://localhost:3001"));
     auths = new Array<IAuthorization>();
     const socialAgent = await ProfileDocument.fetch(ALICE_WEBID);
     auths.push(new Authorization(socialAgent, authService));
     const authStore = new AuthorizationStore(auths);
-    app = new Application({authStore: authStore});
+    app = new Application({ authStore: authStore });
   });
 
   it("Can register", () => {
-    app.register(new URL(ALICE_WEBID))
-    expect(app.authStore.Authorizations.length).toBe(1)
+    app.register(new URL(ALICE_WEBID));
+    expect(app.authStore.Authorizations.length).toBe(1);
   });
 
   it("Can get Authorizations", () => {
@@ -63,7 +61,6 @@ describe("Application", () => {
   });
 
   it("should store Solid Data Instance", async () => {
-
     const instance = DataInstance.new(
       new TestInstance({}),
       auths[0].socialAgent,

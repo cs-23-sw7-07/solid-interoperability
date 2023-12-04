@@ -181,8 +181,8 @@ export class DataAuthorization extends Rdf implements ItoRdf {
       subjectNode,
       namedNode("interop:registeredShapeTree"),
       namedNode(this.registeredShapeTree),
-    )
-    console.log("hasDataRegistration: " + this.hasDataRegistration)
+    );
+    console.log("hasDataRegistration: " + this.hasDataRegistration);
     if (this.hasDataRegistration != undefined) {
       writer.addQuad(
         subjectNode,

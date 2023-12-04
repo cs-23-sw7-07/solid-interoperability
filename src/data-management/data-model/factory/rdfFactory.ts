@@ -70,7 +70,7 @@ export class RdfFactory {
 
   private parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
     return new Promise((resolve, reject) => {
-      const parserOptions: { baseIRI: string } = {baseIRI: docPath};
+      const parserOptions: { baseIRI: string } = { baseIRI: docPath };
       const parser = new N3.Parser({ ...parserOptions });
       const quads: N3.Quad[] = [];
       parser.parse(rdf, (error, quad) => {
@@ -89,21 +89,23 @@ export class RdfFactory {
     });
   }
 
-  async parseQuads(fetch: Fetch, quads: N3.Quad[], url: string): Promise<Map<string, any>> {
+  async parseQuads(
+    fetch: Fetch,
+    quads: N3.Quad[],
+    url: string,
+  ): Promise<Map<string, any>> {
     const args: Map<string, any> = new Map<string, any>();
     const solidInterop: string = "http://www.w3.org/ns/solid/interop#";
 
     for (const quad of quads) {
-      if (quad.subject.id != url)
-        continue;
+      if (quad.subject.id != url) continue;
       switch (quad.predicate.id) {
         case "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
-          if (args.has("type"))
-            args.get("type").push(quad.object.id);
+          if (args.has("type")) args.get("type").push(quad.object.id);
           else {
             args.set("type", [quad.object.id]);
             args.set("id", quad.subject.id);
-          } 
+          }
           break;
         }
         case solidInterop + "grantedBy": {
@@ -118,22 +120,21 @@ export class RdfFactory {
           args.set("grantedAt", getDate(quad.object.id));
           break;
         }
-        case solidInterop + "grantee": {
-          const result: Map<string, any> | Error = await this.parse(
-            fetch,
-            quad.object.id,
-          );
-          if (result instanceof Error) {
-            throw result;
-          }
-          const types: string[] = result.get("type")
+        case solidInterop + "grantee":
+          {
+            const result: Map<string, any> | Error = await this.parse(
+              fetch,
+              quad.object.id,
+            );
+            if (result instanceof Error) {
+              throw result;
+            }
+            const types: string[] = result.get("type");
             if (types.includes(solidInterop + "Application")) {
               args.set("grantee", new ApplicationAgent(quad.object.id));
-            }
-            else if (types.includes(solidInterop + "Agent")) {
+            } else if (types.includes(solidInterop + "Agent")) {
               args.set("grantee", new SocialAgent(quad.object.id));
-            }
-            else {
+            } else {
               // throw new Error("Could not infer agent type " + result.get("type"));
             }
           }
@@ -266,7 +267,7 @@ export class RdfFactory {
           break;
         }
         default: {
-          console.log(JSON.stringify(quad, null, 4))
+          console.log(JSON.stringify(quad, null, 4));
           // throw new NotImplementedYet(JSON.stringify(quad, null, 4));
         }
       }

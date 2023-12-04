@@ -1,12 +1,17 @@
 import { URL } from "url";
 import { DataInstance } from "./SolidDataInstance";
-import {Authorization, AuthorizationStore, IAuthorization, IAuthorizationStore} from "./Authorization";
+import {
+  Authorization,
+  AuthorizationStore,
+  IAuthorization,
+  IAuthorizationStore,
+} from "./Authorization";
 import { Type } from "typedoc";
-import {getAuthAgent, getProfile} from "../authentication/authentication";
-import {NotImplementedYet} from "../Errors/NotImplementedYet";
+import { getAuthAgent, getProfile } from "../authentication/authentication";
+import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import * as fs from "fs";
-import {SocialAgent} from "./SocialAgent";
-import {ProfileDocument} from "./Rdf";
+import { SocialAgent } from "./SocialAgent";
+import { ProfileDocument } from "./Rdf";
 
 /**
  * Interface for Solid Applications.
@@ -31,7 +36,7 @@ interface IApplicationOptions {
 }
 
 export class Application implements IApplication {
-  authStore: IAuthorizationStore
+  authStore: IAuthorizationStore;
   /**
    * The main interface for Solid application. The {@link Application} API contains the necessary functionality to create a
    * solid application. To create a Solid application, simply instantiate an {@link Application} and plug it into your express
@@ -41,11 +46,8 @@ export class Application implements IApplication {
    * @param authenticationStore
    * @param options
    */
-  constructor(
-    private options?: IApplicationOptions,
-  )
-  {
-    this.authStore = this.options?.authStore ?? new AuthorizationStore()
+  constructor(private options?: IApplicationOptions) {
+    this.authStore = this.options?.authStore ?? new AuthorizationStore();
   }
 
   /**
@@ -56,14 +58,16 @@ export class Application implements IApplication {
     return this.options?.name ?? "Application";
   }
 
-  get Profile(){
-    const profile = this.options?.profile
+  get Profile() {
+    const profile = this.options?.profile;
 
-    if (profile == undefined){
-      throw new Error("This application does not have a profile document. Please pass one to the constructor upon " +
-          "instantiation.")
+    if (profile == undefined) {
+      throw new Error(
+        "This application does not have a profile document. Please pass one to the constructor upon " +
+          "instantiation.",
+      );
     }
-    return fs.readFileSync(profile, {encoding: "utf-8"})
+    return fs.readFileSync(profile, { encoding: "utf-8" });
   }
 
   /**
@@ -71,21 +75,21 @@ export class Application implements IApplication {
    */
 
   async register(webId: URL): Promise<void> {
-    let authStore = this.authStore
-    if (authStore == undefined){
+    let authStore = this.authStore;
+    if (authStore == undefined) {
       //TODO: Save new authstore
-      authStore = new AuthorizationStore()
+      authStore = new AuthorizationStore();
     }
 
-    const profile = await ProfileDocument.fetch(webId)
-    authStore.addAuthorization(profile.Authorization)
+    const profile = await ProfileDocument.fetch(webId);
+    authStore.addAuthorization(profile.Authorization);
   }
 
   /**
    * Retrieve all registered authorizations.
    */
   get Authorizations(): IAuthorization[] {
-    return this.authStore.Authorizations
+    return this.authStore.Authorizations;
   }
 
   /**
@@ -94,7 +98,9 @@ export class Application implements IApplication {
    */
   getAuthorization(webId: URL): IAuthorization | undefined {
     // Maybe this should be a database?
-    return this.Authorizations.find((x) => x.socialAgent.WebId.toString() == webId.toString());
+    return this.Authorizations.find(
+      (x) => x.socialAgent.WebId.toString() == webId.toString(),
+    );
   }
 
   /**
@@ -152,7 +158,7 @@ export class Application implements IApplication {
     return (req: any, res: any, next: any) => {
       for (const type of req.accepts()) {
         if (type.includes("turtle")) {
-          res.send(this.Profile)
+          res.send(this.Profile);
           return;
         }
       }
@@ -161,6 +167,6 @@ export class Application implements IApplication {
   }
 
   getSocialAgents(webId: URL): SocialAgent {
-    throw new NotImplementedYet()
+    throw new NotImplementedYet();
   }
 }
