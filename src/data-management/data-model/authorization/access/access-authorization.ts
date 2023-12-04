@@ -27,6 +27,7 @@ export class AccessAuthorization extends Access {
 
   static async new(
     id: string,
+    fetch: Fetch,
     grantedBy: SocialAgent,
     grantedWith: ApplicationAgent,
     grantedAt: Date,
