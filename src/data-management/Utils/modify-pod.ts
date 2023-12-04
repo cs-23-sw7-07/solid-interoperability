@@ -135,6 +135,21 @@ class FetchError extends Error {
     }
 }
 
+export function patchSPARQLUpdate(fetch: Fetch, uri: string, body: string, withMeta: boolean = true): Promise<Response> {
+    return fetch(uri + (withMeta ? ".meta" : ""), {
+      method: "PATCH",
+      body: body,
+      headers: {
+          "Content-Type": "application/sparql-update",
+      },
+  }).then((res) => {
+      if (!res.ok) {
+          throw new Error(`failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`);
+      }
+      return res
+  });
+  }
+
 
 export async function deleteSPARQLUpdate(dataset: DatasetCore, subject?: string, predicate?: string): Promise<string> {
     if (subject && predicate) {

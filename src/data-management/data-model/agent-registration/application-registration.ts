@@ -3,7 +3,7 @@ import {Agent, ApplicationAgent, SocialAgent} from "../agent";
 import { AgentRegistration } from "./agent-registration";
 import { AccessGrant } from "../authorization/access/access-grant";
 import { Fetch } from "../../../fetch";
-import {createTriple} from "../RDF/rdf";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
 import {INTEROP} from "../namespace";
 import { SAIViolationMissingTripleError } from "../../../Errors";
 
@@ -34,14 +34,12 @@ export class ApplicationRegistration
     registeredAgent: ApplicationAgent,
     hasAccessGrant: AccessGrant[]
   ) {
-    const agentReg = new ApplicationRegistration(id, fetch)
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
 
     const quads = super.newQuadsAgent(id, registeredBy, registeredWith, new Date(), new Date(), hasAccessGrant);
-    quads.push(triple("registeredAgent", registeredAgent.webID))
-    await agentReg.add(quads)
-
-    return agentReg
+    quads.push(triple("registeredAgent", registeredAgent.webID));
+    
+    return newResourceContainer(ApplicationRegistration, fetch, id, "ApplicationRegistration", quads);
   }
 
   get RegisteredAgent(): ApplicationAgent {

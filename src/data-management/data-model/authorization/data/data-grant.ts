@@ -3,7 +3,7 @@ import { Agent, SocialAgent } from "../../agent";
 import { DataRegistration } from "../../data-registration/data-registration";
 import { GrantScope } from "../grant-scope";
 import { AccessMode } from "../access/access-mode";
-import { createTriple, getResource } from "../../RDF/rdf";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { Data } from "./data";
 import { INTEROP } from "../../namespace";
@@ -42,21 +42,21 @@ export class DataGrant extends Data{
     const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuads(id, grantee, registeredShapeTree, satisfiesAccessNeed, accessMode, creatorAccessMode);
 
-    quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)))
-    quads.push(triple("dataOwner", dataOwner.webID))
+    quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)));
+    quads.push(triple("dataOwner", dataOwner.webID));
     quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {
       for (const iri of hasDataInstance) {
-        quads.push(triple("hasDataInstance", iri))
+        quads.push(triple("hasDataInstance", iri));
       }
     }
 
     if (InheritsFromGrant) {
-      quads.push(triple("inheritsFromAuthorization", InheritsFromGrant.uri))
+      quads.push(triple("inheritsFromAuthorization", InheritsFromGrant.uri));
     }
 
-    return new DataGrant(id, fetch, new Store(quads));
+    return newResource(DataGrant, fetch, id, "DataGrant", quads);
   }
 
   public get DataOwner(): SocialAgent {

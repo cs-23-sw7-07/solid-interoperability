@@ -3,32 +3,13 @@ import {Agent, SocialAgent} from "../agent";
 import { Registration } from "../registration";
 import { Fetch } from "../../../fetch";
 import {INTEROP} from "../namespace";
-import {createTriple} from "../RDF/rdf";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
 
 export class DataRegistration extends Registration {
   /**
    * A class which has the fields to conform to the `Data Registration` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-registration
    */
-  // constructor(
-  //   id: string,
-  //   registeredBy: SocialAgent,
-  //   registeredWith: Agent,
-  //   registeredAt: Date,
-  //   updatedAt: Date,
-  //   registeredShapeTree: string,
-  // ) {
-  //   super(
-  //     id,
-  //     "DataRegistration",
-  //     registeredBy,
-  //     registeredWith,
-  //     registeredAt,
-  //     updatedAt,
-  //   );
-  //   this.registeredShapeTree = registeredShapeTree;
-  // }
-
   constructor(
     id: string,
     fetch: Fetch, 
@@ -55,7 +36,7 @@ export class DataRegistration extends Registration {
 
     quads.push(triple("registeredShapeTree", registeredShapeTree))
 
-    return new DataRegistration(id, fetch, new Store(quads));
+    return newResourceContainer(DataRegistration, fetch, id, "DataRegistration", quads);
   }
 
 

@@ -67,12 +67,12 @@ describe("Testing pod communication for Access Grant", () => {
     });
     
     test("Able to add an Access Grant", async () => {
-        const dataGrant = await getResource(DataGrant, session.fetch, pod + "LOCATIONDataGrant")
-        const id: string = pod + "applicationRegistration1/";
+        const dataGrant = await getResource(DataGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant")
+        const id: string = pod + "test-created/accessGrant1";
         const grantedBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const grantedAt: Date = new Date();
         const grantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/MyApp/profile/card#me");
-        const hasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, pod + "LOCATIONAccessNeedGroup");
+        const hasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, pod + "profile-documents/projectron#need-group-pm");
         const hasDataGrant: DataGrant[] = [dataGrant];
 
         await AccessGrant.new(id, session.fetch, grantedBy, grantedAt, grantee, hasAccessNeedGroup, hasDataGrant);
@@ -82,6 +82,6 @@ describe("Testing pod communication for Access Grant", () => {
         expect(addedGrant.GrantedBy).toStrictEqual(grantedBy)
         expect(addedGrant.GrantedAt).toStrictEqual(grantedAt)
         expect(addedGrant.Grantee).toStrictEqual(grantee)
-        expect(addedGrant.getHasDataGrant).toStrictEqual(hasDataGrant)
+        expect(await addedGrant.getHasDataGrant()).toStrictEqual(hasDataGrant)
     })
 })

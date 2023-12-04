@@ -150,7 +150,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
 
         class MockBuilder implements IDataGrantBuilder {
             generateId(): string {
-                return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
+                return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant12345";
             }
 
             getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {

@@ -1,6 +1,7 @@
 import { DataFactory, Prefixes, Store, Quad} from "n3";
 import { Fetch } from "../../../fetch";
-import {deleteSPARQLUpdate, insertSPARQLUpdate, readParseResource, updateContainerResource} from "../../Utils/modify-pod";
+import {createContainer, deleteSPARQLUpdate, insertSPARQLUpdate, patchSPARQLUpdate, readParseResource, updateContainerResource} from "../../Utils/modify-pod";
+import { TYPE_A } from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -78,43 +79,41 @@ export class Rdf {
   }
 
   protected async patchSPARQLUpdate(body: string, withMeta: boolean = true): Promise<Response> {
-    return await this.fetch(this.uri + (withMeta ? ".meta" : ""), {
-      method: "PATCH",
-      body: body,
-      headers: {
-          "Content-Type": "application/sparql-update",
-      },
-  }).then((res) => {
-      if (!res.ok) {
-          throw new Error(`failed to patch ${this.uri}, body: ${body}, Response: ${res.statusText} ${res.status}`);
-      }
-      return res
-  });
+    return patchSPARQLUpdate(this.fetch, this.uri, body, withMeta)
   }
 }
 
-// export async function newResource<T extends Rdf>(
-//   c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
-//   fetch: Fetch,
-//   uri: string,
-//   type: string,
-//   quads: Quad[],
-// ): Promise<T> {
-// const url = uri;
+export async function newResource<T extends Rdf>(
+  c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
+  fetch: Fetch,
+  uri: string,
+  type: string,
+  quads: Quad[],
+): Promise<T> {
+  const store = new Store(quads);
+  store.addQuad(createTriple(uri, TYPE_A, type));
 
-// await insertEmptyResource(fetch, uri)
+  return insertSPARQLUpdate(store)
+    .then(body => patchSPARQLUpdate(fetch, uri, body, false))
+    .then(_ => new c(uri, fetch, store, {}))
+}
 
+export async function newResourceContainer<T extends Rdf>(
+  c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },
+  fetch: Fetch,
+  uri: string,
+  type: string,
+  quads: Quad[],
+): Promise<T> {
+  await createContainer(fetch, uri);
+  
+  const store = new Store(quads);
+  store.addQuad(createTriple(uri, TYPE_A, type));
 
-// await insertSPARQLUpdate(new Store(quads))
-//         .then(body => this.patchSPARQLUpdate(body))
-//         .then(_ => {
-//           for (const quad of quads) {
-//             this.dataset.add(quad)
-//           }
-//         })
-
-// return new c(uri, fetch, result.dataset, result.prefixes);
-// }
+  return insertSPARQLUpdate(store)
+    .then(body => patchSPARQLUpdate(fetch, uri, body, false))
+    .then(_ => new c(uri, fetch, store, {}))
+}
 
 export async function getResource<T extends Rdf>(
     c: { new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T },

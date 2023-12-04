@@ -3,9 +3,6 @@ import { AccessNeed } from "./access-need";
 import { Prefixes, Store } from "n3";
 import { Rdf, getResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { DataAuthorization } from "../data";
-import { AccessAuthorization } from "../access/access-authorization";
 
 export class AccessNeedGroup extends Rdf {
     constructor(
@@ -36,7 +33,7 @@ export class AccessNeedGroup extends Rdf {
         return this.getObjectValueFromPredicate(INTEROP + "authenticatesAs");
     }
 
-    async getHasAccessNeed(fetch: Fetch): Promise<AccessNeed[]> {
+    async getHasAccessNeed(): Promise<AccessNeed[]> {
         const needUris = this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeed");
         if (!needUris) return [];
 
@@ -50,25 +47,5 @@ export class AccessNeedGroup extends Rdf {
 
     get Replaces(): string | undefined {
         return this.getObjectValueFromPredicate(INTEROP + "replaces");
-    }
-
-    toAccessAuthorization(
-        id: string,
-        fetch: Fetch,
-        grantedBy: SocialAgent,
-        grantedWith: ApplicationAgent,
-        grantee: Agent,
-        dataAuthorizations: DataAuthorization[],
-    ): Promise<AccessAuthorization> {
-        return AccessAuthorization.new(
-            id,
-            fetch,
-            grantedBy,
-            grantedWith,
-            new Date(),
-            grantee,
-            this,
-            dataAuthorizations,
-        );
     }
 }

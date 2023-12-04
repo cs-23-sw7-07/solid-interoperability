@@ -6,7 +6,7 @@ import { DataAuthorization } from "../data";
 import { Fetch } from "../../../../fetch";
 import { INTEROP } from "../../namespace";
 import { Access } from "./access";
-import {getResource, getResources} from "../../RDF/rdf";
+import {createTriple, getResource, getResources, newResource} from "../../RDF/rdf";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 
@@ -35,8 +35,7 @@ export class AccessAuthorization extends Access {
     hasAccessNeedGroup: AccessNeedGroup,
     hasDataAuthorization: DataAuthorization[],
     replaces?: AccessAuthorization,) {
-    const auth = new AccessAuthorization(id, fetch)
-    const triple = (predicate: string, object: string | Date) => auth.createTriple(INTEROP + predicate, object);
+    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
     
     quads.push(triple("grantedWith", grantedWith.webID));
@@ -47,9 +46,9 @@ export class AccessAuthorization extends Access {
     if (replaces) {
       quads.push(triple("replaces", replaces.uri))
     }
-    return auth;
+    return newResource(AccessAuthorization, fetch, id, "AccessAuthorization", quads);
   }
-
+  
   public async toAccessGrant(id: string, data_grants: DataGrant[]) {
     return AccessGrant.new(
       id,

@@ -1,12 +1,12 @@
 import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
+import { Agent, SocialAgent } from "../../agent";
 import { DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
-import { Access } from "./access";
 import {INTEROP, TYPE_A} from "../../namespace";
-import {getResources} from "../../RDF/rdf";
+import {createTriple, getResources, newResource} from "../../RDF/rdf";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
+import { Access } from "./access";
 
 
 export class AccessGrant extends Access {
@@ -32,15 +32,12 @@ export class AccessGrant extends Access {
     grantee: Agent,
     hasAccessNeedGroup: AccessNeedGroup,
     hasDataGrant: DataGrant[],) {
-    const grant = new AccessGrant(id, fetch)
-    const triple = (predicate: string, object: string | Date) => grant.createTriple(INTEROP + predicate, object);
+    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
     const quads = super.newQuadsAccess(id, grantedBy, grantedAt, grantee, hasAccessNeedGroup);
     for (const dataGrant of hasDataGrant) {
       quads.push(triple("hasDataGrant", dataGrant.uri))
     }
-    quads.push(triple(TYPE_A, INTEROP + "AccessGrant"));
-    // await grant.newResource(quads);
-    return grant;
+    return newResource(AccessGrant, fetch, id, "AccessGrant", quads);
   }
 
   public async getHasDataGrant(): Promise<DataGrant[]> {

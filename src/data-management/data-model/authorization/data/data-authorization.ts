@@ -5,7 +5,7 @@ import { GrantScope } from "../grant-scope";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access/access-mode";
 import { Data } from "./data";
-import { createTriple, getResource } from "../../RDF/rdf";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
 import { INTEROP } from "../../namespace";
 import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
@@ -47,22 +47,22 @@ export class DataAuthorization extends Data {
     quads.push(triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)))
 
     if (dataOwner)
-      quads.push(triple("dataOwner", dataOwner.webID))
+      quads.push(triple("dataOwner", dataOwner.webID));
 
     if (hasDataRegistration)
       quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {
       for (const iri of hasDataInstance) {
-        quads.push(triple("hasDataInstanceIRI", iri))
+        quads.push(triple("hasDataInstanceIRI", iri));
       }
     }
 
     if (inheritsFromAuthorization) {
-      quads.push(triple("inheritsFromAuthorization", inheritsFromAuthorization.uri))
+      quads.push(triple("inheritsFromAuthorization", inheritsFromAuthorization.uri));
     }
 
-    return new DataAuthorization(id, fetch, new Store(quads));
+    return newResource(DataAuthorization, fetch, id, "DataAuthorization", quads);
   }
 
   public get ScopeOfAuthorization(): GrantScope {
@@ -124,7 +124,7 @@ export class DataAuthorization extends Data {
           this.DataOwner,
         )) {
           grants.push(
-            DataGrant.new(
+            await DataGrant.new(
               builder.generateId(),
               this.fetch,
               this.Grantee,
@@ -143,7 +143,7 @@ export class DataAuthorization extends Data {
       case GrantScope.AllFromRegistry: {
         const reg = await this.getHasDataRegistration();
         grants.push(
-          DataGrant.new(
+          await DataGrant.new(
             builder.generateId(),
             this.fetch,
             this.Grantee,
@@ -161,7 +161,7 @@ export class DataAuthorization extends Data {
       case GrantScope.SelectedFromRegistry: {
         const reg = await this.getHasDataRegistration();
         grants.push(
-          DataGrant.new(
+          await DataGrant.new(
             builder.generateId(),
             this.fetch,
             this.Grantee,
@@ -183,7 +183,7 @@ export class DataAuthorization extends Data {
           this,
         )) {
           grants.push(
-            DataGrant.new(
+            await DataGrant.new(
               builder.generateId(),
               this.fetch,
               this.Grantee,

@@ -5,6 +5,7 @@ import { INTEROP } from "../namespace";
 import {Agent, ApplicationAgent, SocialAgent} from "../agent";
 import { AccessGrant } from "../authorization/access/access-grant";
 import { SAIViolationMissingTripleError } from "../../../Errors";
+import { createTriple, newResourceContainer } from "../RDF/rdf";
 
 /**
  * A class which has the fields to conform to the `Social Agent Registration` graph defined in the Solid interoperability specification.
@@ -32,15 +33,12 @@ export class SocialAgentRegistration extends AgentRegistration {
     hasAccessGrant: AccessGrant[],
     reciprocalRegistration: string,
   ) {
-    const agentReg = new SocialAgentRegistration(id, fetch)
-    const triple = (predicate: string, object: string) => agentReg.createTriple(INTEROP + predicate, object);
+    const triple = (predicate: string, object: string) => createTriple(id, INTEROP + predicate, object);
     
     const quads = super.newQuadsAgent(id, registeredBy, registeredWith, new Date(), new Date(), hasAccessGrant);
     quads.push(triple("registeredAgent", registeredAgent.webID), triple("reciprocalRegistration", reciprocalRegistration))
 
-    await agentReg.add(quads)
-
-    return agentReg
+    return newResourceContainer(SocialAgentRegistration, fetch, id, "SocialAgentRegistration", quads);
   }
 
   get RegisteredAgent(): SocialAgent {
