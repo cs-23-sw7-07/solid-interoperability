@@ -33,13 +33,63 @@ export class Authorization implements IAuthorization {
     const writer = new N3.Writer();
     writer.addQuads(instance);
     writer.end(async (error, result) => {
-      console.log(result);
       await fetch(url, {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "text/turtle" },
         body: result,
       });
     });
+  }
+
+  async retrieve(registry: URL): Promise<N3.Quad[]> {
+    // Should return the quads from a specific file within a data registry
+    const response = await fetch(registry.toString(), {
+      headers: { "Content-Type": "text/turtle" },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Bad response received: status code: ${response.status}, status message: ${response.statusText}`,
+      );
+    }
+
+    const parser = new N3.Parser();
+    return parser.parse(await response.text());
+  }
+
+  async listDataRegistries(registry: URL): Promise<string[]> {
+    // Should return all URLs to files from a specific data registry
+    const response = await fetch(registry.toString() + ".meta", {
+      headers: { "Content-Type": "text/turtle" },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Bad response received: status code: ${response.status}, status message: ${response.statusText}`,
+      );
+    }
+
+    const text = await response.text();
+    const parser = new N3.Parser();
+    let result: string[] = [];
+    for (const quad of parser.parse(text)) {
+      if (quad.predicate.id == "http://www.w3.org/ns/ldp#contains") {
+        if (
+          quad.object.id != "http://localhost:3000/weed/README" &&
+          quad.object.id != "http://localhost:3000/weed/profile/"
+        ) {
+          if (quad.object.id.endsWith("/")) {
+            result = result.concat(
+              await this.listDataRegistries(new URL(quad.object.id)),
+            );
+          } else {
+            result.push(quad.object.id);
+          }
+        }
+      }
+    }
+
+    return result;
   }
 }
 

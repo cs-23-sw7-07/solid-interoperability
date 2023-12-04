@@ -12,12 +12,13 @@ import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import * as fs from "fs";
 import { SocialAgent } from "./SocialAgent";
 import { ProfileDocument } from "./Rdf";
+import N3 from "n3";
 
 /**
  * Interface for Solid Applications.
  */
 export interface IApplication {
-  store<T>(webId: URL, instance: DataInstance<T>): Promise<void>;
+  store(webId: URL, instance: N3.Quad[]): Promise<void>;
   dataInstances<T extends Type>(
     webId: URL,
     type: T,
@@ -121,7 +122,7 @@ export class Application implements IApplication {
    * @param webId The WebId of the agent that owns the pod where the data should be registered.
    * @param instance A [[DataInstance]] that wraps the data being stored.
    */
-  async store<T>(webId: URL, instance: DataInstance<T>): Promise<void> {
+  async store(webId: URL, instance: N3.Quad[]): Promise<void> {
     const authAgent = getAuthAgent(webId);
 
     if (authAgent == undefined)
@@ -137,7 +138,7 @@ export class Application implements IApplication {
       );
     }
 
-    await auth.store(instance);
+    await auth.store(instance, new URL(""));
   }
 
   async *dataInstances<T extends Type>(webId: URL, type: T) {
