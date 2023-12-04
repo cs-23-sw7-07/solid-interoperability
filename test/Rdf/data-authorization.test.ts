@@ -8,8 +8,9 @@ import {
     GrantScope,
     DataRegistration,
     SAIViolationError,
-    DataGrant, IDataGrantBuilder
+    DataGrant, IDataGrantBuilder, AccessNeed, Agent
 } from "../../src";
+import { AccessMode } from "@solid/community-server";
 
 describe("DataAuthorization - test get and set methods/properties", () => {
     let session: Session;
@@ -181,5 +182,37 @@ describe("DataAuthorization - test get and set methods/properties", () => {
             expect(actual.CreatorAccessMode).toStrictEqual(expected.CreatorAccessMode);
             expect(actual.HasDataInstance).toStrictEqual(expected.HasDataInstance);
         })
+    })
+})
+
+describe("Testing pod communication for Data Authorization", () => {
+    let session: Session;
+    let pod: string
+
+    beforeAll(async () => {
+        const env = getNodeTestingEnvironment()
+        session = await getAuthenticatedSession(env)
+        pod = await getPodRoot(session);
+    });
+    
+    test("Data Authorization - scopeOfGrant All/AllFromAgent/AllFromReg/SelectedFromReg/Inherited", async () => {
+        const id: string = pod + "test-created/dataAuth1/";
+        const grantee: Agent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+        const RegisteredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
+        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "LOCATION NEED");
+        const accessMode: AccessMode[] = [AccessMode.read];
+        const dataOwner: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+
+        
+        await DataAuthorization.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, GrantScope.All, dataOwner);
+        
+        const addedGrant = await getResource(DataAuthorization, session.fetch, id)
+        expect(addedGrant.uri).toStrictEqual(id)
+        expect(addedGrant.Grantee).toStrictEqual(grantee)
+        expect(addedGrant.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
+        expect(addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
+        expect(addedGrant.AccessMode).toStrictEqual(accessMode)
+        expect(addedGrant.ScopeOfAuthorization).toStrictEqual(GrantScope.All)
+        expect(addedGrant.DataOwner).toStrictEqual(dataOwner)
     })
 })
