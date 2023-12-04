@@ -12,6 +12,9 @@ export * from "./data-management/data-model/authorization/grant-scope";
 export * from "./data-management/data-model/authorization/access-needs/access-need"
 export * from "./data-management/data-model/authorization/access-needs/access-need-group"
 
+export * from "./data-management/data-model/profile-documents/index"
+
+export * from "./data-management/data-model/registries/index"
 
 export * from "./data-management/data-model/data-registration/data-registration";
 export * from "./data-management/data-model/agent";
