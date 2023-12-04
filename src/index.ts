@@ -9,6 +9,10 @@ export * from "./data-management/data-model/authorization/data";
 export * from "./data-management/data-model/authorization/data/data-grant";
 export * from "./data-management/data-model/authorization/grant-scope";
 
+export * from "./data-management/data-model/authorization/access-needs/access-need"
+export * from "./data-management/data-model/authorization/access-needs/access-need-group"
+
+
 export * from "./data-management/data-model/data-registration/data-registration";
 export * from "./data-management/data-model/agent";
 export * from "./data-management/data-model/RDF/rdf";

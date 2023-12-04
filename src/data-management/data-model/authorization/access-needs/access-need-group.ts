@@ -1,6 +1,5 @@
 import { INTEROP } from "../../namespace";
 import { AccessNeed } from "./access-need";
-import { DatasetCore } from "@rdfjs/types";
 import { Prefixes, Store } from "n3";
 import { Rdf, getResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
