@@ -8,9 +8,8 @@ import {
     GrantScope,
     DataRegistration,
     SAIViolationError,
-    DataGrant, IDataGrantBuilder, AccessNeed, Agent
+    DataGrant, IDataGrantBuilder, AccessNeed, Agent, AccessMode
 } from "../../src";
-import { AccessMode } from "@solid/community-server";
 
 describe("DataAuthorization - test get and set methods/properties", () => {
     let session: Session;
@@ -200,11 +199,9 @@ describe("Testing pod communication for Data Authorization", () => {
         const grantee: Agent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const RegisteredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
         const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "LOCATION NEED");
-        const accessMode: AccessMode[] = [AccessMode.read];
-        const dataOwner: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-
+        const accessMode: AccessMode[] = [AccessMode.Read];
         
-        await DataAuthorization.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, GrantScope.All, dataOwner);
+        await DataAuthorization.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, GrantScope.All);
         
         const addedGrant = await getResource(DataAuthorization, session.fetch, id)
         expect(addedGrant.uri).toStrictEqual(id)
@@ -213,6 +210,5 @@ describe("Testing pod communication for Data Authorization", () => {
         expect(addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
         expect(addedGrant.AccessMode).toStrictEqual(accessMode)
         expect(addedGrant.ScopeOfAuthorization).toStrictEqual(GrantScope.All)
-        expect(addedGrant.DataOwner).toStrictEqual(dataOwner)
     })
 })
