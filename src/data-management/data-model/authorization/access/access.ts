@@ -1,11 +1,12 @@
 import {Prefixes, Store} from "n3";
-import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
+import {Agent, SocialAgent} from "../../agent";
 import {createTriple, getResource, Rdf} from "../../RDF/rdf";
 import {Fetch} from "../../../../fetch";
 import {INTEROP} from "../../namespace";
 import {getDate} from "../../../Utils";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {getAgent} from "../../../Utils/get-grantee";
 
 export abstract class Access extends Rdf {
   /**
@@ -50,11 +51,8 @@ export abstract class Access extends Rdf {
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedAt")
   }
 
-  get Grantee(): Agent {
-    const grantee = this.getObjectValueFromPredicate(INTEROP + "grantee");
-    if (grantee)
-      return new ApplicationAgent(grantee)
-    throw new SAIViolationMissingTripleError(this, INTEROP + "grantee")
+  getGrantee(): Promise<Agent> {
+    return getAgent(this, this.fetch, "grantee");
   }
 
   public async getHasAccessNeedGroup(): Promise<AccessNeedGroup> {

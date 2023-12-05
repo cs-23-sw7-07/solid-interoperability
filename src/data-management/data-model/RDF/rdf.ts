@@ -1,7 +1,14 @@
-import { DataFactory, Prefixes, Store, Quad} from "n3";
-import { Fetch } from "../../../fetch";
-import {createContainer, deleteSPARQLUpdate, insertSPARQLUpdate, patchSPARQLUpdate, readParseResource, updateContainerResource} from "../../Utils/modify-pod";
-import { TYPE_A } from "../namespace";
+import {DataFactory, Prefixes, Quad, Store} from "n3";
+import {Fetch} from "../../../fetch";
+import {
+  createContainer,
+  deleteSPARQLUpdate,
+  insertSPARQLUpdate,
+  patchSPARQLUpdate,
+  readParseResource,
+  updateContainerResource
+} from "../../Utils/modify-pod";
+import {TYPE_A} from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -111,7 +118,7 @@ export async function newResourceContainer<T extends Rdf>(
   store.addQuad(createTriple(uri, TYPE_A, type));
 
   return insertSPARQLUpdate(store)
-    .then(body => patchSPARQLUpdate(fetch, uri, body, false))
+    .then(body => patchSPARQLUpdate(fetch, uri, body))
     .then(_ => new c(uri, fetch, store, {}))
 }
 

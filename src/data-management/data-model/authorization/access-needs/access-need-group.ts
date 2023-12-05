@@ -1,8 +1,8 @@
-import { INTEROP } from "../../namespace";
-import { AccessNeed } from "./access-need";
-import { Prefixes, Store } from "n3";
-import { Rdf, getResource } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {AccessNeed} from "./access-need";
+import {Prefixes, Store} from "n3";
+import {getResource, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
 
 export class AccessNeedGroup extends Rdf {
     constructor(

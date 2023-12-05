@@ -1,7 +1,7 @@
-import { Prefixes, Store } from "n3";
-import {Agent, ApplicationAgent, SocialAgent} from "../agent";
-import { Registration } from "../registration";
-import { Fetch } from "../../../fetch";
+import {Prefixes, Store} from "n3";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {Registration} from "../registration";
+import {Fetch} from "../../../fetch";
 import {INTEROP} from "../namespace";
 import {createTriple, newResourceContainer} from "../RDF/rdf";
 

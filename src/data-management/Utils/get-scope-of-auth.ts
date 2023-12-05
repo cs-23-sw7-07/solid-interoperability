@@ -1,4 +1,4 @@
-import { GrantScope } from "../data-model/authorization/grant-scope";
+import {GrantScope} from "../data-model/authorization/grant-scope";
 
 class InvalidGrantScope extends Error {
   constructor(message: string) {

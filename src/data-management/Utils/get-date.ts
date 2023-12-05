@@ -1,4 +1,4 @@
-import { InvalidDate } from "../../Errors/InvalidDate";
+import {InvalidDate} from "../../Errors/InvalidDate";
 
 export function getDate(date: string): Date {
   const dateResult: Date = new Date(date);

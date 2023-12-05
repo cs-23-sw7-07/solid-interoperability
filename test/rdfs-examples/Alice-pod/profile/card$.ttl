@@ -1,0 +1,9 @@
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<Alice-pod/profile/card> a <http://xmlns.com/foaf/0.1/PersonalProfileDocument>;
+    <http://xmlns.com/foaf/0.1/maker> <Alice-pod/profile/card#me>;
+    <http://xmlns.com/foaf/0.1/primaryTopic> <http://localhost:3000/Alice-pod/profile/card#me>.
+<Alice-pod/profile/card#me> a <http://xmlns.com/foaf/0.1/Person>;
+    <http://www.w3.org/ns/pim/space#storage> <http://localhost:3000/Alice-pod/>;
+    <http://www.w3.org/ns/solid/terms#oidcIssuer> <http://localhost:3000/>;
+    interop:hasRegistrySet <http://localhost:3000/Alice-pod/Registries/>.

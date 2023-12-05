@@ -17,7 +17,7 @@ describe("Application-registration-test", () => {
     });
 
     test("Able to add a Application Registration", async () => {
-        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant$.ttl")
+        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
         const id: string = pod + "test-created/applicationRegistration1/";
         const registeredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test")
@@ -43,7 +43,7 @@ describe("Application-registration-test", () => {
         });
 
         test("Unit test: Application Registration - get RegisteredAgent", () => {
-            const registeredAgent: ApplicationAgent = new ApplicationAgent("http://localhost:3000/projectron/#id");
+            const registeredAgent: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/projectron#id");
             expect(reg.RegisteredAgent).toStrictEqual(registeredAgent)
         })
     })

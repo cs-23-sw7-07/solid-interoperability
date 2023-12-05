@@ -1,17 +1,17 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataRegistration } from "../../data-registration/data-registration";
-import { GrantScope } from "../grant-scope";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access/access-mode";
-import { Data } from "./data";
-import { createTriple, getResource, newResource } from "../../RDF/rdf";
-import { INTEROP } from "../../namespace";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataRegistration} from "../../data-registration/data-registration";
+import {GrantScope} from "../grant-scope";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access/access-mode";
+import {Data} from "./data";
+import {createTriple, getResource, newResource} from "../../RDF/rdf";
+import {INTEROP} from "../../namespace";
 import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import { AccessNeed } from "../access-needs/access-need";
-import { SAIViolationError, SAIViolationMissingTripleError } from "../../../../Errors";
-import { IDataGrantBuilder } from "./IDataGrantBuilder";
-import { DataGrant } from "./data-grant";
+import {AccessNeed} from "../access-needs/access-need";
+import {SAIViolationError, SAIViolationMissingTripleError} from "../../../../Errors";
+import {IDataGrantBuilder} from "./IDataGrantBuilder";
+import {DataGrant} from "./data-grant";
 
 export class DataAuthorization extends Data {
   /**
@@ -127,7 +127,7 @@ export class DataAuthorization extends Data {
             await DataGrant.new(
               builder.generateId(),
               this.fetch,
-              this.Grantee,
+              await this.getGrantee(),
               this.RegisteredShapeTree,
               await this.getSatisfiesAccessNeed(),
               this.AccessMode,
@@ -146,7 +146,7 @@ export class DataAuthorization extends Data {
           await DataGrant.new(
             builder.generateId(),
             this.fetch,
-            this.Grantee,
+            await this.getGrantee(),
             this.RegisteredShapeTree,
             await this.getSatisfiesAccessNeed(),
             this.AccessMode,
@@ -164,7 +164,7 @@ export class DataAuthorization extends Data {
           await DataGrant.new(
             builder.generateId(),
             this.fetch,
-            this.Grantee,
+            await this.getGrantee(),
             this.RegisteredShapeTree,
             await this.getSatisfiesAccessNeed(),
             this.AccessMode,
@@ -186,7 +186,7 @@ export class DataAuthorization extends Data {
             await DataGrant.new(
               builder.generateId(),
               this.fetch,
-              this.Grantee,
+              await this.getGrantee(),
               this.RegisteredShapeTree,
               await this.getSatisfiesAccessNeed(),
               this.AccessMode,

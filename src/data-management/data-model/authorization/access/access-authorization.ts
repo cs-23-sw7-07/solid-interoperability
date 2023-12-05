@@ -1,14 +1,13 @@
-import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { AccessGrant } from "./access-grant";
-import { DataGrant } from "../data";
-import { DataAuthorization } from "../data";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
-import { Access } from "./access";
+import {Prefixes, Store} from "n3";
+import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
+import {AccessGrant} from "./access-grant";
+import {DataAuthorization, DataGrant} from "../data";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {Access} from "./access";
 import {createTriple, getResource, getResources, newResource} from "../../RDF/rdf";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
 
 
 export class AccessAuthorization extends Access {
@@ -55,7 +54,7 @@ export class AccessAuthorization extends Access {
       this.fetch,
       this.GrantedBy,
       this.GrantedAt,
-      this.Grantee,
+      await this.getGrantee(),
       await this.getHasAccessNeedGroup(),
       data_grants,
     );

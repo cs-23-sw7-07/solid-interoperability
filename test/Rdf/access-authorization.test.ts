@@ -108,7 +108,7 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
             const actual = await auth.toAccessGrant(pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100", dataGrants);
             expect(actual.GrantedBy).toStrictEqual(expected.GrantedBy);
             expect(actual.GrantedAt).toStrictEqual(expected.GrantedAt);
-            expect(actual.Grantee).toStrictEqual(expected.Grantee);
+            expect(await actual.getGrantee()).toStrictEqual(await expected.getGrantee());
             expect(actual.getHasAccessNeedGroup()).toStrictEqual(expected.getHasAccessNeedGroup());
             expect(actual.getHasDataGrant()).toStrictEqual(expected.getHasDataGrant());
         })

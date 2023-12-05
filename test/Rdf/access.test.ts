@@ -1,7 +1,7 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
 import {AccessAuthorization, ApplicationAgent, getResource, SAIViolationMissingTripleError, SocialAgent} from "../../src";
-import { AccessNeedGroup } from "../../src/data-management/data-model/authorization/access-needs/access-need-group";
+import { AccessNeedGroup } from "../../src";
 
 describe(" - test get and set methods/properties", () => {
     let session: Session;
@@ -35,9 +35,9 @@ describe(" - test get and set methods/properties", () => {
             expect(access.GrantedAt).toStrictEqual(expectedGrantedAt)
         })
 
-        test("Unit test: AccessAuthorization - get Grantee", () => {
+        test("Unit test: AccessAuthorization - get Grantee", async () => {
             const expectedGrantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/projectron#id");
-            expect(access.Grantee).toStrictEqual(expectedGrantee)
+            expect(await access.getGrantee()).toStrictEqual(expectedGrantee)
         })
 
         test("Unit test: AccessAuthorization - getHasAccessNeedGroup", async () => {
@@ -56,7 +56,7 @@ describe(" - test get and set methods/properties", () => {
             });
     
             test("Unit test:  - get GrantedBy", () => {
-                expect(() => {access.GrantedBy}).toThrow(SAIViolationMissingTripleError)
+                expect(() => access.GrantedBy).toThrow(SAIViolationMissingTripleError)
             })
         })
 
@@ -69,11 +69,11 @@ describe(" - test get and set methods/properties", () => {
             });
 
             test("Unit test:  - get GrantedAt", () => {
-                expect(() => {access.GrantedAt}).toThrow(SAIViolationMissingTripleError)
+                expect(() => access.GrantedAt).toThrow(SAIViolationMissingTripleError)
             })
     
             test("Unit test:  - get Grantee", () => {
-                expect(() => {access.Grantee}).toThrow(SAIViolationMissingTripleError)
+                expect(() => access.getGrantee()).rejects.toThrow(SAIViolationMissingTripleError)
             })
 
             test("Unit test:  - getHasAccessNeedGroup", () => {

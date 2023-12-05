@@ -171,7 +171,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
             const actuals = await auth.toDataGrant(new MockBuilder());
             expect(actuals.length).toEqual(1);
             const actual = actuals[0];
-            expect(actual.Grantee).toStrictEqual(expected.Grantee);
+            expect(await actual.getGrantee()).toStrictEqual(await expected.getGrantee());
             expect(actual.RegisteredShapeTree).toStrictEqual(expected.RegisteredShapeTree);
             expect(actual.getSatisfiesAccessNeed()).toStrictEqual(expected.getSatisfiesAccessNeed());
             expect(actual.AccessMode).toStrictEqual(expected.AccessMode);
@@ -195,19 +195,19 @@ describe("Testing pod communication for Data Authorization", () => {
     });
     
     test("Data Authorization - scopeOfGrant All/AllFromAgent/AllFromReg/SelectedFromReg/Inherited", async () => {
-        const id: string = pod + "test-created/dataAuth1/";
+        const id: string = pod + "test-created/dataAuth1";
         const grantee: Agent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-        const RegisteredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
-        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "LOCATION NEED");
+        const RegisteredShapeTree: string = "http://shapetrees.example/solid/Project";
+        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "profile-documents/projectron#need-project");
         const accessMode: AccessMode[] = [AccessMode.Read];
         
         await DataAuthorization.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, GrantScope.All);
         
         const addedAuth = await getResource(DataAuthorization, session.fetch, id)
         expect(addedAuth.uri).toStrictEqual(id)
-        expect(addedAuth.Grantee).toStrictEqual(grantee)
+        expect(await addedAuth.getGrantee()).toStrictEqual(grantee)
         expect(addedAuth.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
-        expect(addedAuth.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
+        expect(await addedAuth.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
         expect(addedAuth.AccessMode).toStrictEqual(accessMode)
         expect(addedAuth.ScopeOfAuthorization).toStrictEqual(GrantScope.All)
     })

@@ -3,7 +3,7 @@ import {Session} from "@inrupt/solid-client-authn-node";
 import {DataGrant, getResource, SocialAgent, GrantScope, DataRegistration, AccessNeed, AccessMode, Agent, DataAuthorization, ApplicationAgent} from "../../src";
 
 
-describe("Testing pod communication for Data Authorization", () => {
+describe("Testing pod communication for Data Registration", () => {
     let session: Session;
     let pod: string
 
@@ -12,9 +12,9 @@ describe("Testing pod communication for Data Authorization", () => {
         session = await getAuthenticatedSession(env)
         pod = await getPodRoot(session);
     });
-    DataGrant
-    test("Data Registration - scopeOfGrant All/AllFromAgent/AllFromReg/SelectedFromReg/Inherited", async () => {
-        const id: string = pod + "test-created/dataGrant1/";
+
+    test("Data Registration - Able to store an Data Registration", async () => {
+        const id: string = pod + "test-created/dataRegistration1/";
         const registeredBy = new SocialAgent(pod + "profile/card#me");
         const registeredWith = new ApplicationAgent(pod + "profile-documents/authorization-agent#id");
         const registeredAt = new Date();

@@ -1,12 +1,11 @@
 import {Prefixes, Quad, Store} from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../agent";
-import { AccessGrant } from "../authorization/access/access-grant";
-import { Registration } from "../registration";
-import { Fetch } from "../../../fetch";
-import {fetch} from "solid-auth-fetcher";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {AccessGrant} from "../authorization/access/access-grant";
+import {Registration} from "../registration";
+import {Fetch} from "../../../fetch";
 import {INTEROP} from "../namespace";
 import {createTriple, getResource} from "../RDF/rdf";
-import { SAIViolationMissingTripleError } from "../../../Errors";
+import {SAIViolationMissingTripleError} from "../../../Errors";
 
 export abstract class AgentRegistration extends Registration {
   /**

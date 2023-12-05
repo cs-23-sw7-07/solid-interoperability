@@ -1,0 +1,6 @@
+<http://localhost:3000/Alice-pod/test-created/dataAuth1> <http://www.w3.org/ns/solid/interop#grantee> <http://localhost:3000/Alice-pod/profile/card#me>;
+    <http://www.w3.org/ns/solid/interop#registeredShapeTree> <http://shapetrees.example/solid/Project>;
+    <http://www.w3.org/ns/solid/interop#satisfiesAccessNeed> <http://localhost:3000/Alice-pod/profile-documents/projectron#need-project>;
+    <http://www.w3.org/ns/solid/interop#accessMode> <http://www.w3.org/ns/auth/acl#Read>;
+    <http://www.w3.org/ns/solid/interop#scopeOfAuthorization> <http://www.w3.org/ns/solid/interop#All>;
+    a <http://localhost:3000/Alice-pod/test-created/DataAuthorization>.

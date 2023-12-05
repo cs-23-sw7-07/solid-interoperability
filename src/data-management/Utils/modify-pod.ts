@@ -1,6 +1,6 @@
-import { Fetch } from "../../fetch";
-import { serializeTurtle } from "../turtle/turtle-serializer";
-import { ParserResult, parseTurtle } from "../turtle/turtle-parser";
+import {Fetch} from "../../fetch";
+import {serializeTurtle} from "../turtle/turtle-serializer";
+import {ParserResult, parseTurtle} from "../turtle/turtle-parser";
 import {Store} from "n3";
 import {DatasetCore} from "@rdfjs/types";
 

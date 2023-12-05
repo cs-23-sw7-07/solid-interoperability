@@ -25,9 +25,9 @@ describe(" - test get and set methods/properties", () => {
             access = await getResource(DataAuthorization, session.fetch, id);
         });
 
-        test("Unit test: DataAuthorization - get Grantee", () => {
+        test("Unit test: DataAuthorization - get Grantee", async () => {
             const expectedGrantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/projectron#id");
-            expect(access.Grantee).toStrictEqual(expectedGrantee)
+            expect(await access.getGrantee()).toStrictEqual(expectedGrantee)
         })
 
         test("Unit test: DataAuthorization - get RegisteredShapeTree", () => {
@@ -36,7 +36,7 @@ describe(" - test get and set methods/properties", () => {
         })
 
         test("Unit test: DataAuthorization - getSatisfiesAccessNeed", async () => {
-            const expectedSatisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "profile-documents/projectron#ac54ff1e");
+            const expectedSatisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "profile-documents/projectron#need-project");
             expect(await access.getSatisfiesAccessNeed()).toStrictEqual(expectedSatisfiesAccessNeed)
         })
 
@@ -61,7 +61,7 @@ describe(" - test get and set methods/properties", () => {
             });
     
             test("Unit test:  - get Grantee", () => {
-                expect(() => {access.Grantee}).toThrow(SAIViolationMissingTripleError)
+                expect(() => access.getGrantee()).rejects.toThrow(SAIViolationMissingTripleError)
             })
 
             test("Unit test:  - get RegisteredShapeTree", () => {

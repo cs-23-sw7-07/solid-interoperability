@@ -1,9 +1,9 @@
-import { Prefixes, Store } from "n3";
-import { INTEROP } from "../../namespace";
-import { Rdf, getResource } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access/access-mode";
-import { getAccessmode } from "../../../Utils";
+import {Prefixes, Store} from "n3";
+import {INTEROP} from "../../namespace";
+import {getResource, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access/access-mode";
+import {getAccessmode} from "../../../Utils";
 
 export class AccessNeed extends Rdf {
     constructor(

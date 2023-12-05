@@ -1,5 +1,5 @@
 import * as ExampleInstances from "../test-case";
-import {AccessAuthorization, ApplicationRegistration, DataAuthorization, InvalidAccessMode, InvalidDate, NotImplementedYet, NotParsable, RdfFactory} from "../../src/index";
+import {AccessAuthorization, ApplicationRegistration, DataAuthorization, InvalidAccessMode, InvalidDate, NotImplementedYet, NotParsable} from "../../src/index";
 import { mock_fetch } from "../Utils/mock-fetch";
 
 test.each([

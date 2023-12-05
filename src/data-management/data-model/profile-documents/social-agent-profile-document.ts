@@ -1,14 +1,16 @@
-import N3, { Prefixes, Store } from "n3";
-import { INTEROP } from "../namespace";
-import { Rdf, getResource } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { RegistrySetResource } from "../registries/registry-set-container";
-import { serializeTurtle } from "../../turtle/turtle-serializer";
+import N3, {Prefixes, Store} from "n3";
+import {INTEROP} from "../namespace";
+import {getResource} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {RegistrySetResource} from "../registries/registry-set-container";
+import {serializeTurtle} from "../../turtle/turtle-serializer";
+import {ProfileDocument} from "./profile-document";
+
 const { quad, namedNode, defaultGraph } = N3.DataFactory;
 
 const OIDC_ISSUER_PREDICATE = "http://www.w3.org/ns/solid/terms#oidcIssuer";
 
-export class SocialAgentProfileDocument extends Rdf {
+export class SocialAgentProfileDocument extends ProfileDocument {
     constructor(
         id: string,
         fetch: Fetch, 

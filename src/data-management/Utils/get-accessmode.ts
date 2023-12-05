@@ -1,5 +1,5 @@
-import { AccessMode } from "../data-model/authorization/access/access-mode";
-import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
+import {AccessMode} from "../data-model/authorization/access/access-mode";
+import {InvalidAccessMode} from "../../Errors/InvalidAccessMode";
 
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;

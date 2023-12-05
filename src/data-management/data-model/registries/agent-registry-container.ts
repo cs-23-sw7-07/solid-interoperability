@@ -1,9 +1,8 @@
-import { Prefixes, Store } from "n3";
-import { Rdf } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { AgentRegistration } from "../agent-registration/agent-registration";
-import { ApplicationAgent } from "../agent";
+import {Prefixes, Store} from "n3";
+import {Rdf} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {AgentRegistration} from "../agent-registration/agent-registration";
 import {ApplicationRegistration} from "../agent-registration/application-registration";
 
 

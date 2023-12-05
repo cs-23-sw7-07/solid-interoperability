@@ -1,11 +1,9 @@
-import { DatasetCore } from "@rdfjs/types";
-import { Prefixes, Store } from "n3";
-import N3 from "n3";
-import { Rdf } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { INTEROP, TYPE_A } from "../namespace";
-import { SocialAgentProfileDocument } from "../profile-documents/social-agent-profile-document";
-import { createContainer, updateContainerResource } from "../../Utils/modify-pod";
+import N3, {Prefixes, Store} from "n3";
+import {Rdf} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {INTEROP, TYPE_A} from "../namespace";
+import {SocialAgentProfileDocument} from "../profile-documents/social-agent-profile-document";
+import {createContainer, updateContainerResource} from "../../Utils/modify-pod";
 
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;

@@ -71,7 +71,7 @@ describe("Testing pod communication for Access Grant", () => {
         const id: string = pod + "test-created/accessGrant1";
         const grantedBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const grantedAt: Date = new Date();
-        const grantee: ApplicationAgent = new ApplicationAgent("http://localhost:3000/MyApp/profile/card#me");
+        const grantee: ApplicationAgent = new ApplicationAgent(pod + "profile-documents/projectron#id");
         const hasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, pod + "profile-documents/projectron#need-group-pm");
         const hasDataGrant: DataGrant[] = [dataGrant];
 
@@ -81,7 +81,7 @@ describe("Testing pod communication for Access Grant", () => {
         expect(addedGrant.uri).toStrictEqual(id)
         expect(addedGrant.GrantedBy).toStrictEqual(grantedBy)
         expect(addedGrant.GrantedAt).toStrictEqual(grantedAt)
-        expect(addedGrant.Grantee).toStrictEqual(grantee)
+        expect(await addedGrant.getGrantee()).toStrictEqual(grantee)
         expect(await addedGrant.getHasDataGrant()).toStrictEqual(hasDataGrant)
     })
 })

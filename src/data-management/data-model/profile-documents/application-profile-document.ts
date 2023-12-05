@@ -1,10 +1,11 @@
-import { INTEROP } from "../namespace";
-import { Prefixes, Store } from "n3";
-import { Rdf, getResource } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { AccessNeedGroup } from "../authorization/access-needs/access-need-group";
+import {INTEROP} from "../namespace";
+import {Prefixes, Store} from "n3";
+import {getResource} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {AccessNeedGroup} from "../authorization/access-needs/access-need-group";
+import {ProfileDocument} from "./profile-document";
 
-export class ApplicationProfileDocument extends Rdf {
+export class ApplicationProfileDocument extends ProfileDocument {
     constructor(
         id: string,
         fetch: Fetch, 

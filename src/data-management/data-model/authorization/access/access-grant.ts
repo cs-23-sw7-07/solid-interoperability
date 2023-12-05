@@ -1,12 +1,12 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataGrant } from "../data";
-import { Fetch } from "../../../../fetch";
-import {INTEROP, TYPE_A} from "../../namespace";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataGrant} from "../data";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
 import {createTriple, getResources, newResource} from "../../RDF/rdf";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
-import { Access } from "./access";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {Access} from "./access";
 
 
 export class AccessGrant extends Access {

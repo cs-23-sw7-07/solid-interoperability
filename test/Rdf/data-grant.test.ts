@@ -129,12 +129,12 @@ describe("Testing pod communication for Data Authorization", () => {
         session = await getAuthenticatedSession(env)
         pod = await getPodRoot(session);
     });
-    DataGrant
-    test("Data Grant - scopeOfGrant All/AllFromAgent/AllFromReg/SelectedFromReg/Inherited", async () => {
-        const id: string = pod + "test-created/dataGrant1/";
+
+    test("Data Grant - scopeOfGrant AllFromReg/SelectedFromReg/Inherited", async () => {
+        const id: string = pod + "test-created/dataGrant1";
         const grantee: Agent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
-        const RegisteredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
-        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "LOCATION NEED");
+        const RegisteredShapeTree: string = "http://shapetrees.example/solid/Project";
+        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "profile-documents/projectron#need-project");
         const accessMode: AccessMode[] = [AccessMode.Read];
         const scopeOfGrant: GrantScope = GrantScope.All;
         const DataOwner: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
@@ -144,9 +144,9 @@ describe("Testing pod communication for Data Authorization", () => {
         
         const addedGrant = await getResource(DataGrant, session.fetch, id)
         expect(addedGrant.uri).toStrictEqual(id)
-        expect(addedGrant.Grantee).toStrictEqual(grantee)
+        expect(await addedGrant.getGrantee()).toStrictEqual(grantee)
         expect(addedGrant.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
-        expect(addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
+        expect(await addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
         expect(addedGrant.AccessMode).toStrictEqual(accessMode)
         expect(addedGrant.ScopeOfGrant).toStrictEqual(scopeOfGrant)
         expect(addedGrant.DataOwner).toStrictEqual(DataOwner)

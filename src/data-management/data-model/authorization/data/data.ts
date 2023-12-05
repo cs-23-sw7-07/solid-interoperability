@@ -1,12 +1,13 @@
-import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { Rdf, createTriple, getResource } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access/access-mode";
-import { INTEROP } from "../../namespace";
+import {Prefixes, Store} from "n3";
+import {Agent} from "../../agent";
+import {createTriple, getResource, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access/access-mode";
+import {INTEROP} from "../../namespace";
 import {accessModeFromEnum, getAccessmode} from "../../../Utils";
-import { AccessNeed } from "../access-needs/access-need";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
+import {AccessNeed} from "../access-needs/access-need";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {getAgent} from "../../../Utils/get-grantee";
 
 export class Data extends Rdf {
   constructor(
@@ -47,11 +48,8 @@ export class Data extends Rdf {
   }
 
 
-  public get Grantee(): Agent {
-    const grantee = this.getObjectValueFromPredicate(INTEROP + "grantee");
-    if (grantee)
-      return new ApplicationAgent(grantee);
-    throw new SAIViolationMissingTripleError(this, INTEROP + "grantee");
+  public getGrantee(): Promise<Agent> {
+    return getAgent(this, this.fetch, "grantee");
   }
 
   public get RegisteredShapeTree(): string {
