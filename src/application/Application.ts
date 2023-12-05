@@ -18,6 +18,7 @@ import N3 from "n3";
  */
 export interface IApplication {
   store(webId: URL, instance: N3.Quad[]): Promise<void>;
+  getProfile(): Promise<ProfileDocument>;
 }
 
 /**
@@ -54,7 +55,7 @@ export class Application implements IApplication {
     return this.options?.name ?? "Application";
   }
 
-  get Profile() {
+  async getProfile() {
     const profile = this.options?.profile;
 
     if (profile == undefined) {
@@ -63,7 +64,7 @@ export class Application implements IApplication {
           "instantiation.",
       );
     }
-    return fs.readFileSync(profile, { encoding: "utf-8" });
+    return ProfileDocument.parse(profile)
   }
 
   /**
@@ -78,9 +79,11 @@ export class Application implements IApplication {
       this.authStore = authStore;
     }
 
+    console.log("Getting profile")
     const profile = await ProfileDocument.fetch(webId);
+    console.log("Getting auth")
+    const auth = await Authorization.create(this, profile)
 
-    const auth = new Authorization(profile);
     authStore.addAuthorization(auth);
   }
 
@@ -180,11 +183,12 @@ export class Application implements IApplication {
    * Returns an express router that sends the profile document of the application when the request asks for
    * "text/turtle" as content type.
    */
-  get Router() {
+  async getRouter() {
+    const profile = await this.getProfile()
     return (req: any, res: any, next: any) => {
       for (const type of req.accepts()) {
         if (type.includes("turtle")) {
-          res.send(this.Profile);
+          res.send(profile.Document);
           return;
         }
       }

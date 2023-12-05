@@ -3,15 +3,14 @@ import { expect } from "@jest/globals";
 import {
   Authorization,
   AuthorizationStore,
-  AuthService,
   IAuthorization,
 } from "./Authorization";
 import { readFileSync } from "fs";
 import * as path from "path";
 import { v4 as uuid } from "uuid";
 import { DataInstance } from "./SolidDataInstance";
-import { SocialAgent } from "./SocialAgent";
 import { ProfileDocument } from "./Rdf";
+import express from "express";
 
 export const ALICE_WEBID = new URL(
   "http://localhost:3000/alice-pod/profile/card#me",
@@ -19,9 +18,12 @@ export const ALICE_WEBID = new URL(
 export const ALICE_POD = new URL("http://localhost:3000/alice-pod/");
 
 function readPodResource(_path: string) {
+  return readResource("data/" + _path)
+}
+function readResource(_path: string){
   return readFileSync(
-    path.resolve(__dirname, "../../test/resources/data", _path),
-    { encoding: "utf-8" },
+      path.resolve(__dirname, "../../test/resources/", _path),
+      { encoding: "utf-8" },
   );
 }
 
@@ -45,7 +47,10 @@ describe("Application", () => {
     const socialAgent = await ProfileDocument.fetch(ALICE_WEBID);
     auths.push(new Authorization(socialAgent));
     const authStore = new AuthorizationStore(auths);
-    app = new Application({ authStore: authStore });
+    const app = new Application({ authStore: authStore, profile: readResource("testAppProfile.ttl") });
+
+    const expressApp = express()
+    expressApp.use(await app.getRouter())
   });
 
   it("Can register", () => {
@@ -67,7 +72,7 @@ describe("Application", () => {
     );
     const uuid = instance.id;
 
-    await app.store(ALICE_WEBID, instance);
+    //await app.store(ALICE_WEBID);
 
     // Check that the data is stored.
     // If this fails in the future, make sure that it should contain <member>

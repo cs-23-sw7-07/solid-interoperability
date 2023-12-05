@@ -2,7 +2,6 @@ import { fetch } from "solid-auth-fetcher";
 import N3 from "n3";
 import { URL } from "url";
 import { ISocialAgent } from "./SocialAgent";
-import { Authorization, AuthService } from "./Authorization";
 
 export class Rdf {
   constructor(private quads: N3.Quad[]) {}
@@ -14,17 +13,30 @@ export class Rdf {
 
 export class ProfileDocument extends Rdf implements ISocialAgent {
   private pod: URL | undefined;
+  private document: string | undefined
 
   static async fetch(webId: URL) {
     const response = await fetch(webId.toString(), {
       headers: { "Content-Type": "text/turtle" },
     });
     const profile = await response.text();
+    console.log("THIS IS PROFILE: " +profile)
+    return this.parse(profile);
+  }
 
+  static async parse(document: string){
     const parser = new N3.Parser();
-    const pd = new ProfileDocument(parser.parse(profile));
+    const pd = new ProfileDocument(parser.parse(document));
+    pd.document = document
     pd.pod = await this.getPod(pd.WebId.toString());
-    return pd;
+    console.log("Returning Profile")
+    return pd
+  }
+
+  get Document(): string{
+    if(this.document)
+      return this.document
+    else throw new Error("Profile document did not have its document property set. It may not have been created correctly.")
   }
 
   static async getPod(webId: string) {
@@ -65,7 +77,7 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
 
   get WebId() {
     const id = this.Quads.find(
-      (x) => x.object.value == "http://xmlns.com/foaf/0.1/Person",
+      (x) => x.object.value == "http://xmlns.com/foaf/0.1/Person" || x.object.value == "http://www.w3.org/ns/solid/interop#Application",
     )?.subject.value;
     if (id == undefined) {
       throw new Error("Did not find WebId in profile document.");

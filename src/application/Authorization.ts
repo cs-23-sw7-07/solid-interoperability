@@ -8,6 +8,8 @@ import { DataRegistration } from "../data-management/data-model/data-registratio
 import { readableToString } from "@solid/community-server";
 import { RdfFactory } from "../data-management/data-model/factory/rdfFactory";
 import { ApplicationRegistration } from "../data-management/data-model/agent-registration/application-registration";
+import {IApplication} from "./Application";
+import {header} from "typedoc/dist/lib/output/themes/default/partials/header";
 
 export interface IAuthorization {
   readonly socialAgent: ProfileDocument;
@@ -23,20 +25,34 @@ export class Authorization implements IAuthorization {
     return this.socialAgent.WebId;
   }
 
-  private applicationRegistration: ApplicationRegistration | undefined;
-  async getApplicationRegistration(): Promise<ApplicationRegistration> {
-    if (this.applicationRegistration != undefined) {
-      return this.applicationRegistration;
-    }
-    const url = `${this.socialAgent.AuthorizationAgent}wants-access`;
-    const res = await fetch(url, {
+  static async create(app: IApplication, socialAgent: ProfileDocument): Promise<Authorization>{
+    const appId = (await app.getProfile()).WebId
+    const url = new URL(`${socialAgent.AuthorizationAgent}wants-access?client_id=${appId}`);
+
+    const res = await fetch(url.toString(), {
       method: "POST",
       headers: {
         Accept: "text/turtle",
       },
     });
-    const str = await res.text();
+    if (!res.ok)
+      throw new Error("Application did not respond 'OK' to 'want-access'")
+    const res2 = await fetch(`${socialAgent.AuthorizationAgent}`, {method: "HEAD", headers: {Accept: "text/turtle"}})
+    if (!res2.ok){
+      throw new Error("Application did not respond with Authorization Agent when requested.")
+    }
+    const registries = await res2.text()
+    console.log(registries)
+    const auth = new Authorization(socialAgent)
+    return auth
+  }
 
+  private applicationRegistration: ApplicationRegistration | undefined;
+  async getApplicationRegistration(): Promise<ApplicationRegistration> {
+    if (!this.applicationRegistration)
+    {
+      throw new Error("Application Registration does not exist. This is not a valid Authorization.")
+    }
     const parser = new N3.Parser();
     //return parser.parse(str)
     //@ts-ignore
