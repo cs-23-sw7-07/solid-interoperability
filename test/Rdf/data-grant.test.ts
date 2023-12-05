@@ -1,6 +1,6 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {DataGrant, getResource, SAIViolationMissingTripleError, SocialAgent, GrantScope, DataRegistration, SAIViolationError} from "../../src";
+import {DataGrant, getResource, SAIViolationMissingTripleError, SocialAgent, GrantScope, DataRegistration, SAIViolationError, AccessNeed, AccessMode, Agent, DataAuthorization} from "../../src";
 
 describe("DataGrant - test get and set methods/properties", () => {
     let session: Session;
@@ -117,5 +117,39 @@ describe("DataGrant - test get and set methods/properties", () => {
                 expect(async () => await access.getInheritsFromGrant()).rejects.toThrow(SAIViolationMissingTripleError);
             })
         })
+    })
+})
+
+describe("Testing pod communication for Data Authorization", () => {
+    let session: Session;
+    let pod: string
+
+    beforeAll(async () => {
+        const env = getNodeTestingEnvironment()
+        session = await getAuthenticatedSession(env)
+        pod = await getPodRoot(session);
+    });
+    DataGrant
+    test("Data Grant - scopeOfGrant All/AllFromAgent/AllFromReg/SelectedFromReg/Inherited", async () => {
+        const id: string = pod + "test-created/dataGrant1/";
+        const grantee: Agent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+        const RegisteredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
+        const satisfiesAccessNeed: AccessNeed = await getResource(AccessNeed, session.fetch, pod + "LOCATION NEED");
+        const accessMode: AccessMode[] = [AccessMode.Read];
+        const scopeOfGrant: GrantScope = GrantScope.All;
+        const DataOwner: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
+        const hasDataRegistration: DataRegistration = await getResource(DataRegistration, session.fetch, pod + "data/1234567DataRegistration/");
+        
+        await DataGrant.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, scopeOfGrant, DataOwner, hasDataRegistration);
+        
+        const addedGrant = await getResource(DataGrant, session.fetch, id)
+        expect(addedGrant.uri).toStrictEqual(id)
+        expect(addedGrant.Grantee).toStrictEqual(grantee)
+        expect(addedGrant.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
+        expect(addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
+        expect(addedGrant.AccessMode).toStrictEqual(accessMode)
+        expect(addedGrant.ScopeOfGrant).toStrictEqual(scopeOfGrant)
+        expect(addedGrant.DataOwner).toStrictEqual(DataOwner)
+        expect(await addedGrant.getHasDataRegistration()).toStrictEqual(hasDataRegistration)
     })
 })
