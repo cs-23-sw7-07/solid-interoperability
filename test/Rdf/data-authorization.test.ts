@@ -203,12 +203,12 @@ describe("Testing pod communication for Data Authorization", () => {
         
         await DataAuthorization.new(id, session.fetch, grantee, RegisteredShapeTree, satisfiesAccessNeed, accessMode, GrantScope.All);
         
-        const addedGrant = await getResource(DataAuthorization, session.fetch, id)
-        expect(addedGrant.uri).toStrictEqual(id)
-        expect(addedGrant.Grantee).toStrictEqual(grantee)
-        expect(addedGrant.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
-        expect(addedGrant.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
-        expect(addedGrant.AccessMode).toStrictEqual(accessMode)
-        expect(addedGrant.ScopeOfAuthorization).toStrictEqual(GrantScope.All)
+        const addedAuth = await getResource(DataAuthorization, session.fetch, id)
+        expect(addedAuth.uri).toStrictEqual(id)
+        expect(addedAuth.Grantee).toStrictEqual(grantee)
+        expect(addedAuth.RegisteredShapeTree).toStrictEqual(RegisteredShapeTree)
+        expect(addedAuth.getSatisfiesAccessNeed()).toStrictEqual(satisfiesAccessNeed)
+        expect(addedAuth.AccessMode).toStrictEqual(accessMode)
+        expect(addedAuth.ScopeOfAuthorization).toStrictEqual(GrantScope.All)
     })
 })
