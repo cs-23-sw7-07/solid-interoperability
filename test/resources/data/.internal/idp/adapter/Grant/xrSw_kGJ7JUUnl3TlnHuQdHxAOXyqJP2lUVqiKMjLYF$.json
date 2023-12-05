@@ -1,0 +1,1 @@
+{"key":"idp/adapter/Grant/xrSw_kGJ7JUUnl3TlnHuQdHxAOXyqJP2lUVqiKMjLYF","payload":{"expires":"2023-12-18T12:28:12.341Z","payload":{"iat":1701692892,"exp":1702902492,"accountId":"http://localhost:3000/alice-pod/profile/card#me","clientId":"Uxrliiv_Y5C4dWcqWqdEn","kind":"Grant","jti":"xrSw_kGJ7JUUnl3TlnHuQdHxAOXyqJP2lUVqiKMjLYF","openid":{"scope":"openid offline_access webid"}}}}
