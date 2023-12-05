@@ -40,20 +40,21 @@ export class DataInstance<T> {
 
   get Serialized() {
     // Create ShapeTree from class Definitions
-    const shape = {};
     const writer = new N3.Writer();
     const registryURL = new URL(this.Name + "/" + this.id, this.DataRegistry);
 
     writer.addQuad(namedNode(registryURL.toString()), A, literal(this.Name));
 
     for (const member of Object.getOwnPropertyNames(this.data)) {
-      // @ts-ignore
-      shape[member] = this.data[member];
+      //@ts-ignore
+      const data = this.data[member];
+      const serialized = DataInstance.new(data, this.owner);
+
       writer.addQuad(
         namedNode(registryURL.toString()),
         namedNode(member),
         // @ts-ignore
-        namedNode(this.data[member]),
+        namedNode(),
       );
     }
 

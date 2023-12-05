@@ -6,8 +6,7 @@ import {
   IAuthorization,
   IAuthorizationStore,
 } from "./Authorization";
-import { Type } from "typedoc";
-import { getAuthAgent, getProfile } from "../authentication/authentication";
+import { getAuthAgent } from "../authentication/authentication";
 import { NotImplementedYet } from "../Errors/NotImplementedYet";
 import * as fs from "fs";
 import { SocialAgent } from "./SocialAgent";
@@ -19,10 +18,6 @@ import N3 from "n3";
  */
 export interface IApplication {
   store(webId: URL, instance: N3.Quad[]): Promise<void>;
-  dataInstances<T extends Type>(
-    webId: URL,
-    type: T,
-  ): AsyncGenerator<DataInstance<unknown>>;
 }
 
 /**
@@ -80,10 +75,13 @@ export class Application implements IApplication {
     if (authStore == undefined) {
       //TODO: Save new authstore
       authStore = new AuthorizationStore();
+      this.authStore = authStore;
     }
 
     const profile = await ProfileDocument.fetch(webId);
-    authStore.addAuthorization(profile.Authorization);
+
+    const auth = new Authorization(profile);
+    authStore.addAuthorization(auth);
   }
 
   /**
@@ -137,17 +135,44 @@ export class Application implements IApplication {
         `Social agent with WebId ${webId} has not authorized this application.`,
       );
     }
+    let shape = instance.find(
+      (graph) =>
+        graph.predicate.value == "http://www.w3.org/ns/shapetrees#shape",
+    )?.object.value;
 
-    await auth.store(instance, new URL(""));
+    if (!shape) {
+      shape = "unshaped";
+    }
+
+    const registry = await auth.getApplicationRegistration();
+
+    const accessGrant = registry.hasAccessGrant.find((grant) => {
+      return (
+        grant.hasDataGrant.find(
+          (dataGrant) => dataGrant.registeredShapeTree == shape,
+        ) != undefined
+      );
+    });
+    if (accessGrant){
+      const dataRegistration = accessGrant?.hasDataGrant.find(
+        (grant) => grant.hasDataRegistration.registeredShapeTree == shape,
+      )?.hasDataRegistration;
+      if (!dataRegistration){
+        throw new Error(`There were no Data Registration for type: ${shape} in AccessGrant.`)
+      }
+      await auth.store(instance, new URL(dataRegistration.id));
+    }
+    throw new Error(`There are no Access Grants for the type: ${shape}.`)
   }
 
-  async *dataInstances<T extends Type>(webId: URL, type: T) {
+  async *dataInstances(webId: URL) {
     // Get data instances of given type.
-    const list = [DataInstance.empty(type)];
+    const auth = this.getAuthorization(webId);
 
-    // Yield each instance.
-    for (const x of list) {
-      yield x;
+    if (auth == undefined) {
+      throw new Error(
+        `Social agent with WebId ${webId} has not authorized this application.`,
+      );
     }
   }
 

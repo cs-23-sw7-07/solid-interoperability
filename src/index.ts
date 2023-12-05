@@ -28,4 +28,5 @@ export * from "./Errors/NotFound";
 
 export * from "./fetch";
 export * from "./application/Application";
-export * from "./application/SolidDataInstance";
+export { DataInstance } from "./application/SolidDataInstance";
+export { ProfileDocument } from "./application/Rdf";

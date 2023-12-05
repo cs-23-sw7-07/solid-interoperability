@@ -49,7 +49,7 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
     throw new Error("No storage pod found!");
   }
 
-  get Authorization() {
+  get AuthorizationAgent() {
     const agentUrl = this.Quads.find(
       (x) =>
         x.predicate.value ==
@@ -60,8 +60,7 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
         "The identity described by this profile document does not have any authorization agent.",
       );
     }
-    const agent = new Authorization(this, new AuthService(new URL(agentUrl)));
-    return agent;
+    return new URL(agentUrl);
   }
 
   get WebId() {

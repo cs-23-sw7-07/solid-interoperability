@@ -41,16 +41,16 @@ describe("Application", () => {
   let auths: IAuthorization[];
 
   beforeAll(async () => {
-    const authService = new AuthService(new URL("http://localhost:3001"));
     auths = new Array<IAuthorization>();
     const socialAgent = await ProfileDocument.fetch(ALICE_WEBID);
-    auths.push(new Authorization(socialAgent, authService));
+    auths.push(new Authorization(socialAgent));
     const authStore = new AuthorizationStore(auths);
     app = new Application({ authStore: authStore });
   });
 
   it("Can register", () => {
     app.register(new URL(ALICE_WEBID));
+
     expect(app.authStore.Authorizations.length).toBe(1);
   });
 

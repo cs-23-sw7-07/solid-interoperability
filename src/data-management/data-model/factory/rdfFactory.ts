@@ -68,7 +68,7 @@ export class RdfFactory {
       .then((quads) => this.parseQuads(fetch, quads, docPath));
   }
 
-  private parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
+  parseRdfToQuads(rdf: string, docPath: string): Promise<N3.Quad[]> {
     return new Promise((resolve, reject) => {
       const parserOptions: { baseIRI: string } = { baseIRI: docPath };
       const parser = new N3.Parser({ ...parserOptions });
