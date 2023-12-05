@@ -1,5 +1,5 @@
 import { Prefixes, Store } from "n3";
-import {Agent, SocialAgent} from "../agent";
+import {Agent, ApplicationAgent, SocialAgent} from "../agent";
 import { Registration } from "../registration";
 import { Fetch } from "../../../fetch";
 import {INTEROP} from "../namespace";
@@ -26,7 +26,7 @@ export class DataRegistration extends Registration {
       id: string,
       fetch: Fetch,
       registeredBy: SocialAgent,
-      registeredWith: Agent,
+      registeredWith: ApplicationAgent,
       registeredAt: Date,
       updatedAt: Date,
       registeredShapeTree: string,
