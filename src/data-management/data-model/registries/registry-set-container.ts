@@ -1,9 +1,9 @@
-import {Prefixes, Store} from "n3";
-import {createTriple, newResourceContainer, Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {SocialAgentProfileDocument} from "../profile-documents";
-import {createContainer} from "../../Utils/modify-pod";
+import { Prefixes, Store } from "n3";
+import { createTriple, newResourceContainer, Rdf } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { SocialAgentProfileDocument } from "../profile-documents";
+import { createContainer } from "../../Utils/modify-pod";
 
 export class RegistrySetResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {

@@ -1,5 +1,5 @@
-import {INTEROP} from "../namespace";
-import {ProfileDocument} from "./profile-document";
+import { INTEROP } from "../namespace";
+import { ProfileDocument } from "./profile-document";
 
 export function isApplicationAgent(profile: ProfileDocument): boolean {
   const types = profile.getTypeOfSubject();

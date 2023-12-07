@@ -1,13 +1,18 @@
-import {Prefixes, Store} from "n3";
-import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
-import {AccessGrant} from "./access-grant";
-import {DataAuthorization, DataGrant} from "../data";
-import {Fetch} from "../../../../fetch";
-import {INTEROP} from "../../namespace";
-import {Access} from "./access";
-import {createTriple, getResource, getResources, newResource,} from "../../RDF/rdf";
-import {AccessNeedGroup} from "../access-needs/access-need-group";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
+import { Prefixes, Store } from "n3";
+import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
+import { AccessGrant } from "./access-grant";
+import { DataAuthorization, DataGrant } from "../data";
+import { Fetch } from "../../../../fetch";
+import { INTEROP } from "../../namespace";
+import { Access } from "./access";
+import {
+  createTriple,
+  getResource,
+  getResources,
+  newResource,
+} from "../../RDF/rdf";
+import { AccessNeedGroup } from "../access-needs/access-need-group";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 export class AccessAuthorization extends Access {
   /**

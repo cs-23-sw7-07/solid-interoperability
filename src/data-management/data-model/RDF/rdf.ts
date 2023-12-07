@@ -1,5 +1,5 @@
-import {DataFactory, Prefixes, Quad, Store} from "n3";
-import {Fetch} from "../../../fetch";
+import { DataFactory, Prefixes, Quad, Store } from "n3";
+import { Fetch } from "../../../fetch";
 import {
   createContainer,
   deleteSPARQLUpdate,
@@ -7,7 +7,7 @@ import {
   patchSPARQLUpdate,
   readParseResource,
 } from "../../Utils/modify-pod";
-import {TYPE_A} from "../namespace";
+import { TYPE_A } from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -26,9 +26,7 @@ export class Rdf {
   }
 
   getTypeOfSubject(): string[] | undefined {
-    return this.getObjectValuesFromPredicate(
-      TYPE_A,
-    );
+    return this.getObjectValuesFromPredicate(TYPE_A);
   }
 
   getObjectValueFromPredicate(predicate: string): string | undefined {
@@ -98,13 +96,13 @@ export class Rdf {
 }
 
 export async function newResource<T extends Rdf>(
-    c: {
-      new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
-    },
-    fetch: Fetch,
-    uri: string,
-    type: string,
-    quads: Quad[],
+  c: {
+    new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
+  },
+  fetch: Fetch,
+  uri: string,
+  type: string,
+  quads: Quad[],
 ): Promise<T> {
   const store = new Store(quads);
   store.addQuad(createTriple(uri, TYPE_A, type));

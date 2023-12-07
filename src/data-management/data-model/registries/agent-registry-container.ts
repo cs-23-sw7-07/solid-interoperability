@@ -1,10 +1,10 @@
-import {Prefixes, Store} from "n3";
-import {getResources, Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {AgentRegistration} from "../agent-registration/agent-registration";
-import {ApplicationRegistration} from "../agent-registration/application-registration";
-import {SocialAgentRegistration} from "../agent-registration/social-agent-registration";
+import { Prefixes, Store } from "n3";
+import { getResources, Rdf } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { AgentRegistration } from "../agent-registration/agent-registration";
+import { ApplicationRegistration } from "../agent-registration/application-registration";
+import { SocialAgentRegistration } from "../agent-registration/social-agent-registration";
 
 export class AgentRegistryResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
