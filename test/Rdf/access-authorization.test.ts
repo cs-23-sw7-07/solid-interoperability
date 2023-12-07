@@ -1,13 +1,14 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
 import {
-    AccessAuthorization, AccessGrant,
+    AccessAuthorization,
+    AccessGrant,
     ApplicationAgent,
-    DataAuthorization, DataGrant, DataRegistration,
+    DataAuthorization,
+    DataGrant,
     getResource,
     getResources,
-    IDataGrantBuilder,
-    SAIViolationMissingTripleError, SocialAgent
+    SAIViolationMissingTripleError
 } from "../../src";
 
 describe("AccessAuthorization - test get and set methods/properties", () => {
@@ -81,22 +82,6 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
     })
 
     describe("Convert from authorization to grant", () => {
-
-        class MockBuilder implements IDataGrantBuilder {
-            generateId(): string {
-                return pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
-            }
-
-            getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
-                return Promise.reject([]);
-            }
-
-            getInheritedDataGrants(_auth: DataAuthorization): Promise<DataGrant[]> {
-                return Promise.reject([]);
-            }
-
-        }
-
         test("Unit test: Access authorization to Access grant", async () => {
             const expected = await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant");
 

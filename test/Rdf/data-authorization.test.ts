@@ -1,14 +1,18 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
 import {
+    AccessMode,
+    AccessNeed,
+    Agent,
     DataAuthorization,
-    getResource,
-    SAIViolationMissingTripleError,
-    SocialAgent,
-    GrantScope,
+    DataGrant,
     DataRegistration,
+    getResource,
+    GrantScope,
+    IDataGrantBuilder,
     SAIViolationError,
-    DataGrant, IDataGrantBuilder, AccessNeed, Agent, AccessMode
+    SAIViolationMissingTripleError,
+    SocialAgent
 } from "../../src";
 
 describe("DataAuthorization - test get and set methods/properties", () => {

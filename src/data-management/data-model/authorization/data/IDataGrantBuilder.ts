@@ -1,7 +1,7 @@
-import {SocialAgent} from "../../agent";
-import {DataRegistration} from "../../data-registration/data-registration";
-import {DataAuthorization} from "./data-authorization";
-import {DataGrant} from "./data-grant";
+import { SocialAgent } from "../../agent";
+import { DataRegistration } from "../../data-registration/data-registration";
+import { DataAuthorization } from "./data-authorization";
+import { DataGrant } from "./data-grant";
 
 export interface IDataGrantBuilder {
   /**
@@ -11,7 +11,7 @@ export interface IDataGrantBuilder {
 
   /**
    * This function need to return **all** registrations in which the pod owner has access to.
-   * @param registeredShapeTree 
+   * @param registeredShapeTree
    * @param dataOwner this parameter should not be supplied if the `scopeOfGrant` is not of type `interop:All` and is of type `interop:AllFromAgent`
    */
   getAllDataRegistrations(

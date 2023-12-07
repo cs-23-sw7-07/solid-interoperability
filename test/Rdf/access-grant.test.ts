@@ -4,8 +4,6 @@ import {
     AccessGrant,
     AccessNeedGroup,
     ApplicationAgent,
-    ApplicationRegistration,
-    DataAuthorization,
     DataGrant,
     getResource,
     getResources,

@@ -1,29 +1,27 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../data-registration/data-registration";
-import {GrantScope} from "../grant-scope";
-import {Fetch} from "../../../../fetch";
-import {AccessMode} from "../access/access-mode";
-import {Data} from "./data";
-import {createTriple, getResource, newResource} from "../../RDF/rdf";
-import {INTEROP} from "../../namespace";
-import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs/access-need";
-import {SAIViolationError, SAIViolationMissingTripleError} from "../../../../Errors";
-import {IDataGrantBuilder} from "./IDataGrantBuilder";
-import {DataGrant} from "./data-grant";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../data-registration/data-registration";
+import { GrantScope } from "../grant-scope";
+import { Fetch } from "../../../../fetch";
+import { AccessMode } from "../access/access-mode";
+import { Data } from "./data";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
+import { INTEROP } from "../../namespace";
+import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
+import { AccessNeed } from "../access-needs/access-need";
+import {
+  SAIViolationError,
+  SAIViolationMissingTripleError,
+} from "../../../../Errors";
+import { IDataGrantBuilder } from "./IDataGrantBuilder";
+import { DataGrant } from "./data-grant";
 
 export class DataAuthorization extends Data {
   /**
    * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
    */
-  constructor(
-    id: string,
-    fetch: Fetch, 
-    dataset?: Store,
-    prefixes?: Prefixes,
-  ) {
+  constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 
@@ -41,13 +39,22 @@ export class DataAuthorization extends Data {
     hasDataInstance?: string[],
     inheritsFromAuthorization?: DataAuthorization,
   ) {
-    const triple = (predicate: string, object: string | Date) => createTriple(id, INTEROP + predicate, object);
-    const quads = super.newQuads(id, grantee, registeredShapeTree, satisfiesAccessNeed, accessMode, creatorAccessMode);
+    const triple = (predicate: string, object: string | Date) =>
+      createTriple(id, INTEROP + predicate, object);
+    const quads = super.newQuads(
+      id,
+      grantee,
+      registeredShapeTree,
+      satisfiesAccessNeed,
+      accessMode,
+      creatorAccessMode,
+    );
 
-    quads.push(triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)))
+    quads.push(
+      triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)),
+    );
 
-    if (dataOwner)
-      quads.push(triple("dataOwner", dataOwner.webID));
+    if (dataOwner) quads.push(triple("dataOwner", dataOwner.webID));
 
     if (hasDataRegistration)
       quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
@@ -59,22 +66,39 @@ export class DataAuthorization extends Data {
     }
 
     if (inheritsFromAuthorization) {
-      quads.push(triple("inheritsFromAuthorization", inheritsFromAuthorization.uri));
+      quads.push(
+        triple("inheritsFromAuthorization", inheritsFromAuthorization.uri),
+      );
     }
 
-    return newResource(DataAuthorization, fetch, id, "DataAuthorization", quads);
+    return newResource(
+      DataAuthorization,
+      fetch,
+      id,
+      "DataAuthorization",
+      quads,
+    );
   }
 
   public get ScopeOfAuthorization(): GrantScope {
-    const scope = this.getObjectValueFromPredicate(INTEROP + "scopeOfAuthorization");
-    if (scope)
-      return getScopeOfAuth(scope);
-    throw new SAIViolationMissingTripleError(this, INTEROP + "scopeOfAuthorization");
+    const scope = this.getObjectValueFromPredicate(
+      INTEROP + "scopeOfAuthorization",
+    );
+    if (scope) return getScopeOfAuth(scope);
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "scopeOfAuthorization",
+    );
   }
 
   public get DataOwner(): SocialAgent {
     if (this.ScopeOfAuthorization == GrantScope.All)
-      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data owner property.");
+      throw new SAIViolationError(
+        this,
+        "Since the scope of authorization is " +
+          this.ScopeOfAuthorization +
+          " it has no data owner property.",
+      );
     const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
     if (dataOwner) {
       return new SocialAgent(dataOwner);
@@ -85,33 +109,56 @@ export class DataAuthorization extends Data {
   public async getHasDataRegistration(): Promise<DataRegistration> {
     const scope = this.ScopeOfAuthorization;
     if (scope == GrantScope.All || scope == GrantScope.AllFromAgent)
-      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data registration attacted.");
-    const iri = this.getObjectValueFromPredicate(INTEROP + "hasDataRegistration");
+      throw new SAIViolationError(
+        this,
+        "Since the scope of authorization is " +
+          this.ScopeOfAuthorization +
+          " it has no data registration attacted.",
+      );
+    const iri = this.getObjectValueFromPredicate(
+      INTEROP + "hasDataRegistration",
+    );
     if (iri) {
       return await getResource(DataRegistration, this.fetch, iri);
     }
-    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataRegistration");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "hasDataRegistration",
+    );
   }
 
   public get HasDataInstance(): string[] {
     if (this.ScopeOfAuthorization != GrantScope.SelectedFromRegistry)
-      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no data instance attacted.");
+      throw new SAIViolationError(
+        this,
+        "Since the scope of authorization is " +
+          this.ScopeOfAuthorization +
+          " it has no data instance attacted.",
+      );
     const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
-    if (iris)
-      return iris;
+    if (iris) return iris;
     throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstance");
   }
 
   public async getInheritsFromAuthorization(): Promise<DataAuthorization> {
     if (this.ScopeOfAuthorization != GrantScope.Inherited)
-      throw new SAIViolationError(this, "Since the scope of authorization is " + this.ScopeOfAuthorization + " it has no inherited authorization attacted.");
-    const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromAuthorization");
+      throw new SAIViolationError(
+        this,
+        "Since the scope of authorization is " +
+          this.ScopeOfAuthorization +
+          " it has no inherited authorization attacted.",
+      );
+    const iri = this.getObjectValueFromPredicate(
+      INTEROP + "inheritsFromAuthorization",
+    );
     if (iri) {
       return await getResource(DataAuthorization, this.fetch, iri);
     }
-    throw new SAIViolationMissingTripleError(this, INTEROP + "inheritsFromAuthorization");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "inheritsFromAuthorization",
+    );
   }
-
 
   async toDataGrant(builder: IDataGrantBuilder): Promise<DataGrant[]> {
     const grants: DataGrant[] = [];
@@ -195,14 +242,17 @@ export class DataAuthorization extends Data {
               reg,
               this.CreatorAccessMode,
               undefined,
-              inheritedGrant
+              inheritedGrant,
             ),
           );
         }
         break;
       }
       default:
-        throw new SAIViolationError(this, this.ScopeOfAuthorization + " is not a valid scope of authorization");
+        throw new SAIViolationError(
+          this,
+          this.ScopeOfAuthorization + " is not a valid scope of authorization",
+        );
     }
     return grants;
   }

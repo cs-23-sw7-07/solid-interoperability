@@ -1,6 +1,17 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {DataGrant, getResource, SAIViolationMissingTripleError, SocialAgent, GrantScope, DataRegistration, SAIViolationError, AccessNeed, AccessMode, Agent, DataAuthorization} from "../../src";
+import {
+    AccessMode,
+    AccessNeed,
+    Agent,
+    DataGrant,
+    DataRegistration,
+    getResource,
+    GrantScope,
+    SAIViolationError,
+    SAIViolationMissingTripleError,
+    SocialAgent
+} from "../../src";
 
 describe("DataGrant - test get and set methods/properties", () => {
     let session: Session;

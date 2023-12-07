@@ -1,6 +1,13 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {ApplicationAgent, ApplicationRegistration, getResource, SAIViolationMissingTripleError, SocialAgent, SocialAgentRegistration} from "../../src";
+import {
+    ApplicationAgent,
+    ApplicationRegistration,
+    getResource,
+    SAIViolationMissingTripleError,
+    SocialAgent,
+    SocialAgentRegistration
+} from "../../src";
 
 describe("registration - test get and set methods/properties", () => {
     let session: Session;

@@ -6,26 +6,29 @@ import { AgentRegistration } from "../agent-registration/agent-registration";
 import { ApplicationRegistration } from "../agent-registration/application-registration";
 import { SocialAgentRegistration } from "../agent-registration/social-agent-registration";
 
-
 export class AgentRegistryResource extends Rdf {
-  constructor(
-    id: string,
-    fetch: Fetch,
-    dataset?: Store,
-    prefixes?: Prefixes,
-  ) {
-    super(
-      id,
-      fetch, dataset, prefixes
-    );
+  constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+    super(id, fetch, dataset, prefixes);
   }
 
   getHasSocialAgentRegistration(): Promise<SocialAgentRegistration[]> {
-    return getResources(SocialAgentRegistration, this.fetch, this.getObjectValuesFromPredicate(INTEROP + "hasSocialAgentRegistration") ?? []);
+    return getResources(
+      SocialAgentRegistration,
+      this.fetch,
+      this.getObjectValuesFromPredicate(
+        INTEROP + "hasSocialAgentRegistration",
+      ) ?? [],
+    );
   }
 
   getHasApplicationRegistration(): Promise<ApplicationRegistration[]> {
-    return getResources(ApplicationRegistration, this.fetch, this.getObjectValuesFromPredicate(INTEROP + "hasApplicationRegistration") ?? []);
+    return getResources(
+      ApplicationRegistration,
+      this.fetch,
+      this.getObjectValuesFromPredicate(
+        INTEROP + "hasApplicationRegistration",
+      ) ?? [],
+    );
   }
 
   async addRegistration(registration: AgentRegistration) {
@@ -33,7 +36,7 @@ export class AgentRegistryResource extends Rdf {
       registration instanceof ApplicationRegistration
         ? INTEROP + "hasApplicationRegistration"
         : INTEROP + "hasSocialAgentRegistration";
-    const quad = this.createTriple(predicate, registration.uri)
-    await this.add(quad)
+    const quad = this.createTriple(predicate, registration.uri);
+    await this.add(quad);
   }
 }

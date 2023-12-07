@@ -1,4 +1,4 @@
-import {GrantScope} from "../data-model/authorization/grant-scope";
+import { GrantScope } from "../data-model/authorization/grant-scope";
 
 class InvalidGrantScope extends Error {
   constructor(message: string) {
@@ -58,8 +58,9 @@ export function scopeOfAuthFromEnum(scopeOfAuthEnum: GrantScope): string {
       return solidInterop + "Inherited";
     }
     default: {
-      throw new InvalidGrantScope("Invalid grant scope enum: " + scopeOfAuthEnum);
+      throw new InvalidGrantScope(
+        "Invalid grant scope enum: " + scopeOfAuthEnum,
+      );
     }
   }
 }
-

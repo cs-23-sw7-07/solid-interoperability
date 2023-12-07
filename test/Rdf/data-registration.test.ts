@@ -1,6 +1,6 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {DataGrant, getResource, SocialAgent, GrantScope, DataRegistration, AccessNeed, AccessMode, Agent, DataAuthorization, ApplicationAgent} from "../../src";
+import {ApplicationAgent, DataRegistration, getResource, SocialAgent} from "../../src";
 
 
 describe("Testing pod communication for Data Registration", () => {
