@@ -1,11 +1,11 @@
-import { Prefixes, Store } from "n3";
-import { AgentRegistration } from "./agent-registration";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { ApplicationAgent, SocialAgent } from "../agent";
-import { AccessGrant } from "../authorization/access/access-grant";
-import { SAIViolationMissingTripleError } from "../../../Errors";
-import { createTriple, newResourceContainer } from "../RDF/rdf";
+import {Prefixes, Store} from "n3";
+import {AgentRegistration} from "./agent-registration";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {AccessGrant} from "../authorization/access/access-grant";
+import {SAIViolationMissingTripleError} from "../../../Errors";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
 
 /**
  * A class which has the fields to conform to the `Social Agent Registration` graph defined in the Solid interoperability specification.
