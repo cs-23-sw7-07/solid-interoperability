@@ -1,12 +1,12 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { createTriple, getResource, Rdf } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
-import { getDate } from "../../../Utils";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
-import { getAgent } from "../../../Utils/get-grantee";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {createTriple, getResource, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {getDate} from "../../../Utils";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {getAgent} from "../../../Utils/get-grantee";
 
 export abstract class Access extends Rdf {
   /**

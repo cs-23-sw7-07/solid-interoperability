@@ -1,4 +1,4 @@
-import { Rdf } from "..";
+import {Rdf} from "..";
 
 export class SAIViolationError extends Error {
   constructor(

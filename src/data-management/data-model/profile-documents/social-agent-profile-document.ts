@@ -1,10 +1,10 @@
-import { Prefixes, Store } from "n3";
-import { INTEROP } from "../namespace";
-import { getResource } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { RegistrySetResource } from "../registries/registry-set-container";
-import { ProfileDocument } from "./profile-document";
-import { SAIViolationError } from "../../../Errors";
+import {Prefixes, Store} from "n3";
+import {INTEROP} from "../namespace";
+import {getResource} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {RegistrySetResource} from "../registries";
+import {ProfileDocument} from "./profile-document";
+import {SAIViolationError} from "../../../Errors";
 
 export class SocialAgentProfileDocument extends ProfileDocument {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -23,7 +23,7 @@ export class SocialAgentProfileDocument extends ProfileDocument {
 
   async addHasAuthorizationAgent(agentUri: string) {
     await this.add(
-      this.createTriple(INTEROP + "hasAuthorizationAgent", agentUri),
+      [this.createTriple(INTEROP + "hasAuthorizationAgent", agentUri)],
     );
   }
 
@@ -48,7 +48,7 @@ export class SocialAgentProfileDocument extends ProfileDocument {
         "The Social Agent ahs already a registry set.",
       );
     await this.add(
-      this.createTriple(INTEROP + "hasRegistrySet", registriesContainer.uri),
+      [this.createTriple(INTEROP + "hasRegistrySet", registriesContainer.uri)],
     );
   }
 }

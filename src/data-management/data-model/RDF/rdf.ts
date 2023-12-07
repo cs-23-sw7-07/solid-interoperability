@@ -1,14 +1,13 @@
-import { DataFactory, Prefixes, Quad, Store } from "n3";
-import { Fetch } from "../../../fetch";
+import {DataFactory, Prefixes, Quad, Store} from "n3";
+import {Fetch} from "../../../fetch";
 import {
   createContainer,
   deleteSPARQLUpdate,
   insertSPARQLUpdate,
   patchSPARQLUpdate,
   readParseResource,
-
 } from "../../Utils/modify-pod";
-import { TYPE_A } from "../namespace";
+import {TYPE_A} from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 

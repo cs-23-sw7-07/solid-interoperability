@@ -1,10 +1,10 @@
-import { createTriple, Rdf } from "./RDF/rdf";
-import { ApplicationAgent, SocialAgent } from "./agent";
-import { INTEROP } from "./namespace";
-import { Fetch } from "../../fetch";
-import { getDate } from "../Utils";
-import { Prefixes, Quad, Store } from "n3";
-import { SAIViolationMissingTripleError } from "../../Errors";
+import {createTriple, Rdf} from "./RDF/rdf";
+import {ApplicationAgent, SocialAgent} from "./agent";
+import {INTEROP} from "./namespace";
+import {Fetch} from "../../fetch";
+import {getDate} from "../Utils";
+import {Prefixes, Quad, Store} from "n3";
+import {SAIViolationMissingTripleError} from "../../Errors";
 
 export abstract class Registration extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
