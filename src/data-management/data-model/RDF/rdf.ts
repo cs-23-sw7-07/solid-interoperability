@@ -28,7 +28,7 @@ export class Rdf {
 
   getTypeOfSubject(): string[] | undefined {
     return this.getObjectValuesFromPredicate(
-      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      TYPE_A,
     );
   }
 
