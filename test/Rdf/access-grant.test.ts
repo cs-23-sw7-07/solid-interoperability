@@ -31,12 +31,12 @@ describe("AccessGrant - test get and set methods/properties", () => {
         let access: AccessGrant;
 
         beforeAll(async () => {
-            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant";
+            const id = pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant";
             access = await getResource(AccessGrant, session.fetch, id);
         });
 
         test("Unit test: AccessGrant - getHasDataGrant", async () => {
-            const uris = [pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
+            const uris = [pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
             const dataGrants: DataGrant[] = await getResources(DataGrant, session.fetch, uris);
             expect(await access.getHasDataGrant()).toStrictEqual(dataGrants)
         })
@@ -67,7 +67,7 @@ describe("Testing pod communication for Access Grant", () => {
     });
     
     test("Able to add an Access Grant", async () => {
-        const dataGrant = await getResource(DataGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant")
+        const dataGrant = await getResource(DataGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant")
         const id: string = pod + "test-created/accessGrant1";
         const grantedBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const grantedAt: Date = new Date();

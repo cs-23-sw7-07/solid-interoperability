@@ -28,7 +28,7 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
         let access: AccessAuthorization;
 
         beforeAll(async () => {
-            const id = pod + "registries/authorization/e2765d6cAccessAuthReplace";
+            const id = pod + "registries-unchangeable/authorization/e2765d6cAccessAuthReplace";
             access = await getResource(AccessAuthorization, session.fetch, id);
         });
 
@@ -38,13 +38,13 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
         })
 
         test("Unit test: AccessAuthorization - getHasDataAuthorization", async () => {
-            const uris = [pod + "registries/authorization/f54a1b6a0DataAuth", pod + "registries/authorization/f0e4cb692DataAuth"];
+            const uris = [pod + "registries-unchangeable/authorization/f54a1b6a0DataAuth", pod + "registries-unchangeable/authorization/f0e4cb692DataAuth"];
             const dataAuthorizations: DataAuthorization[] = await getResources(DataAuthorization, session.fetch, uris);
             expect(await access.getHasDataAuthorization()).toStrictEqual(dataAuthorizations)
         })
 
         test("Unit test: AccessAuthorization - getReplaces", async () => {
-            const expectedAccessAuthorization: AccessAuthorization = await getResource(AccessAuthorization, session.fetch, pod + "registries/authorization/e2765d6dAccessAuth");
+            const expectedAccessAuthorization: AccessAuthorization = await getResource(AccessAuthorization, session.fetch, pod + "registries-unchangeable/authorization/e2765d6dAccessAuth");
             expect(await access.getReplaces()).toStrictEqual(expectedAccessAuthorization)
         })
     })
@@ -84,7 +84,7 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
 
         class MockBuilder implements IDataGrantBuilder {
             generateId(): string {
-                return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
+                return pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
             }
 
             getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
@@ -98,14 +98,14 @@ describe("AccessAuthorization - test get and set methods/properties", () => {
         }
 
         test("Unit test: Access authorization to Access grant", async () => {
-            const expected = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant");
+            const expected = await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant");
 
-            const uris = [pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
+            const uris = [pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
             const dataGrants: DataGrant[] = await getResources(DataGrant, session.fetch, uris);
 
-            const auth = await getResource(AccessAuthorization, session.fetch, pod + "registries/authorization/e2765d6cAccessAuthReplace");
+            const auth = await getResource(AccessAuthorization, session.fetch, pod + "registries-unchangeable/authorization/e2765d6cAccessAuthReplace");
 
-            const actual = await auth.toAccessGrant(pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100", dataGrants);
+            const actual = await auth.toAccessGrant(pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100", dataGrants);
             expect(actual.GrantedBy).toStrictEqual(expected.GrantedBy);
             expect(actual.GrantedAt).toStrictEqual(expected.GrantedAt);
             expect(await actual.getGrantee()).toStrictEqual(await expected.getGrantee());

@@ -4,7 +4,7 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<http://localhost:3000/Alice-pod/registries/authorization/f54a1b6a0DataAuth> a interop:DataAuthorization;
+<http://localhost:3000/Alice-pod/registries-unchangeable/authorization/f54a1b6a0DataAuth> a interop:DataAuthorization;
     interop:dataOwner <http://localhost:3000/Alice-pod/profile/card#me>;
     interop:hasDataRegistration <http://localhost:3000/Alice-pod/data/8501f084DataRegistration/>;
     interop:accessMode acl:Read, acl:Create;

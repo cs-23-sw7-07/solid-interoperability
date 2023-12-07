@@ -10,6 +10,7 @@ projectron:\#id
   interop:applicationDescription "Manage projects with ease" ;
   interop:applicationAuthor acme:\#corp ;
   interop:applicationThumbnail projectron:thumb.svg ;
+  interop:hasAuthorizationCallbackEndpoint projectron:\/auth-callback ;
   interop:hasAccessNeedGroup projectron:\#need-group-pm .
 projectron:\#need-group-pm
   interop:accessNecessity interop:accessRequired ;

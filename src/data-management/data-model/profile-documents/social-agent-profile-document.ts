@@ -1,14 +1,10 @@
-import N3, {Prefixes, Store} from "n3";
+import {Prefixes, Store} from "n3";
 import {INTEROP} from "../namespace";
 import {getResource} from "../RDF/rdf";
 import {Fetch} from "../../../fetch";
 import {RegistrySetResource} from "../registries/registry-set-container";
-import {serializeTurtle} from "../../turtle/turtle-serializer";
 import {ProfileDocument} from "./profile-document";
-
-const { quad, namedNode, defaultGraph } = N3.DataFactory;
-
-const OIDC_ISSUER_PREDICATE = "http://www.w3.org/ns/solid/terms#oidcIssuer";
+import { SAIViolationError } from "../../../Errors";
 
 export class SocialAgentProfileDocument extends ProfileDocument {
     constructor(
@@ -27,21 +23,11 @@ export class SocialAgentProfileDocument extends ProfileDocument {
         const authorizationAgents = this.getObjectValuesFromPredicate(
             INTEROP + "hasAuthorizationAgent",
         );
-        return (
-            authorizationAgents != undefined && authorizationAgents.includes(authorizationUri)
-        );
+        return authorizationAgents != undefined && authorizationAgents.includes(authorizationUri);
     }
 
-    async addHasAuthorizationAgent(agentUri: string, fetch: Fetch) {
-        this.dataset.add(
-            quad(
-                this.SubjectWebId,
-                namedNode(INTEROP + "hasAuthorizationAgent"),
-                namedNode(agentUri),
-                defaultGraph(),
-            ),
-        );
-        await this.updateProfile(fetch);
+    async addHasAuthorizationAgent(agentUri: string) {
+        await this.add(this.createTriple(INTEROP + "hasAuthorizationAgent", agentUri));
     }
 
     get HasRegistrySet(): boolean {
@@ -50,38 +36,17 @@ export class SocialAgentProfileDocument extends ProfileDocument {
     }
 
     getRegistrySet(): Promise<RegistrySetResource> {
-        const set = this.getObjectValueFromPredicate(INTEROP + "hasRegistrySet")!;
+        const set = this.getObjectValueFromPredicate(INTEROP + "hasRegistrySet");
+        if (set == undefined) {
+            throw new Error("No registry set found");
+        }
         return getResource(RegistrySetResource, this.fetch, set);
     }
 
-    async addHasRegistrySet(registriesContainer: string, fetch: Fetch) {
-        this.dataset.add(
-            quad(
-                this.SubjectWebId,
-                namedNode(INTEROP + "hasRegistrySet"),
-                namedNode(registriesContainer),
-                defaultGraph(),
-            ),
-        );
-        await this.updateProfile(fetch);
-    }
-
-    private async updateProfile(fetch: Fetch) {
-        await fetch(this.uri, {
-            method: "PUT",
-            body: await serializeTurtle(this.dataset, {
-                interop: INTEROP,
-            }),
-            headers: {
-                "Content-Type": "text/turtle",
-            },
-        });
-    }
-
-    get SubjectWebId() {
-        for (const quad of this.dataset.match(null, namedNode(OIDC_ISSUER_PREDICATE))) {
-            return quad.subject;
-        }
-        throw new Error("No subject with an OIDC Issuer");
+    async addHasRegistrySet(registriesContainer: RegistrySetResource) {
+        const set = this.getObjectValueFromPredicate(INTEROP + "hasRegistrySet");
+        if (set)
+            throw new SAIViolationError(this, "The Social Agent ahs already a registry set.");
+        await this.add(this.createTriple(INTEROP + "hasRegistrySet", registriesContainer.uri));
     }
 }

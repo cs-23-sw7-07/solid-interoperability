@@ -9,4 +9,4 @@
     interop:grantedAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
     interop:grantee <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
     interop:hasAccessNeedGroup <http://localhost:3000/Alice-pod/profile-documents/projectron#need-group-pm>;
-    interop:hasDataGrant <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>, <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant>.
+    interop:hasDataGrant <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>, <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant>.

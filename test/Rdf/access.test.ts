@@ -21,7 +21,7 @@ describe(" - test get and set methods/properties", () => {
         let access: AccessAuthorization;
 
         beforeAll(async () => {
-            const id = pod + "registries/authorization/e2765d6cAccessAuthReplace";
+            const id = pod + "registries-unchangeable/authorization/e2765d6cAccessAuthReplace";
             access = await getResource(AccessAuthorization, session.fetch, id);
         });
 

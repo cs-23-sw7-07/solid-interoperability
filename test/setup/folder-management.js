@@ -30,8 +30,20 @@ async function replaceFolder(sourcePath, destinationPath) {
   }
 }
 
+async function deleteFolder(path) {
+  try {
+    await fs.remove(path);
+    console.log(`Delete folder at ${path}`);
+  } catch (error) {
+    console.error(`Error replacing folder: ${error.message}`);
+  }
+}
+
+
+
 // Export the functions, so they can be accessed from other files
 module.exports = {
+  deleteFolder,
   copyFolder,
   replaceFolder
 };

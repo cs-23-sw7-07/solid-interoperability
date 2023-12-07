@@ -29,7 +29,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         let data: DataAuthorization;
 
         beforeAll(async () => {
-            const id = pod + "registries/authorization/f54a1b6a0DataAuth";
+            const id = pod + "registries-unchangeable/authorization/f54a1b6a0DataAuth";
             data = await getResource(DataAuthorization, session.fetch, id);
         });
 
@@ -54,8 +54,8 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         })
 
         test("Unit test: DataAuthorization - getInheritsFromAuthorization", async () => {
-            const data = await getResource(DataAuthorization, session.fetch, pod + "registries/authorization/f0e4cb692DataAuth");
-            const expected: DataAuthorization = await getResource(DataAuthorization, session.fetch, pod + "registries/authorization/f54a1b6a0DataAuth");
+            const data = await getResource(DataAuthorization, session.fetch, pod + "registries-unchangeable/authorization/f0e4cb692DataAuth");
+            const expected: DataAuthorization = await getResource(DataAuthorization, session.fetch, pod + "registries-unchangeable/authorization/f54a1b6a0DataAuth");
             expect(await data.getInheritsFromAuthorization()).toStrictEqual(expected)
         })
     })
@@ -150,7 +150,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
 
         class MockBuilder implements IDataGrantBuilder {
             generateId(): string {
-                return pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant12345";
+                return pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant12345";
             }
 
             getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
@@ -164,9 +164,9 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         }
 
         test("Unit test: Data authorization to Data grant", async () => {
-            const expected = await getResource(DataGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
+            const expected = await getResource(DataGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
 
-            const auth = await getResource(DataAuthorization, session.fetch, pod + "registries/authorization/f54a1b6a0DataAuth");
+            const auth = await getResource(DataAuthorization, session.fetch, pod + "registries-unchangeable/authorization/f54a1b6a0DataAuth");
 
             const actuals = await auth.toDataGrant(new MockBuilder());
             expect(actuals.length).toEqual(1);

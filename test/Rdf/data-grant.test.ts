@@ -20,7 +20,7 @@ describe("DataGrant - test get and set methods/properties", () => {
         let data: DataGrant;
 
         beforeAll(async () => {
-            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant";
+            const id = pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant";
             data = await getResource(DataGrant, session.fetch, id);
         });
 
@@ -40,13 +40,13 @@ describe("DataGrant - test get and set methods/properties", () => {
         })
 
         test("Unit test: DataGrant - get HasDataInstance", async () => {
-            const data = await getResource(DataGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
+            const data = await getResource(DataGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
             const expected: string[] = ["http://localhost:3000/Alice-pod/data/8501f084DataRegistration/123"];
             expect(data.HasDataInstance).toStrictEqual(expected)
         })
 
         test("Unit test: DataGrant - getInheritsFromGrant", async () => {
-            const expected: DataGrant = await getResource(DataGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
+            const expected: DataGrant = await getResource(DataGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant");
             expect(await data.getInheritsFromGrant()).toStrictEqual(expected)
         })
     })

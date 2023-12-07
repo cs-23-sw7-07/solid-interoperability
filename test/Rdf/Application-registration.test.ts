@@ -17,7 +17,7 @@ describe("Application-registration-test", () => {
     });
 
     test("Able to add a Application Registration", async () => {
-        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
+        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
         const id: string = pod + "test-created/applicationRegistration1/";
         const registeredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/test")
@@ -38,7 +38,7 @@ describe("Application-registration-test", () => {
         let reg: ApplicationRegistration;
 
         beforeAll(async () => {
-            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/";
             reg = await getResource(ApplicationRegistration, session.fetch, id);
         });
 

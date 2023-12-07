@@ -13,4 +13,4 @@
     interop:accessMode acl:Read, acl:Create;
     interop:creatorAccessMode acl:Update, acl:Delete;
     interop:scopeOfGrant interop:All;
-    interop:inheritsFromGrant <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>.
+    interop:inheritsFromGrant <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>.

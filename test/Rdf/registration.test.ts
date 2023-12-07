@@ -20,7 +20,7 @@ describe("registration - test get and set methods/properties", () => {
         let reg: ApplicationRegistration;
 
         beforeAll(async () => {
-            const id = pod + "registries/agents/2f2f3628ApplicationRegistration/";
+            const id = pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/";
             reg = await getResource(ApplicationRegistration, session.fetch, id);
         });
 
@@ -49,7 +49,7 @@ describe("registration - test get and set methods/properties", () => {
         let reg: SocialAgentRegistration;
 
         beforeAll(async () => {
-            const id = pod + "registries/agents/c4562da9SocialAgentRegistration/";
+            const id = pod + "registries-unchangeable/agents/c4562da9SocialAgentRegistration/";
             reg = await getResource(SocialAgentRegistration, session.fetch, id);
         });
 

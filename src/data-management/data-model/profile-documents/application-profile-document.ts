@@ -34,7 +34,7 @@ export class ApplicationProfileDocument extends ProfileDocument {
         return this.getObjectValueFromPredicate(INTEROP + "applicationThumbnail");
     }
 
-    async getHasAccessNeedGroup(fetch: Fetch): Promise<AccessNeedGroup[]> {
+    async getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
         const values = this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeedGroup");
 
         if (!values) return [];

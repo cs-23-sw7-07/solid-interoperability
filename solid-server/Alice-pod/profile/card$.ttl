@@ -7,4 +7,4 @@
     <http://www.w3.org/ns/pim/space#storage> <http://localhost:3000/Alice-pod/>;
     <http://www.w3.org/ns/solid/terms#oidcIssuer> <http://localhost:3000/>;
     interop:hasAuthorizationAgent <http://localhost:3001/agents/aHR0cDovL2xvY2FsaG9zdDozMDAwL0FsaWNlLXBvZC9wcm9maWxlL2NhcmQjbWU=>;
-    interop:hasRegistrySet <http://localhost:3000/Alice-pod/Registries/>.
+    interop:hasRegistrySet <http://localhost:3000/Alice-pod/registries-unchangeable/>.

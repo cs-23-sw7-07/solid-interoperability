@@ -1,15 +1,16 @@
-import {Prefixes, Store} from "n3";
-import {Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {AgentRegistration} from "../agent-registration/agent-registration";
-import {ApplicationRegistration} from "../agent-registration/application-registration";
+import { Prefixes, Store } from "n3";
+import { Rdf, getResources } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { AgentRegistration } from "../agent-registration/agent-registration";
+import { ApplicationRegistration } from "../agent-registration/application-registration";
+import { SocialAgentRegistration } from "../agent-registration/social-agent-registration";
 
 
 export class AgentRegistryResource extends Rdf {
-    constructor(
+  constructor(
     id: string,
-    fetch: Fetch, 
+    fetch: Fetch,
     dataset?: Store,
     prefixes?: Prefixes,
   ) {
@@ -19,24 +20,20 @@ export class AgentRegistryResource extends Rdf {
     );
   }
 
-    get HasSocialAgentRegistration(): string[] | undefined {
-        return this.getObjectValuesFromPredicate(INTEROP + "hasSocialAgentRegistration");
-    }
+  getHasSocialAgentRegistration(): Promise<SocialAgentRegistration[]> {
+    return getResources(SocialAgentRegistration, this.fetch, this.getObjectValuesFromPredicate(INTEROP + "hasSocialAgentRegistration") ?? []);
+  }
 
-    get HasApplicationRegistration(): string[] | undefined {
-        return this.getObjectValuesFromPredicate(INTEROP + "hasApplicationRegistration");
-    }
+  getHasApplicationRegistration(): Promise<ApplicationRegistration[]> {
+    return getResources(ApplicationRegistration, this.fetch, this.getObjectValuesFromPredicate(INTEROP + "hasApplicationRegistration") ?? []);
+  }
 
-    async addRegistration(registration: AgentRegistration) {
-        const predicate =
-        registration instanceof ApplicationRegistration
-                ? INTEROP + "hasApplicationRegistration"
-                : INTEROP + "hasSocialAgentRegistration";
-        const quad = this.createTriple(predicate, registration.uri)
-        await this.add([quad])
-    }
-
-    get HasDataRegistry(): string | undefined {
-        return this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
-    }
+  async addRegistration(registration: AgentRegistration) {
+    const predicate =
+      registration instanceof ApplicationRegistration
+        ? INTEROP + "hasApplicationRegistration"
+        : INTEROP + "hasSocialAgentRegistration";
+    const quad = this.createTriple(predicate, registration.uri)
+    await this.add(quad)
+  }
 }

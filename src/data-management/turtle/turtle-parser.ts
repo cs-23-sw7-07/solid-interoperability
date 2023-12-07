@@ -1,4 +1,5 @@
 import {DataFactory, Parser, Prefixes, Quad, Store} from "n3";
+import { NotParsable } from "../..";
 
 /**
  * The result of parseTurtle function.
@@ -17,7 +18,7 @@ export class ParserResult {
  * @param text turtle text to parse.
  * @param source the IRI of the resource to parse.
  */
-export const parseTurtle = async (text: string, source?: string): Promise<ParserResult> => {
+export function parseTurtle(text: string, source?: string): Promise<ParserResult> {
     const store = new Store();
     return new Promise((resolve, reject) => {
         const parserOptions: { baseIRI?: string } = {};
@@ -27,7 +28,7 @@ export const parseTurtle = async (text: string, source?: string): Promise<Parser
         const parser = new Parser({ ...parserOptions });
         parser.parse(text, (error: Error, quad: Quad, parse: Prefixes) => {
             if (error) {
-                reject(error);
+                reject(new NotParsable(error.message));
             } else if (quad) {
                 store.add(DataFactory.quad(quad.subject, quad.predicate, quad.object));
             } else {

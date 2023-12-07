@@ -16,20 +16,18 @@ const trimNamedGraph = (dataset: DatasetCore): Store => {
 /**
  * Wrapper around N3.Writer to convert from callback style to Promise.
  * @param dataset Store with data to serialize
- * @param trim Whether to trim the named graph off the dataset or not. If the dataset has a named graph and is not trimmed
- *             the serialization will be done in trig format instead of turtle.
+ * trim the named graph: If the dataset has a named graph and is not trimmed the serialization will be done in trig format instead of turtle.
  */
-export async function serializeTurtle(
+export function serializeTurtle(
     dataset: DatasetCore,
     prefixes: {},
-    trim = true,
 ): Promise<string> {
     const writer = new Writer({
         format: "text/turtle",
         prefixes: { ...prefixes },
     });
 
-    for (const quad of trim ? trimNamedGraph(dataset) : dataset) {
+    for (const quad of trimNamedGraph(dataset)) {
         writer.addQuad(quad);
     }
 

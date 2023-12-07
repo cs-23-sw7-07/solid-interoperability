@@ -1,4 +1,4 @@
-import {ApplicationAgent, DataRegistration, SocialAgent} from "../src";
+import {AccessAuthorization, ApplicationAgent, DataRegistration, SocialAgent} from "../src";
 
 
 const pmShapetrees = 'http://data.example/shapetrees/pm#';
@@ -52,7 +52,7 @@ export const dataRegistration1234567 = new DataRegistration(
 // );
 
 export const dataGrantb42228af = new DataGrant(
-    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/b42228afDataGrant",
+    "Alice-pod/registries-unchangeable/agents/c4562da9SocialAgentRegistration/b42228afDataGrant",
     aliceID,
     bobID,
     pmShapetrees + "ProjectTree",
@@ -65,7 +65,7 @@ export const dataGrantb42228af = new DataGrant(
 );
 
 export const dataGrant2aa21a8c = new DataGrant(
-    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant",
+    "Alice-pod/registries-unchangeable/agents/c4562da9SocialAgentRegistration/2aa21a8cDataGrant",
     aliceID,
     bobID,
     pmShapetrees + "Issue",
@@ -78,7 +78,7 @@ export const dataGrant2aa21a8c = new DataGrant(
 );
 
 export const dataGrant95ff7580 = new DataGrant(
-    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/95ff7580DataGrant",
+    "Alice-pod/registries-unchangeable/agents/c4562da9SocialAgentRegistration/95ff7580DataGrant",
     aliceID,
     bobID,
     pmShapetrees + "TaskTree",
@@ -92,7 +92,7 @@ export const dataGrant95ff7580 = new DataGrant(
 );
 
 export const accessGrantb6e125b8 = new AccessGrant(
-    "Alice-pod/registries/agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant",
+    "Alice-pod/registries-unchangeable/agents/c4562da9SocialAgentRegistration/b6e125b8AccessGrant",
     aliceID,
     new Date("2020-04-04T20:15:47.000Z"),
     bobID,
@@ -310,7 +310,7 @@ export const accessAuthorizatione47e07897 = new AccessAuthorization(
     ]
 );
 
-export const accessAuthorizatione47e07897Parse = new AccessAuthorization(
+export const accessAuthorizatione47e07897Parse = AccessAuthorization.new(
     "https://alice.example/authorization/47e07897",
     aliceID,
     jarvisID,

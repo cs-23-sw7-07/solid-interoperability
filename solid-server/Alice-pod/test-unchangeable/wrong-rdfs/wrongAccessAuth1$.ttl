@@ -4,9 +4,9 @@
 @prefix acl: <http://www.w3.org/ns/auth/acl#>.
 @prefix interop: <http://www.w3.org/ns/solid/interop#>.
 
-<http://localhost:3000/Alice-pod/registries/authorization/e2765d6cAccessAuthReplace> a interop:AccessAuthorization;
+<http://localhost:3000/Alice-pod/registries-unchangeable/authorization/e2765d6cAccessAuthReplace> a interop:AccessAuthorization;
     interop:grantedAt "2020-12-04T20:15:47.000Z"^^xsd:dateTime;
     interop:grantee <http://localhost:3000/Alice-pod/profile-documents/projectron#id>;
     interop:hasAccessNeedGroup <http://localhost:3000/Alice-pod/profile-documents/projectron#need-group-pm>;
-    interop:hasDataAuthorization <http://localhost:3000/Alice-pod/registries/authorization/f54a1b6a0DataAuth>, <http://localhost:3000/Alice-pod/registries/authorization/f0e4cb692DataAuth>;
-    interop:replaces <http://localhost:3000/Alice-pod/registries/authorization/e2765d6dAccessAuth>.
+    interop:hasDataAuthorization <http://localhost:3000/Alice-pod/registries-unchangeable/authorization/f54a1b6a0DataAuth>, <http://localhost:3000/Alice-pod/registries-unchangeable/authorization/f0e4cb692DataAuth>;
+    interop:replaces <http://localhost:3000/Alice-pod/registries-unchangeable/authorization/e2765d6dAccessAuth>.

@@ -19,7 +19,7 @@ describe("Testing pod communication for Data Registration", () => {
         const registeredWith = new ApplicationAgent(pod + "profile-documents/authorization-agent#id");
         const registeredAt = new Date();
         const updatedAt = new Date();
-        const registeredShapeTree: string = pod + "registries/shapeTrees/8501f084ShapeTree/";
+        const registeredShapeTree: string = pod + "registries-unchangeable/shapeTrees/8501f084ShapeTree/";
         
         await DataRegistration.new(id, session.fetch, registeredBy, registeredWith, registeredAt, updatedAt, registeredShapeTree);
         

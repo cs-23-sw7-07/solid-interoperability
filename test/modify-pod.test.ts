@@ -30,8 +30,8 @@ describe("modify-pod-test", () => {
     })
 
     test("Unit test: get a Application Registration resource, check it has the fields", async () => {
-        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
-        const id: string = pod + "registries/agents/2f2f3628ApplicationRegistration/";
+        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
+        const id: string = pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/";
         const registeredBy: SocialAgent = new SocialAgent("http://localhost:3000/Alice-pod/profile/card#me");
         const registeredWith: ApplicationAgent = new ApplicationAgent("http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id");
         const registeredAt: Date = new Date("2020-04-04T20:15:47.000Z");
@@ -51,6 +51,19 @@ describe("modify-pod-test", () => {
     })
 
 
+    describe("getResource", () => {
+        test("Able to not get a resource, parse, create Rdf object", async () => {
+            await getResource(Rdf, session.fetch, pod + "profile/card#me")
+        })
+
+
+
+
+
+
+
+
+    })
 
 
 

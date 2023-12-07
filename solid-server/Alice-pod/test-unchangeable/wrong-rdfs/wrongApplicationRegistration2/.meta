@@ -8,4 +8,4 @@
     interop:registeredBy <http://localhost:3000/Alice-pod/profile/card#me>;
     interop:registeredWith <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
     interop:registeredAgent <http://localhost:3000/Alice-pod/profile-documents/projectron#id>;
-    interop:hasAccessGrant <http://localhost:3000/Alice-pod/registries/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant>.
+    interop:hasAccessGrant <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant>.

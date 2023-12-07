@@ -1,5 +1,5 @@
 import N3, {Prefixes, Store} from "n3";
-import {Rdf} from "../RDF/rdf";
+import {Rdf, createTriple, newResourceContainer} from "../RDF/rdf";
 import {Fetch} from "../../../fetch";
 import {INTEROP, TYPE_A} from "../namespace";
 import {SocialAgentProfileDocument} from "../profile-documents/social-agent-profile-document";
@@ -20,6 +20,32 @@ export class RegistrySetResource extends Rdf {
           fetch, dataset, prefixes
         );
       }
+    
+    static async createRegistriesSet(
+        fetch: Fetch,
+        pod: string,
+        profileDocument: SocialAgentProfileDocument,
+    ) {
+        const registriesContainer = pod + "Registries/";
+        const agentRegistryContainer = registriesContainer + "agentregistries/";
+        const authorizationRegistryContainer = registriesContainer + "accessregistries/";
+        const dataRegistryContainer = pod + "data/";
+    
+        await createContainer(fetch, registriesContainer);
+        await createContainer(fetch, agentRegistryContainer);
+        await createContainer(fetch, authorizationRegistryContainer);
+        await createContainer(fetch, dataRegistryContainer);
+    
+        const triple = (predicate: string, object: string | Date) => createTriple(registriesContainer, INTEROP + predicate, object);
+        const quads = [];
+        quads.push(triple("hasAgentRegistry", agentRegistryContainer));
+        quads.push(triple("hasAuthorizationRegistry", authorizationRegistryContainer));
+        quads.push(triple("hasDataRegistry", dataRegistryContainer));
+    
+        const set = await newResourceContainer(RegistrySetResource, fetch, registriesContainer, "RegistrySet", quads);
+        await profileDocument.addHasRegistrySet(set);
+        return set;
+    }
 
     get HasAgentRegistry(): string | undefined {
         return this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
@@ -32,48 +58,4 @@ export class RegistrySetResource extends Rdf {
     get HasDataRegistry(): string | undefined {
         return this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
     }
-}
-
-export async function createRegistriesSet(
-    fetch: Fetch,
-    pod: string,
-    profileDocument: SocialAgentProfileDocument,
-) {
-    const registriesContainer = pod + "Registries/";
-    const agentRegistryContainer = registriesContainer + "agentregistries/";
-    const authorizationRegistryContainer = registriesContainer + "accessregistries/";
-    const dataRegistryContainer = pod + "data/";
-
-    await createContainer(fetch, registriesContainer);
-    await createContainer(fetch, agentRegistryContainer);
-    await createContainer(fetch, authorizationRegistryContainer);
-    await createContainer(fetch, dataRegistryContainer);
-
-    const registriesStore = new Store();
-    registriesStore.addQuad(
-        namedNode(registriesContainer),
-        namedNode(TYPE_A),
-        namedNode(INTEROP + "RegistrySet"),
-    );
-    registriesStore.addQuad(
-        namedNode(registriesContainer),
-        namedNode(INTEROP + "hasAgentRegistry"),
-        namedNode(agentRegistryContainer),
-    );
-    registriesStore.addQuad(
-        namedNode(registriesContainer),
-        namedNode(INTEROP + "hasAuthorizationRegistry"),
-        namedNode(authorizationRegistryContainer),
-    );
-    registriesStore.addQuad(
-        namedNode(registriesContainer),
-        namedNode(INTEROP + "hasDataRegistry"),
-        namedNode(dataRegistryContainer),
-    );
-
-    await updateContainerResource(fetch, registriesContainer, registriesStore).then((_) =>
-        profileDocument.addHasRegistrySet(registriesContainer, fetch),
-    );
-
-    return new RegistrySetResource(registriesContainer, fetch, registriesStore, {});
 }

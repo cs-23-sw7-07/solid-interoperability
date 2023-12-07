@@ -10,4 +10,4 @@
     interop:registeredAt "2020-04-04T20:15:47.000Z"^^xsd:dateTime;
     interop:updatedAt "2020-04-04T21:11:33.000Z"^^xsd:dateTime;
     interop:registeredAgent <https://projectron.example/#id>;
-    interop:hasAccessGrant <test/rdfs-examples/parse-tests-rdfs/2f2f3628ApplicationRegistration-parse/27eae14bAccessGrant.ttl>.
+    interop:hasAccessGrant <https://alice.example/agents/2f2f3628/27eae14bAccessGrant>.

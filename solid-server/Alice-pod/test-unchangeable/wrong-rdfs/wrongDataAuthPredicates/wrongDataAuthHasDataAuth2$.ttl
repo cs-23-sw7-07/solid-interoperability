@@ -13,4 +13,4 @@
     interop:creatorAccessMode acl:Update, acl:Delete;
     interop:scopeOfAuthorization interop:AllFromAgent;
     interop:satisfiesAccessNeed <http://localhost:3000/Alice-pod/profile-documents/projectron#need-issue>;
-    interop:inheritsFromAuthorization <http://localhost:3000/Alice-pod/registries/authorization/f54a1b6a0DataAuth>.
+    interop:inheritsFromAuthorization <http://localhost:3000/Alice-pod/registries-unchangeable/authorization/f54a1b6a0DataAuth>.
