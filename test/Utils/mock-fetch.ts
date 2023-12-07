@@ -1,4 +1,4 @@
-import { getRDFFromPath } from "./get-RDF";
+import {getRDFFromPath} from "./get-RDF";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export function mock_fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {

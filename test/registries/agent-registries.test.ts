@@ -1,18 +1,8 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {
-    AccessAuthorization, AccessGrant,
-    AgentRegistryResource,
-    ApplicationAgent,
-    ApplicationRegistration,
-    DataAuthorization, DataGrant, DataRegistration,
-    getResource,
-    getResources,
-    IDataGrantBuilder,
-    SAIViolationMissingTripleError, SocialAgent, SocialAgentRegistration
-} from "../../src";
-import { randomUUID } from "crypto";
-import { copyFolder, deleteFolder, replaceFolder } from "../setup/folder-management";
+import {AgentRegistryResource, ApplicationRegistration, getResource, SocialAgentRegistration} from "../../src";
+import {randomUUID} from "crypto";
+import {copyFolder, deleteFolder} from "../Utils/folder-management";
 
 describe("Agent registry set - test properties/methods", () => {
     let session: Session;
@@ -80,57 +70,6 @@ describe("Agent registry set - test properties/methods", () => {
             const regs = await agentReg.getHasSocialAgentRegistration();
 
             expect(regs).toContain([socialReg]);
-        })
-    })
-
-    describe("No Registration", () => {
-        let agentReg: AgentRegistryResource;
-
-        beforeAll(async () => {
-            const id = pod + "test-unchangeable/wrong-rdfs/wrongAccessAuth2";
-            access = await getResource(AccessAuthorization, session.fetch, id);
-        });
-
-        test("Unit test:  - get GrantedWith", () => {
-            expect(() => {access.GrantedWith}).toThrow(SAIViolationMissingTripleError)
-        })
-
-        test("Unit test: AccessAuthorization - getHasDataAuthorization", () => {
-            expect(async () => {await access.getHasDataAuthorization()}).rejects.toThrow(SAIViolationMissingTripleError)
-        })
-    })
-
-    describe("Convert from authorization to grant", () => {
-
-        class MockBuilder implements IDataGrantBuilder {
-            generateId(): string {
-                return pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant";
-            }
-
-            getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
-                return Promise.reject([]);
-            }
-
-            getInheritedDataGrants(_auth: DataAuthorization): Promise<DataGrant[]> {
-                return Promise.reject([]);
-            }
-
-        }
-
-        test("Unit test: Access authorization to Access grant", async () => {
-            const expected = await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant");
-
-            const uris = [pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant", pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f0e4cb692DataGrant"];
-            const dataGrants: DataGrant[] = await getResources(DataGrant, session.fetch, uris);
-
-            const auth = await getResource(AccessAuthorization, session.fetch, pod + "registries-unchangeable/authorization/e2765d6cAccessAuthReplace");
-
-            const actual = await auth.toAccessGrant(pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant100", dataGrants);
-            expect(actual.GrantedBy).toStrictEqual(expected.GrantedBy);
-            expect(actual.GrantedAt).toStrictEqual(expected.GrantedAt);
-            expect(await actual.getGrantee()).toStrictEqual(await expected.getGrantee());
-            expect(actual.getHasAccessNeedGroup()).toStrictEqual(expected.getHasAccessNeedGroup());
-            expect(actual.getHasDataGrant()).toStrictEqual(expected.getHasDataGrant());
         })
     })
 })

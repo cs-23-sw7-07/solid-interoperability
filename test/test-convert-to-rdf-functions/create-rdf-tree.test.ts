@@ -1,9 +1,7 @@
-import { join } from 'path';
+import {join} from 'path';
 import * as ExampleInstances from '../test-case'
-import { getRDFFromPath } from '../Utils/get-RDF'
-import { test } from '@jest/globals';
-import { AccessAuthorization } from '../../src/data-management/data-model/authorization/access/access-authorization';
-import { mock_fetch } from '../Utils/mock-fetch';
+import {getRDFFromPath} from '../Utils/get-RDF'
+import {test} from '@jest/globals';
 
 const PATH_TO_RDFS_EXAMPLES = join(__dirname, "../rdfs-examples")
 

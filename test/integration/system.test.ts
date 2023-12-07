@@ -1,4 +1,3 @@
-
 import {expect} from "@jest/globals";
 
 describe("Full system", () => {

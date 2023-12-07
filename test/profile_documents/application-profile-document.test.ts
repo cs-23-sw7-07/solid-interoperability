@@ -1,6 +1,6 @@
-import { AccessNeedGroup, ApplicationProfileDocument, getResource } from "../../src";
-import { getNodeTestingEnvironment, getAuthenticatedSession, getPodRoot } from "@inrupt/internal-test-env";
-import { Session } from "@inrupt/solid-client-authn-node";
+import {AccessNeedGroup, ApplicationProfileDocument, getResource} from "../../src";
+import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
+import {Session} from "@inrupt/solid-client-authn-node";
 
 describe("ApplicationProfileDocument", () => {
     let session: Session;

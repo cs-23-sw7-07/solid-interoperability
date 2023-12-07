@@ -1,7 +1,7 @@
-import { DataFactory, Quad, Store } from "n3";
-import { ProfileDocument } from "../../src/data-management/data-model/profile-documents/profile-document";
-import { isApplicationAgent } from "../../src/data-management/data-model/profile-documents/utils";
-import { INTEROP, TYPE_A } from "../../src/data-management/data-model/namespace";
+import {DataFactory, Quad, Store} from "n3";
+import {ProfileDocument} from "../../src/data-management/data-model/profile-documents/profile-document";
+import {isApplicationAgent} from "../../src/data-management/data-model/profile-documents/utils";
+import {INTEROP, TYPE_A} from "../../src/data-management/data-model/namespace";
 
 const { namedNode } = DataFactory;
 

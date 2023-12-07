@@ -1,6 +1,12 @@
-import { AccessNeedGroup, ApplicationProfileDocument, RegistrySetResource, SAIViolationError, SocialAgentProfileDocument, getResource } from "../../src";
-import { getNodeTestingEnvironment, getAuthenticatedSession, getPodRoot } from "@inrupt/internal-test-env";
-import { Session } from "@inrupt/solid-client-authn-node";
+import {
+    ApplicationProfileDocument,
+    getResource,
+    RegistrySetResource,
+    SAIViolationError,
+    SocialAgentProfileDocument
+} from "../../src";
+import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
+import {Session} from "@inrupt/solid-client-authn-node";
 
 describe("SocialAgentProfileDocument", () => {
     let session: Session;

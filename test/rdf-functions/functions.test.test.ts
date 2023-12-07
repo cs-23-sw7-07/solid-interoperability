@@ -1,6 +1,6 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
-import {AccessGrant, ApplicationAgent, ApplicationRegistration, Fetch, getResource, SocialAgent} from "../../src";
+import {AccessGrant, getResource} from "../../src";
 
 describe("Application-registration-test", () => {
     let env;
@@ -18,7 +18,7 @@ describe("Application-registration-test", () => {
     });
 
     test("Able to get a resource", async () => {
-        const accessGrant = await getResource(AccessGrant, session.fetch, pod + "e2765d6dAccessGrant")
+        await getResource(AccessGrant, session.fetch, pod + "e2765d6dAccessGrant")
     })
 
 

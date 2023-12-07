@@ -1,6 +1,14 @@
 import * as ExampleInstances from "../test-case";
-import {AccessAuthorization, ApplicationRegistration, DataAuthorization, InvalidAccessMode, InvalidDate, NotImplementedYet, NotParsable} from "../../src/index";
-import { mock_fetch } from "../Utils/mock-fetch";
+import {
+    AccessAuthorization,
+    ApplicationRegistration,
+    DataAuthorization,
+    InvalidAccessMode,
+    InvalidDate,
+    NotImplementedYet,
+    NotParsable
+} from "../../src/index";
+import {mock_fetch} from "../Utils/mock-fetch";
 
 test.each([
     { name: '47e07897', rdfFilePath: "test/rdfs-examples/parse-tests-rdfs/47e07897AccessAuth-parse.ttl", instance: ExampleInstances.accessAuthorizatione47e07897Parse }
