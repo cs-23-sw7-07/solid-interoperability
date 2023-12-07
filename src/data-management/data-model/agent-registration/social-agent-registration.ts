@@ -51,7 +51,7 @@ export class SocialAgentRegistration extends AgentRegistration {
   }
 
   get RegisteredAgent(): SocialAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
+    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredAgent" });
     if (!webId)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");
 
@@ -66,7 +66,7 @@ export class SocialAgentRegistration extends AgentRegistration {
 
   get ReciprocalRegistration(): string {
     const reciprocalRegistration = this.getObjectValueFromPredicate(
-      INTEROP + "reciprocalRegistration",
+      { predicate: INTEROP + "reciprocalRegistration" },
     )!;
     if (!reciprocalRegistration)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");

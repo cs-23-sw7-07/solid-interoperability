@@ -11,19 +11,19 @@ export class ApplicationProfileDocument extends ProfileDocument {
   }
 
   get ApplicationName(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "applicationName");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationName" });
   }
 
   get ApplicationDescription(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "applicationDescription");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationDescription" });
   }
 
   get ApplicationAuthor(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "applicationAuthor");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationAuthor" });
   }
 
   get ApplicationThumbnail(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "applicationThumbnail");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationThumbnail" });
   }
 
   getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
@@ -34,7 +34,7 @@ export class ApplicationProfileDocument extends ProfileDocument {
 
   get HasAuthorizationCallbackEndpoint(): string | undefined {
     return this.getObjectValueFromPredicate(
-      INTEROP + "hasAuthorizationCallbackEndpoint",
+      { predicate: INTEROP + "hasAuthorizationCallbackEndpoint" },
     );
   }
 }

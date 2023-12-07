@@ -49,7 +49,7 @@ export class Data extends Rdf {
 
   public get RegisteredShapeTree(): string {
     const registeredShapeTree = this.getObjectValueFromPredicate(
-      INTEROP + "registeredShapeTree",
+      { predicate: INTEROP + "registeredShapeTree" },
     );
     if (registeredShapeTree) return registeredShapeTree;
     throw new SAIViolationMissingTripleError(
@@ -60,7 +60,7 @@ export class Data extends Rdf {
 
   public async getSatisfiesAccessNeed(): Promise<AccessNeed> {
     const uri = this.getObjectValueFromPredicate(
-      INTEROP + "satisfiesAccessNeed",
+      { predicate: INTEROP + "satisfiesAccessNeed" },
     );
     if (uri) return await getResource(AccessNeed, this.fetch, uri);
     throw new SAIViolationMissingTripleError(

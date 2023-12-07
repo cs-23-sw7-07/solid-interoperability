@@ -35,13 +35,13 @@ export abstract class Access extends Rdf {
   }
 
   get GrantedBy(): SocialAgent {
-    const grantedBy = this.getObjectValueFromPredicate(INTEROP + "grantedBy");
+    const grantedBy = this.getObjectValueFromPredicate({ predicate: INTEROP + "grantedBy" });
     if (grantedBy) return new SocialAgent(grantedBy);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedBy");
   }
 
   get GrantedAt(): Date {
-    const grantedAt = this.getObjectValueFromPredicate(INTEROP + "grantedAt");
+    const grantedAt = this.getObjectValueFromPredicate({ predicate: INTEROP + "grantedAt" });
     if (grantedAt) return getDate(grantedAt);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedAt");
   }
@@ -52,7 +52,7 @@ export abstract class Access extends Rdf {
 
   public async getHasAccessNeedGroup(): Promise<AccessNeedGroup> {
     const uri = this.getObjectValueFromPredicate(
-      INTEROP + "hasAccessNeedGroup",
+      { predicate: INTEROP + "hasAccessNeedGroup" },
     );
     if (uri) return await getResource(AccessNeedGroup, this.fetch, uri);
     throw new SAIViolationMissingTripleError(

@@ -45,7 +45,7 @@ export class DataRegistration extends Registration {
   }
 
   get RegisteredShapeTree(): string {
-    return this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree")!;
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredShapeTree" })!;
   }
 
   async setRegisteredShapeTree(shapeTree: string) {

@@ -33,7 +33,7 @@ export class SocialAgentProfileDocument extends ProfileDocument {
   }
 
   getRegistrySet(): Promise<RegistrySetResource> {
-    const set = this.getObjectValueFromPredicate(INTEROP + "hasRegistrySet");
+    const set = this.getObjectValueFromPredicate({ predicate: INTEROP + "hasRegistrySet" });
     if (set == undefined) {
       throw new Error("No registry set found");
     }
@@ -41,7 +41,7 @@ export class SocialAgentProfileDocument extends ProfileDocument {
   }
 
   async addHasRegistrySet(registriesContainer: RegistrySetResource) {
-    const set = this.getObjectValueFromPredicate(INTEROP + "hasRegistrySet");
+    const set = this.getObjectValueFromPredicate({ predicate: INTEROP + "hasRegistrySet" });
     if (set)
       throw new SAIViolationError(
         this,

@@ -47,7 +47,7 @@ export class ApplicationRegistration extends AgentRegistration {
   }
 
   get RegisteredAgent(): ApplicationAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
+    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredAgent" });
     if (!webId)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");
 

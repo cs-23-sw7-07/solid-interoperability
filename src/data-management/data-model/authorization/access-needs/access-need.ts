@@ -11,7 +11,7 @@ export class AccessNeed extends Rdf {
   }
 
   get RegisteredShapeTree(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredShapeTree" });
   }
 
   get AccessModes(): AccessMode[] {
@@ -35,7 +35,7 @@ export class AccessNeed extends Rdf {
   }
 
   get AccessNecessity(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "accessNecessity");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "accessNecessity" });
   }
 
   get HasDataInstance(): string[] | undefined {
@@ -44,7 +44,7 @@ export class AccessNeed extends Rdf {
 
   async getInheritsFromNeed(): Promise<AccessNeed | undefined> {
     const inheritUri: string | undefined = this.getObjectValueFromPredicate(
-      INTEROP + "inheritsFromNeed",
+      { predicate: INTEROP + "inheritsFromNeed" },
     );
 
     if (inheritUri) {

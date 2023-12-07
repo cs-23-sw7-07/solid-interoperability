@@ -47,16 +47,16 @@ export class RegistrySetResource extends Rdf {
   }
 
   get HasAgentRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "hasAgentRegistry" });
   }
 
   get HasAuthorizationRegistry(): string | undefined {
     return this.getObjectValueFromPredicate(
-      INTEROP + "hasAuthorizationRegistry",
+      { predicate: INTEROP + "hasAuthorizationRegistry" },
     );
   }
 
   get HasDataRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "hasDataRegistry" });
   }
 }

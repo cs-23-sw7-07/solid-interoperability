@@ -16,7 +16,7 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get AccessNecessity(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "accessNecessity");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "accessNecessity" });
   }
 
   get AccessScenario(): string[] | undefined {
@@ -24,7 +24,7 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get AuthenticatesAs(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "authenticatesAs");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "authenticatesAs" });
   }
 
   async getHasAccessNeed(): Promise<AccessNeed[]> {
@@ -34,6 +34,6 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get Replaces(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "replaces");
+    return this.getObjectValueFromPredicate({ predicate: INTEROP + "replaces" });
   }
 }

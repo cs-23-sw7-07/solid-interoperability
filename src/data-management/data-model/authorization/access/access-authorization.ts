@@ -75,7 +75,7 @@ export class AccessAuthorization extends Access {
 
   get GrantedWith(): ApplicationAgent {
     const grantedWith = this.getObjectValueFromPredicate(
-      INTEROP + "grantedWith",
+      { predicate: INTEROP + "grantedWith" },
     );
     if (grantedWith) return new ApplicationAgent(grantedWith);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedWith");
@@ -95,7 +95,7 @@ export class AccessAuthorization extends Access {
   }
 
   async getReplaces(): Promise<AccessAuthorization | undefined> {
-    const uri = this.getObjectValueFromPredicate(INTEROP + "replaces");
+    const uri = this.getObjectValueFromPredicate({ predicate: INTEROP + "replaces" });
     if (uri) {
       return await getResource(AccessAuthorization, this.fetch, uri);
     }

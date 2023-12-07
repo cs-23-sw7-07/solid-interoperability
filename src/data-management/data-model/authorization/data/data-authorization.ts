@@ -82,7 +82,7 @@ export class DataAuthorization extends Data {
 
   public get ScopeOfAuthorization(): GrantScope {
     const scope = this.getObjectValueFromPredicate(
-      INTEROP + "scopeOfAuthorization",
+      { predicate: INTEROP + "scopeOfAuthorization" },
     );
     if (scope) return getScopeOfAuth(scope);
     throw new SAIViolationMissingTripleError(
@@ -99,7 +99,7 @@ export class DataAuthorization extends Data {
           this.ScopeOfAuthorization +
           " it has no data owner property.",
       );
-    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
+    const dataOwner = this.getObjectValueFromPredicate({ predicate: INTEROP + "dataOwner" });
     if (dataOwner) {
       return new SocialAgent(dataOwner);
     }
@@ -116,7 +116,7 @@ export class DataAuthorization extends Data {
           " it has no data registration attacted.",
       );
     const iri = this.getObjectValueFromPredicate(
-      INTEROP + "hasDataRegistration",
+      { predicate: INTEROP + "hasDataRegistration" },
     );
     if (iri) {
       return await getResource(DataRegistration, this.fetch, iri);
@@ -149,7 +149,7 @@ export class DataAuthorization extends Data {
           " it has no inherited authorization attacted.",
       );
     const iri = this.getObjectValueFromPredicate(
-      INTEROP + "inheritsFromAuthorization",
+      { predicate: INTEROP + "inheritsFromAuthorization" },
     );
     if (iri) {
       return await getResource(DataAuthorization, this.fetch, iri);

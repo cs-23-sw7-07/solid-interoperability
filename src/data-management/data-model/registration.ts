@@ -29,7 +29,7 @@ export abstract class Registration extends Rdf {
   }
 
   get RegisteredBy(): SocialAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredBy");
+    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredBy" });
     if (webId) return new SocialAgent(webId);
 
     throw new SAIViolationMissingTripleError(this, INTEROP + "registeredBy");
@@ -43,7 +43,7 @@ export abstract class Registration extends Rdf {
   }
 
   get RegisteredWith(): ApplicationAgent {
-    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredWith");
+    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredWith" });
     if (webId) return new ApplicationAgent(webId);
 
     throw new SAIViolationMissingTripleError(this, INTEROP + "registeredWith");
@@ -57,7 +57,7 @@ export abstract class Registration extends Rdf {
   }
 
   get RegisteredAt(): Date {
-    const date = this.getObjectValueFromPredicate(INTEROP + "registeredAt");
+    const date = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredAt" });
     if (date) return getDate(date);
 
     throw new SAIViolationMissingTripleError(this, INTEROP + "registeredAt");
@@ -71,7 +71,7 @@ export abstract class Registration extends Rdf {
   }
 
   get UpdatedAt(): Date {
-    const date = this.getObjectValueFromPredicate(INTEROP + "updatedAt");
+    const date = this.getObjectValueFromPredicate({ predicate: INTEROP + "updatedAt" });
     if (date) return getDate(date);
 
     throw new SAIViolationMissingTripleError(this, INTEROP + "updatedAt");

@@ -11,7 +11,7 @@ export async function getAgent(
   fetch: Fetch,
   predicate: string,
 ): Promise<Agent> {
-  const agentWebId = rdf.getObjectValueFromPredicate(INTEROP + predicate);
+  const agentWebId = rdf.getObjectValueFromPredicate({ predicate: INTEROP + predicate });
   if (agentWebId) {
     const profile = await getResource(ProfileDocument, fetch, agentWebId);
 
