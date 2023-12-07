@@ -1,9 +1,9 @@
-import { Prefixes, Store } from "n3";
-import { ApplicationAgent, SocialAgent } from "../agent";
-import { Registration } from "../registration";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { createTriple, newResourceContainer } from "../RDF/rdf";
+import {Prefixes, Store} from "n3";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {Registration} from "../registration";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
 
 export class DataRegistration extends Registration {
   /**
@@ -45,7 +45,7 @@ export class DataRegistration extends Registration {
   }
 
   get RegisteredShapeTree(): string {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredShapeTree" })!;
+    return this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree")!;
   }
 
   async setRegisteredShapeTree(shapeTree: string) {

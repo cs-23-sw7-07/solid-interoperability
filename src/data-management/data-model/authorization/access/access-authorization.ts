@@ -1,18 +1,13 @@
-import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { AccessGrant } from "./access-grant";
-import { DataAuthorization, DataGrant } from "../data";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
-import { Access } from "./access";
-import {
-  createTriple,
-  getResource,
-  getResources,
-  newResource,
-} from "../../RDF/rdf";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
+import {Prefixes, Store} from "n3";
+import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
+import {AccessGrant} from "./access-grant";
+import {DataAuthorization, DataGrant} from "../data";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {Access} from "./access";
+import {createTriple, getResource, getResources, newResource,} from "../../RDF/rdf";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
 
 export class AccessAuthorization extends Access {
   /**
@@ -75,7 +70,7 @@ export class AccessAuthorization extends Access {
 
   get GrantedWith(): ApplicationAgent {
     const grantedWith = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "grantedWith" },
+      INTEROP + "grantedWith",
     );
     if (grantedWith) return new ApplicationAgent(grantedWith);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedWith");
@@ -95,7 +90,7 @@ export class AccessAuthorization extends Access {
   }
 
   async getReplaces(): Promise<AccessAuthorization | undefined> {
-    const uri = this.getObjectValueFromPredicate({ predicate: INTEROP + "replaces" });
+    const uri = this.getObjectValueFromPredicate(INTEROP + "replaces");
     if (uri) {
       return await getResource(AccessAuthorization, this.fetch, uri);
     }

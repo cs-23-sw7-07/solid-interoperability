@@ -1,18 +1,15 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataRegistration } from "../../data-registration/data-registration";
-import { GrantScope } from "../grant-scope";
-import { AccessMode } from "../access/access-mode";
-import { createTriple, getResource, newResource } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { Data } from "./data";
-import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
-import { AccessNeed } from "../access-needs/access-need";
-import {
-  SAIViolationError,
-  SAIViolationMissingTripleError,
-} from "../../../../Errors";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataRegistration} from "../../data-registration/data-registration";
+import {GrantScope} from "../grant-scope";
+import {AccessMode} from "../access/access-mode";
+import {createTriple, getResource, newResource} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {Data} from "./data";
+import {INTEROP} from "../../namespace";
+import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
+import {AccessNeed} from "../access-needs/access-need";
+import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
 
 export class DataGrant extends Data {
   /**
@@ -66,7 +63,7 @@ export class DataGrant extends Data {
   }
 
   public get DataOwner(): SocialAgent {
-    const dataOwner = this.getObjectValueFromPredicate({ predicate: INTEROP + "dataOwner" });
+    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
     if (dataOwner) {
       return new SocialAgent(dataOwner);
     }
@@ -80,7 +77,7 @@ export class DataGrant extends Data {
 
   public async getHasDataRegistration(): Promise<DataRegistration> {
     const iri = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "hasDataRegistration" },
+      INTEROP + "hasDataRegistration",
     );
     if (iri) {
       return await getResource(DataRegistration, this.fetch, iri);
@@ -92,7 +89,7 @@ export class DataGrant extends Data {
   }
 
   public get ScopeOfGrant(): GrantScope {
-    const scope = this.getObjectValueFromPredicate({ predicate: INTEROP + "scopeOfGrant" });
+    const scope = this.getObjectValueFromPredicate(INTEROP + "scopeOfGrant");
     if (scope) return getScopeOfAuth(scope);
     throw new SAIViolationMissingTripleError(this, INTEROP + "scopeOfGrant");
   }
@@ -118,7 +115,7 @@ export class DataGrant extends Data {
           this.ScopeOfGrant +
           " it has no inherited grant attacted.",
       );
-    const iri = this.getObjectValueFromPredicate({ predicate: INTEROP + "inheritsFromGrant" });
+    const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromGrant");
     if (iri) {
       return await getResource(DataGrant, this.fetch, iri);
     }

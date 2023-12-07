@@ -1,9 +1,9 @@
-import { INTEROP } from "../namespace";
-import { Prefixes, Store } from "n3";
-import { getResources } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { AccessNeedGroup } from "../authorization/access-needs/access-need-group";
-import { ProfileDocument } from "./profile-document";
+import {INTEROP} from "../namespace";
+import {Prefixes, Store} from "n3";
+import {getResources} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {AccessNeedGroup} from "../authorization/access-needs/access-need-group";
+import {ProfileDocument} from "./profile-document";
 
 export class ApplicationProfileDocument extends ProfileDocument {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -11,19 +11,19 @@ export class ApplicationProfileDocument extends ProfileDocument {
   }
 
   get ApplicationName(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationName" });
+    return this.getObjectValueFromPredicate(INTEROP + "applicationName");
   }
 
   get ApplicationDescription(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationDescription" });
+    return this.getObjectValueFromPredicate(INTEROP + "applicationDescription");
   }
 
   get ApplicationAuthor(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationAuthor" });
+    return this.getObjectValueFromPredicate(INTEROP + "applicationAuthor");
   }
 
   get ApplicationThumbnail(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "applicationThumbnail" });
+    return this.getObjectValueFromPredicate(INTEROP + "applicationThumbnail");
   }
 
   getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
@@ -34,7 +34,7 @@ export class ApplicationProfileDocument extends ProfileDocument {
 
   get HasAuthorizationCallbackEndpoint(): string | undefined {
     return this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "hasAuthorizationCallbackEndpoint" },
+      INTEROP + "hasAuthorizationCallbackEndpoint",
     );
   }
 }

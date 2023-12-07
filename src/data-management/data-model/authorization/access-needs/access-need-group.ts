@@ -1,8 +1,8 @@
-import { INTEROP } from "../../namespace";
-import { AccessNeed } from "./access-need";
-import { Prefixes, Store } from "n3";
-import { getResources, Rdf } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {AccessNeed} from "./access-need";
+import {Prefixes, Store} from "n3";
+import {getResources, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
 
 export class AccessNeedGroup extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -16,7 +16,7 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get AccessNecessity(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "accessNecessity" });
+    return this.getObjectValueFromPredicate(INTEROP + "accessNecessity");
   }
 
   get AccessScenario(): string[] | undefined {
@@ -24,7 +24,7 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get AuthenticatesAs(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "authenticatesAs" });
+    return this.getObjectValueFromPredicate(INTEROP + "authenticatesAs");
   }
 
   async getHasAccessNeed(): Promise<AccessNeed[]> {
@@ -34,6 +34,6 @@ export class AccessNeedGroup extends Rdf {
   }
 
   get Replaces(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "replaces" });
+    return this.getObjectValueFromPredicate(INTEROP + "replaces");
   }
 }

@@ -1,11 +1,11 @@
-import { Prefixes, Store } from "n3";
-import { AgentRegistration } from "./agent-registration";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { ApplicationAgent, SocialAgent } from "../agent";
-import { AccessGrant } from "../authorization/access/access-grant";
-import { SAIViolationMissingTripleError } from "../../../Errors";
-import { createTriple, newResourceContainer } from "../RDF/rdf";
+import {Prefixes, Store} from "n3";
+import {AgentRegistration} from "./agent-registration";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {AccessGrant} from "../authorization/access/access-grant";
+import {SAIViolationMissingTripleError} from "../../../Errors";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
 
 /**
  * A class which has the fields to conform to the `Social Agent Registration` graph defined in the Solid interoperability specification.
@@ -51,7 +51,7 @@ export class SocialAgentRegistration extends AgentRegistration {
   }
 
   get RegisteredAgent(): SocialAgent {
-    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredAgent" });
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
     if (!webId)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");
 
@@ -66,7 +66,7 @@ export class SocialAgentRegistration extends AgentRegistration {
 
   get ReciprocalRegistration(): string {
     const reciprocalRegistration = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "reciprocalRegistration" },
+      INTEROP + "reciprocalRegistration",
     )!;
     if (!reciprocalRegistration)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");

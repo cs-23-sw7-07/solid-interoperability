@@ -1,11 +1,11 @@
-import { Prefixes, Store } from "n3";
-import { ApplicationAgent, SocialAgent } from "../agent";
-import { AgentRegistration } from "./agent-registration";
-import { AccessGrant } from "../authorization/access/access-grant";
-import { Fetch } from "../../../fetch";
-import { createTriple, newResourceContainer } from "../RDF/rdf";
-import { INTEROP } from "../namespace";
-import { SAIViolationMissingTripleError } from "../../../Errors";
+import {Prefixes, Store} from "n3";
+import {ApplicationAgent, SocialAgent} from "../agent";
+import {AgentRegistration} from "./agent-registration";
+import {AccessGrant} from "../authorization/access/access-grant";
+import {Fetch} from "../../../fetch";
+import {createTriple, newResourceContainer} from "../RDF/rdf";
+import {INTEROP} from "../namespace";
+import {SAIViolationMissingTripleError} from "../../../Errors";
 
 /**
  * A class which has the fields to conform to the `Application Agent Registration` graph defined in the Solid interoperability specification.
@@ -47,7 +47,7 @@ export class ApplicationRegistration extends AgentRegistration {
   }
 
   get RegisteredAgent(): ApplicationAgent {
-    const webId = this.getObjectValueFromPredicate({ predicate: INTEROP + "registeredAgent" });
+    const webId = this.getObjectValueFromPredicate(INTEROP + "registeredAgent");
     if (!webId)
       throw new SAIViolationMissingTripleError(this, "registeredAgent");
 

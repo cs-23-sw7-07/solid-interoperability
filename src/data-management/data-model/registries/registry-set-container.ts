@@ -1,9 +1,9 @@
-import { Prefixes, Store } from "n3";
-import { createTriple, newResourceContainer, Rdf } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { SocialAgentProfileDocument } from "../profile-documents";
-import { createContainer } from "../../Utils/modify-pod";
+import {Prefixes, Store} from "n3";
+import {createTriple, newResourceContainer, Rdf} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {SocialAgentProfileDocument} from "../profile-documents";
+import {createContainer} from "../../Utils/modify-pod";
 
 export class RegistrySetResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -47,16 +47,16 @@ export class RegistrySetResource extends Rdf {
   }
 
   get HasAgentRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "hasAgentRegistry" });
+    return this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
   }
 
   get HasAuthorizationRegistry(): string | undefined {
     return this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "hasAuthorizationRegistry" },
+      INTEROP + "hasAuthorizationRegistry",
     );
   }
 
   get HasDataRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate({ predicate: INTEROP + "hasDataRegistry" });
+    return this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
   }
 }

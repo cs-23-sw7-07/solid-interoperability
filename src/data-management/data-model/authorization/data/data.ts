@@ -1,13 +1,13 @@
-import { Prefixes, Store } from "n3";
-import { Agent } from "../../agent";
-import { createTriple, getResource, Rdf } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access/access-mode";
-import { INTEROP } from "../../namespace";
-import { accessModeFromEnum, getAccessmode } from "../../../Utils";
-import { AccessNeed } from "../access-needs/access-need";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
-import { getAgent } from "../../../Utils/get-grantee";
+import {Prefixes, Store} from "n3";
+import {Agent} from "../../agent";
+import {createTriple, getResource, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access/access-mode";
+import {INTEROP} from "../../namespace";
+import {accessModeFromEnum, getAccessmode} from "../../../Utils";
+import {AccessNeed} from "../access-needs/access-need";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {getAgent} from "../../../Utils/get-grantee";
 
 export class Data extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -49,7 +49,7 @@ export class Data extends Rdf {
 
   public get RegisteredShapeTree(): string {
     const registeredShapeTree = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "registeredShapeTree" },
+      INTEROP + "registeredShapeTree",
     );
     if (registeredShapeTree) return registeredShapeTree;
     throw new SAIViolationMissingTripleError(
@@ -60,7 +60,7 @@ export class Data extends Rdf {
 
   public async getSatisfiesAccessNeed(): Promise<AccessNeed> {
     const uri = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "satisfiesAccessNeed" },
+      INTEROP + "satisfiesAccessNeed",
     );
     if (uri) return await getResource(AccessNeed, this.fetch, uri);
     throw new SAIViolationMissingTripleError(

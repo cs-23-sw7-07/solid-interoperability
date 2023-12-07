@@ -1,20 +1,17 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataRegistration } from "../../data-registration/data-registration";
-import { GrantScope } from "../grant-scope";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access/access-mode";
-import { Data } from "./data";
-import { createTriple, getResource, newResource } from "../../RDF/rdf";
-import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
-import { AccessNeed } from "../access-needs/access-need";
-import {
-  SAIViolationError,
-  SAIViolationMissingTripleError,
-} from "../../../../Errors";
-import { IDataGrantBuilder } from "./IDataGrantBuilder";
-import { DataGrant } from "./data-grant";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataRegistration} from "../../data-registration/data-registration";
+import {GrantScope} from "../grant-scope";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access/access-mode";
+import {Data} from "./data";
+import {createTriple, getResource, newResource} from "../../RDF/rdf";
+import {INTEROP} from "../../namespace";
+import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
+import {AccessNeed} from "../access-needs/access-need";
+import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
+import {IDataGrantBuilder} from "./IDataGrantBuilder";
+import {DataGrant} from "./data-grant";
 
 export class DataAuthorization extends Data {
   /**
@@ -82,7 +79,7 @@ export class DataAuthorization extends Data {
 
   public get ScopeOfAuthorization(): GrantScope {
     const scope = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "scopeOfAuthorization" },
+      INTEROP + "scopeOfAuthorization",
     );
     if (scope) return getScopeOfAuth(scope);
     throw new SAIViolationMissingTripleError(
@@ -99,7 +96,7 @@ export class DataAuthorization extends Data {
           this.ScopeOfAuthorization +
           " it has no data owner property.",
       );
-    const dataOwner = this.getObjectValueFromPredicate({ predicate: INTEROP + "dataOwner" });
+    const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
     if (dataOwner) {
       return new SocialAgent(dataOwner);
     }
@@ -116,7 +113,7 @@ export class DataAuthorization extends Data {
           " it has no data registration attacted.",
       );
     const iri = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "hasDataRegistration" },
+      INTEROP + "hasDataRegistration",
     );
     if (iri) {
       return await getResource(DataRegistration, this.fetch, iri);
@@ -149,7 +146,7 @@ export class DataAuthorization extends Data {
           " it has no inherited authorization attacted.",
       );
     const iri = this.getObjectValueFromPredicate(
-      { predicate: INTEROP + "inheritsFromAuthorization" },
+      INTEROP + "inheritsFromAuthorization",
     );
     if (iri) {
       return await getResource(DataAuthorization, this.fetch, iri);
