@@ -1,5 +1,5 @@
 import { DatasetCore } from "@rdfjs/types";
-import { DataFactory, Store, Writer } from "n3";
+import { DataFactory, NamedNode, Prefixes, Store, Writer } from "n3";
 
 const trimNamedGraph = (dataset: DatasetCore): Store => {
   const newDataset = new Store();
@@ -22,10 +22,11 @@ const trimNamedGraph = (dataset: DatasetCore): Store => {
  * Wrapper around N3.Writer to convert from callback style to Promise.
  * @param dataset Store with data to serialize
  * trim the named graph: If the dataset has a named graph and is not trimmed the serialization will be done in trig format instead of turtle.
+ * @param prefixes Prefixes that should be included in the RDF
  */
 export function serializeTurtle(
   dataset: DatasetCore,
-  prefixes: {},
+  prefixes: Prefixes<string | NamedNode>,
 ): Promise<string> {
   const writer = new Writer({
     format: "text/turtle",

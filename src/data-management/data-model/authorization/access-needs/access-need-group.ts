@@ -1,7 +1,7 @@
 import { INTEROP } from "../../namespace";
 import { AccessNeed } from "./access-need";
 import { Prefixes, Store } from "n3";
-import { getResource, Rdf } from "../../RDF/rdf";
+import { getResources, Rdf } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 
 export class AccessNeedGroup extends Rdf {
@@ -28,17 +28,9 @@ export class AccessNeedGroup extends Rdf {
   }
 
   async getHasAccessNeed(): Promise<AccessNeed[]> {
-    const needUris = this.getObjectValuesFromPredicate(
-      INTEROP + "hasAccessNeed",
-    );
-    if (!needUris) return [];
-
-    let needs: AccessNeed[] = [];
-    for (const uri of needUris) {
-      needs.push(await getResource(AccessNeed, this.fetch, uri));
-    }
-
-    return needs;
+    const needUris =
+      this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeed") ?? [];
+    return getResources(AccessNeed, this.fetch, needUris);
   }
 
   get Replaces(): string | undefined {

@@ -110,7 +110,7 @@ export async function deleteContainerResource(
 }
 
 export async function readResource(fetch: Fetch, url: string): Promise<string> {
-  let res = await fetch(url);
+  const res = await fetch(url);
   if (res.ok) return res.text();
   throw new ReadResourceError("Couldn't read the resource at " + url);
 }

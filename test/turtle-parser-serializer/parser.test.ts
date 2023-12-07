@@ -9,7 +9,7 @@ const { namedNode, quad, literal } = DataFactory;
 describe('TurtleParser', () => {
     it('should be able to parse a turtle without throw any exception', async () => {
         const rdfTurtle = getRDFFromPath("../../solid-server/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant$.ttl")
-        const actual = await parseTurtle(rdfTurtle)
+        await parseTurtle(rdfTurtle)
         expect(true).toBe(true);
     });
 

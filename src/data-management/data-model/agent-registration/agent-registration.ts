@@ -4,15 +4,20 @@ import { AccessGrant } from "../authorization/access/access-grant";
 import { Registration } from "../registration";
 import { Fetch } from "../../../fetch";
 import { INTEROP } from "../namespace";
-import { createTriple, getResource } from "../RDF/rdf";
+import { createTriple, getResources } from "../RDF/rdf";
 import { SAIViolationMissingTripleError } from "../../../Errors";
 
 export abstract class AgentRegistration extends Registration {
   /**
-   * An abstract class which is used polymophicly where functions which both a `Social Agent Registration` or `Application Agent Resitration` can perform.
+   * An abstract class which is used polymorphic where functions which both a `Social Agent Registration` or `Application Agent Registration` can perform.
    * Has the fields which both the agent types share.
    */
-  constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+  protected constructor(
+    id: string,
+    fetch: Fetch,
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
     super(id, fetch, dataset, prefixes);
   }
 
@@ -47,12 +52,7 @@ export abstract class AgentRegistration extends Registration {
     if (!grantIRIs)
       throw new SAIViolationMissingTripleError(this, "hasAccessGrant");
 
-    let grants: AccessGrant[] = [];
-    for (const uri of grantIRIs) {
-      grants.push(await getResource(AccessGrant, this.fetch, uri));
-    }
-
-    return grants;
+    return getResources(AccessGrant, this.fetch, grantIRIs);
   }
 
   async AddAccessGrant(value: AccessGrant) {

@@ -1,26 +1,17 @@
-import N3, { Prefixes, Store } from "n3";
-import { getResource, Rdf } from "../RDF/rdf";
+import { Prefixes, Store } from "n3";
+import { getResources, Rdf } from "../RDF/rdf";
 import { Fetch } from "../../../fetch";
 import { DataRegistration } from "../data-registration/data-registration";
 import { DATA_REGISTRATION, INTEROP } from "../namespace";
-
-const { quad, namedNode } = N3.DataFactory;
 
 export class DataRegistryResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 
-  async getHasDataRegistrations(): Promise<DataRegistration[]> {
-    const values = this.getObjectValuesFromPredicate(DATA_REGISTRATION);
-    if (!values) return [];
-
-    let regs = [];
-    for (const uri of values) {
-      regs.push(await getResource(DataRegistration, this.fetch, uri));
-    }
-
-    return regs;
+  getHasDataRegistrations(): Promise<DataRegistration[]> {
+    const uris = this.getObjectValuesFromPredicate(DATA_REGISTRATION) ?? [];
+    return getResources(DataRegistration, this.fetch, uris);
   }
 
   async addHasDataRegistration(dataRegistration: DataRegistration) {
@@ -28,6 +19,6 @@ export class DataRegistryResource extends Rdf {
       INTEROP + "hasDataRegistration",
       dataRegistration.uri,
     );
-    this.add([quadDataReg]);
+    await this.add([quadDataReg]);
   }
 }

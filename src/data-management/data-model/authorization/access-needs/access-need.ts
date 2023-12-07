@@ -42,7 +42,7 @@ export class AccessNeed extends Rdf {
     return this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
   }
 
-  async getInheritsFromNeed(fetch: Fetch): Promise<AccessNeed | undefined> {
+  async getInheritsFromNeed(): Promise<AccessNeed | undefined> {
     const inheritUri: string | undefined = this.getObjectValueFromPredicate(
       INTEROP + "inheritsFromNeed",
     );

@@ -1,6 +1,6 @@
 import { INTEROP } from "../namespace";
 import { Prefixes, Store } from "n3";
-import { getResource } from "../RDF/rdf";
+import { getResources } from "../RDF/rdf";
 import { Fetch } from "../../../fetch";
 import { AccessNeedGroup } from "../authorization/access-needs/access-need-group";
 import { ProfileDocument } from "./profile-document";
@@ -26,19 +26,10 @@ export class ApplicationProfileDocument extends ProfileDocument {
     return this.getObjectValueFromPredicate(INTEROP + "applicationThumbnail");
   }
 
-  async getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
-    const values = this.getObjectValuesFromPredicate(
-      INTEROP + "hasAccessNeedGroup",
-    );
-
-    if (!values) return [];
-
-    let groups = [];
-    for (const uri of values) {
-      groups.push(await getResource(AccessNeedGroup, this.fetch, uri));
-    }
-
-    return groups;
+  getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
+    const uris =
+      this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeedGroup") ?? [];
+    return getResources(AccessNeedGroup, this.fetch, uris);
   }
 
   get HasAuthorizationCallbackEndpoint(): string | undefined {

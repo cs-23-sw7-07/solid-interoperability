@@ -47,7 +47,7 @@ describe("modify-pod-test", () => {
         expect(reg.RegisteredAt).toStrictEqual(registeredAt)
         expect(reg.UpdatedAt).toStrictEqual(updatedAt)
         expect(reg.RegisteredAgent).toStrictEqual(registeredAgent)
-        //expect(await reg.getHasAccessGrants()).toStrictEqual(hasAccessGrant)
+        expect(await reg.getHasAccessGrants()).toStrictEqual(hasAccessGrant)
     })
 
 

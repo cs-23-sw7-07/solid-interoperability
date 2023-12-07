@@ -1,15 +1,9 @@
-import N3, { Prefixes, Store } from "n3";
+import { Prefixes, Store } from "n3";
 import { Rdf, createTriple, newResourceContainer } from "../RDF/rdf";
 import { Fetch } from "../../../fetch";
-import { INTEROP, TYPE_A } from "../namespace";
-import { SocialAgentProfileDocument } from "../profile-documents/social-agent-profile-document";
-import {
-  createContainer,
-  updateContainerResource,
-} from "../../Utils/modify-pod";
-
-const { DataFactory } = N3;
-const { namedNode } = DataFactory;
+import { INTEROP } from "../namespace";
+import { SocialAgentProfileDocument } from "../profile-documents";
+import { createContainer } from "../../Utils/modify-pod";
 
 export class RegistrySetResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {

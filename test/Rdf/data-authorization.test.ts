@@ -156,11 +156,11 @@ describe("DataAuthorization - test get and set methods/properties", () => {
             generateId(): string {
                 return pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant12345";
             }
-
+            /* eslint-disable @typescript-eslint/no-unused-vars */
             getAllDataRegistrations(_registeredShapeTree: string, _dataOwner?: SocialAgent): Promise<DataRegistration[]> {
                 return Promise.reject([]);
             }
-
+            /* eslint-disable @typescript-eslint/no-unused-vars */
             getInheritedDataGrants(_auth: DataAuthorization): Promise<DataGrant[]> {
                 return Promise.reject([]);
             }

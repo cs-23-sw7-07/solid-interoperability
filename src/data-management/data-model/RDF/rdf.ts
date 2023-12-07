@@ -6,7 +6,7 @@ import {
   insertSPARQLUpdate,
   patchSPARQLUpdate,
   readParseResource,
-  updateContainerResource,
+
 } from "../../Utils/modify-pod";
 import { TYPE_A } from "../namespace";
 
@@ -42,7 +42,7 @@ export class Rdf {
 
   getObjectValuesFromPredicate(predicate: string): string[] | undefined {
     const quads = this.dataset.match(namedNode(this.uri), namedNode(predicate));
-    let values: string[] = [];
+    const values: string[] = [];
     for (const quad of quads) {
       values.push(quad.object.value);
     }
@@ -61,31 +61,29 @@ export class Rdf {
       literal(object.toISOString(), namedNode("xsd:dateTime")),
     );
   }
-
-  protected async updateResource(fetch: Fetch, dataset: Store) {
-    await updateContainerResource(fetch, this.uri, dataset);
-  }
-
   protected async update(predicate: string, updatedQuads: Quad[]) {
     await deleteSPARQLUpdate(
       this.dataset.match(namedNode(this.uri), namedNode(predicate)),
     )
       .then((body) => this.patchSPARQLUpdate(body))
-      .then((res) => insertSPARQLUpdate(new Store(updatedQuads)))
+      .then((res) => {
+        if (!res.ok) throw new Error("Error deleting quads from resource");
+        return insertSPARQLUpdate(new Store(updatedQuads));
+      })
       .then((body) => this.patchSPARQLUpdate(body))
-      .then((_) => {
+      .then((res) => {
+        if (!res.ok) throw new Error("Error adding quads to resource");
         for (const quad of updatedQuads) {
           this.dataset.add(quad);
         }
       });
   }
 
-  protected async add(quads: Quad[]): Promise<void>;
-  protected async add(...quads: Quad[]): Promise<void>;
-  protected async add(quads: any) {
+  protected async add(quads: Quad[]): Promise<void> {
     await insertSPARQLUpdate(new Store(quads))
       .then((body) => this.patchSPARQLUpdate(body))
-      .then((_) => {
+      .then((res) => {
+        if (!res.ok) throw new Error("Error adding quads");
         for (const quad of quads) {
           this.dataset.add(quad);
         }
@@ -101,20 +99,21 @@ export class Rdf {
 }
 
 export async function newResource<T extends Rdf>(
-  c: {
-    new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
-  },
-  fetch: Fetch,
-  uri: string,
-  type: string,
-  quads: Quad[],
+    c: {
+      new(uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
+    },
+    fetch: Fetch,
+    uri: string,
+    type: string,
+    quads: Quad[],
 ): Promise<T> {
   const store = new Store(quads);
   store.addQuad(createTriple(uri, TYPE_A, type));
 
-  return insertSPARQLUpdate(store)
-    .then((body) => patchSPARQLUpdate(fetch, uri, body, false))
-    .then((_) => new c(uri, fetch, store, {}));
+  const body = await insertSPARQLUpdate(store);
+  const res = await patchSPARQLUpdate(fetch, uri, body, false);
+  if (!res.ok) throw new Error("Error creating resource");
+  return new c(uri, fetch, store, {});
 }
 
 export async function newResourceContainer<T extends Rdf>(
@@ -133,7 +132,10 @@ export async function newResourceContainer<T extends Rdf>(
 
   return insertSPARQLUpdate(store)
     .then((body) => patchSPARQLUpdate(fetch, uri, body))
-    .then((_) => new c(uri, fetch, store, {}));
+    .then((res) => {
+      if (!res.ok) throw new Error("Error creating resource container");
+      return new c(uri, fetch, store, {});
+    });
 }
 
 export async function getResource<T extends Rdf>(
@@ -144,7 +146,7 @@ export async function getResource<T extends Rdf>(
   uri: string,
 ): Promise<T> {
   const url = uri + (uri.endsWith("/") ? ".meta" : "");
-  let result = await readParseResource(fetch, url);
+  const result = await readParseResource(fetch, url);
   return new c(uri, fetch, result.dataset, result.prefixes);
 }
 
