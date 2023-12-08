@@ -1,6 +1,6 @@
 import {Prefixes, Store} from "n3";
 import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../data-registration/data-registration";
+import {DataRegistration} from "../../registration/data-registration";
 import {GrantScope} from "../grant-scope";
 import {AccessMode} from "../access/access-mode";
 import {createTriple, getResource, newResource} from "../../RDF/rdf";
@@ -100,7 +100,7 @@ export class DataGrant extends Data {
         this,
         "Since the scope of grant is " +
           this.ScopeOfGrant +
-          " it has no data instance attacted.",
+          " it has no data instance attached.",
       );
     const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
     if (iris) return iris;
@@ -113,7 +113,7 @@ export class DataGrant extends Data {
         this,
         "Since the scope of grant is " +
           this.ScopeOfGrant +
-          " it has no inherited grant attacted.",
+          " it has no inherited grant attached.",
       );
     const iri = this.getObjectValueFromPredicate(INTEROP + "inheritsFromGrant");
     if (iri) {

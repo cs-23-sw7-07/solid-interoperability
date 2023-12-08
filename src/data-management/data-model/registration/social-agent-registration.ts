@@ -3,7 +3,7 @@ import {AgentRegistration} from "./agent-registration";
 import {Fetch} from "../../../fetch";
 import {INTEROP} from "../namespace";
 import {ApplicationAgent, SocialAgent} from "../agent";
-import {AccessGrant} from "../authorization/access/access-grant";
+import {AccessGrant} from "../authorization/access";
 import {SAIViolationMissingTripleError} from "../../../Errors";
 import {createTriple, newResourceContainer} from "../RDF/rdf";
 
@@ -56,12 +56,6 @@ export class SocialAgentRegistration extends AgentRegistration {
       throw new SAIViolationMissingTripleError(this, "registeredAgent");
 
     return new SocialAgent(webId);
-  }
-
-  set RegisteredAgent(agent: SocialAgent) {
-    const predicate = INTEROP + "registeredAgent";
-    const quad = this.createTriple(predicate, agent.webID);
-    this.update(predicate, [quad]);
   }
 
   get ReciprocalRegistration(): string {

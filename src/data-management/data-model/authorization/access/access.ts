@@ -13,7 +13,7 @@ export abstract class Access extends Rdf {
    * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
    */
-  constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+  protected constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 

@@ -1,5 +1,5 @@
-import { DataFactory, Prefixes, Quad, Store } from "n3";
-import { Fetch } from "../../../fetch";
+import {DataFactory, Prefixes, Quad, Store} from "n3";
+import {Fetch} from "../../../fetch";
 import {
   createContainer,
   deleteSPARQLUpdate,
@@ -7,10 +7,13 @@ import {
   patchSPARQLUpdate,
   readParseResource,
 } from "../../Utils/modify-pod";
-import { TYPE_A } from "../namespace";
+import {TYPE_A} from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
+/**
+ * Represents an RDF resource.
+ */
 export class Rdf {
   protected dataset: Store = new Store();
   protected prefixes: Prefixes = {};
@@ -25,10 +28,19 @@ export class Rdf {
     if (prefixes) this.prefixes = prefixes;
   }
 
+  /**
+   * Retrieves the type of the subject.
+   * @returns An array of strings representing the type of the subject, or undefined if not found.
+   */
   getTypeOfSubject(): string[] | undefined {
     return this.getObjectValuesFromPredicate(TYPE_A);
   }
 
+  /**
+   * Retrieves the value of an object from a given predicate.
+   * @param predicate The predicate to retrieve the value from.
+   * @returns The value of the object, or undefined if no value is found.
+   */
   getObjectValueFromPredicate(predicate: string): string | undefined {
     const values = this.getObjectValuesFromPredicate(predicate);
     if (values && values.length == 1) {
@@ -37,6 +49,12 @@ export class Rdf {
     return undefined;
   }
 
+  /**
+   * Retrieves the values of the objects that match the given predicate.
+   * 
+   * @param predicate - The predicate to match against.
+   * @returns An array of string values if there are matching objects, otherwise undefined.
+   */
   getObjectValuesFromPredicate(predicate: string): string[] | undefined {
     const quads = this.dataset.match(namedNode(this.uri), namedNode(predicate));
     const values: string[] = [];
@@ -47,17 +65,21 @@ export class Rdf {
     return values.length != 0 ? values : undefined;
   }
 
+  /**
+   * Creates a triple with the given predicate and object.
+   * @param predicate The predicate of the triple.
+   * @param object The object of the triple.
+   * @returns The created triple.
+   */
   protected createTriple(predicate: string, object: string | Date): Quad {
     return createTriple(this.uri, predicate, object);
   }
 
-  protected createDateTriple(predicate: string, object: Date): Quad {
-    return DataFactory.quad(
-      namedNode(this.uri),
-      namedNode(predicate),
-      literal(object.toISOString(), namedNode("xsd:dateTime")),
-    );
-  }
+  /**
+   * Updates the given predicate with the given quads.
+   * @param predicate The predicate to update.
+   * @param updatedQuads The quads to update the predicate with.
+   */
   protected async update(predicate: string, updatedQuads: Quad[]) {
     await deleteSPARQLUpdate(
       this.dataset.match(namedNode(this.uri), namedNode(predicate)),

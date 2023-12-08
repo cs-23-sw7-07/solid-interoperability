@@ -65,7 +65,7 @@ export abstract class Registration extends Rdf {
 
   async setRegisteredAt(date: Date) {
     const predicate = INTEROP + "registeredAt";
-    const quad = this.createDateTriple(predicate, date);
+    const quad = this.createTriple(predicate, date);
     await this.update(predicate, [quad]);
     await this.updateDate();
   }
@@ -79,7 +79,7 @@ export abstract class Registration extends Rdf {
 
   protected async updateDate() {
     const predicate = INTEROP + "updatedAt";
-    const quad = this.createDateTriple(predicate, new Date());
+    const quad = this.createTriple(predicate, new Date());
     await this.update(predicate, [quad]);
   }
 }

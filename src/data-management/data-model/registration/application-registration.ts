@@ -1,7 +1,7 @@
 import {Prefixes, Store} from "n3";
 import {ApplicationAgent, SocialAgent} from "../agent";
 import {AgentRegistration} from "./agent-registration";
-import {AccessGrant} from "../authorization/access/access-grant";
+import {AccessGrant} from "../authorization/access";
 import {Fetch} from "../../../fetch";
 import {createTriple, newResourceContainer} from "../RDF/rdf";
 import {INTEROP} from "../namespace";
@@ -54,9 +54,9 @@ export class ApplicationRegistration extends AgentRegistration {
     return new ApplicationAgent(webId);
   }
 
-  set RegisteredAgent(agent: ApplicationAgent) {
+  async setRegisteredAgent(agent: ApplicationAgent) {
     const predicate = INTEROP + "registeredAgent";
     const quad = this.createTriple(predicate, agent.webID);
-    this.update(predicate, [quad]);
+    await this.update(predicate, [quad]);
   }
 }

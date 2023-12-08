@@ -1,14 +1,14 @@
 import {Prefixes, Store} from "n3";
 import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../data-registration/data-registration";
+import {DataRegistration} from "../../registration/data-registration";
 import {GrantScope} from "../grant-scope";
 import {Fetch} from "../../../../fetch";
-import {AccessMode} from "../access/access-mode";
+import {AccessMode} from "../access";
 import {Data} from "./data";
 import {createTriple, getResource, newResource} from "../../RDF/rdf";
 import {INTEROP} from "../../namespace";
 import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs/access-need";
+import {AccessNeed} from "../access-needs";
 import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
 import {IDataGrantBuilder} from "./IDataGrantBuilder";
 import {DataGrant} from "./data-grant";
@@ -53,8 +53,7 @@ export class DataAuthorization extends Data {
 
     if (dataOwner) quads.push(triple("dataOwner", dataOwner.webID));
 
-    if (hasDataRegistration)
-      quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
+    if (hasDataRegistration) quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {
       for (const iri of hasDataInstance) {
@@ -62,11 +61,9 @@ export class DataAuthorization extends Data {
       }
     }
 
-    if (inheritsFromAuthorization) {
-      quads.push(
+    if (inheritsFromAuthorization) quads.push(
         triple("inheritsFromAuthorization", inheritsFromAuthorization.uri),
       );
-    }
 
     return newResource(
       DataAuthorization,
@@ -92,9 +89,7 @@ export class DataAuthorization extends Data {
     if (this.ScopeOfAuthorization == GrantScope.All)
       throw new SAIViolationError(
         this,
-        "Since the scope of authorization is " +
-          this.ScopeOfAuthorization +
-          " it has no data owner property.",
+        `Since the scope of authorization is ${this.ScopeOfAuthorization} it has no data owner property.`,
       );
     const dataOwner = this.getObjectValueFromPredicate(INTEROP + "dataOwner");
     if (dataOwner) {
@@ -110,7 +105,7 @@ export class DataAuthorization extends Data {
         this,
         "Since the scope of authorization is " +
           this.ScopeOfAuthorization +
-          " it has no data registration attacted.",
+          " it has no data registration attached.",
       );
     const iri = this.getObjectValueFromPredicate(
       INTEROP + "hasDataRegistration",
@@ -130,7 +125,7 @@ export class DataAuthorization extends Data {
         this,
         "Since the scope of authorization is " +
           this.ScopeOfAuthorization +
-          " it has no data instance attacted.",
+          " it has no data instance attached.",
       );
     const iris = this.getObjectValuesFromPredicate(INTEROP + "hasDataInstance");
     if (iris) return iris;
@@ -143,7 +138,7 @@ export class DataAuthorization extends Data {
         this,
         "Since the scope of authorization is " +
           this.ScopeOfAuthorization +
-          " it has no inherited authorization attacted.",
+          " it has no inherited authorization attached.",
       );
     const iri = this.getObjectValueFromPredicate(
       INTEROP + "inheritsFromAuthorization",

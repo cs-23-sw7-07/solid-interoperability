@@ -1,6 +1,6 @@
-export * from "./data-management/data-model/agent-registration/agent-registration";
-export * from "./data-management/data-model/agent-registration/application-registration";
-export * from "./data-management/data-model/agent-registration/social-agent-registration";
+export * from "./data-management/data-model/registration/agent-registration";
+export * from "./data-management/data-model/registration/application-registration";
+export * from "./data-management/data-model/registration/social-agent-registration";
 
 export * from "./data-management/data-model/authorization/access/access-authorization";
 export * from "./data-management/data-model/authorization/access/access-grant";
@@ -16,7 +16,7 @@ export * from "./data-management/data-model/profile-documents/index";
 
 export * from "./data-management/data-model/registries/index";
 
-export * from "./data-management/data-model/data-registration/data-registration";
+export * from "./data-management/data-model/registration/data-registration";
 export * from "./data-management/data-model/agent";
 export * from "./data-management/data-model/RDF/rdf";
 export * from "./data-management/data-model/registration";

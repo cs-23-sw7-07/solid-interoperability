@@ -66,13 +66,13 @@ describe("DataGrant - test get and set methods/properties", () => {
         test("Unit test: DataGrant - HasDataInstance with wrong scope of grant as All", async () => {
             const data = await getResource(DataGrant, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataGrant1");
             expect(() => {data.HasDataInstance}).toThrow(SAIViolationError)
-            expect(() => {data.HasDataInstance}).toThrow("Since the scope of grant is " + GrantScope.All + " it has no data instance attacted.")
+            expect(() => {data.HasDataInstance}).toThrow("Since the scope of grant is " + GrantScope.All + " it has no data instance attached.")
         })
 
         test("Unit test: DataGrant - HasDataInstance with wrong scope of grant as AllFromAgent", async () => {
             const data = await getResource(DataGrant, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataGrant2");
             expect(() => {data.HasDataInstance}).toThrow(SAIViolationError)
-            expect(() => {data.HasDataInstance}).toThrow("Since the scope of grant is " + GrantScope.AllFromAgent + " it has no data instance attacted.")
+            expect(() => {data.HasDataInstance}).toThrow("Since the scope of grant is " + GrantScope.AllFromAgent + " it has no data instance attached.")
         })
     })
 
@@ -84,7 +84,7 @@ describe("DataGrant - test get and set methods/properties", () => {
             ).rejects.toThrow(SAIViolationError)
             await expect(() =>
                 data.getInheritsFromGrant()
-            ).rejects.toThrow("Since the scope of grant is " + GrantScope.All + " it has no inherited grant attacted.")
+            ).rejects.toThrow("Since the scope of grant is " + GrantScope.All + " it has no inherited grant attached.")
         })
 
         test("Unit test: DataGrant - getInheritsFromGrant with wrong scope of grant as AllFromAgent", async () => {
@@ -94,7 +94,7 @@ describe("DataGrant - test get and set methods/properties", () => {
             ).rejects.toThrow(SAIViolationError)
             await expect(() =>
                 data.getInheritsFromGrant()
-            ).rejects.toThrow("Since the scope of grant is " + GrantScope.AllFromAgent + " it has no inherited grant attacted.")
+            ).rejects.toThrow("Since the scope of grant is " + GrantScope.AllFromAgent + " it has no inherited grant attached.")
         })
     })
 

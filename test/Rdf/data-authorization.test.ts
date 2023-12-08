@@ -76,13 +76,13 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         test("Unit test: DataAuthorization - getHasDataRegistration with wrong scope of authorization as All", async () => {
             const data = await getResource(DataAuthorization, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataAuthPredicates/wrongDataAuthHasDataAuth1");
             await expect(async () => await data.getHasDataRegistration()).rejects.toThrow(SAIViolationError)
-            await expect(async () => await data.getHasDataRegistration()).rejects.toThrow("Since the scope of authorization is " + GrantScope.All + " it has no data registration attacted.")
+            await expect(async () => await data.getHasDataRegistration()).rejects.toThrow("Since the scope of authorization is " + GrantScope.All + " it has no data registration attached.")
         })
 
         test("Unit test: DataAuthorization - getHasDataRegistration with wrong scope of authorization as AllFromAgent", async () => {
             const data = await getResource(DataAuthorization, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataAuthPredicates/wrongDataAuthHasDataAuth2");
             await expect(async () => await data.getHasDataRegistration()).rejects.toThrow(SAIViolationError)
-            await expect(async () => await data.getHasDataRegistration()).rejects.toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no data registration attacted.")
+            await expect(async () => await data.getHasDataRegistration()).rejects.toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no data registration attached.")
         })
     })
 
@@ -90,13 +90,13 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         test("Unit test: DataAuthorization - HasDataInstance with wrong scope of authorization as All", async () => {
             const data = await getResource(DataAuthorization, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataAuthPredicates/wrongDataAuthHasDataAuth1");
             expect(() => {data.HasDataInstance}).toThrow(SAIViolationError)
-            expect(() => {data.HasDataInstance}).toThrow("Since the scope of authorization is " + GrantScope.All + " it has no data instance attacted.")
+            expect(() => {data.HasDataInstance}).toThrow("Since the scope of authorization is " + GrantScope.All + " it has no data instance attached.")
         })
 
         test("Unit test: DataAuthorization - HasDataInstance with wrong scope of authorization as AllFromAgent", async () => {
             const data = await getResource(DataAuthorization, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataAuthPredicates/wrongDataAuthHasDataAuth2");
             expect(() => {data.HasDataInstance}).toThrow(SAIViolationError)
-            expect(() => {data.HasDataInstance}).toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no data instance attacted.")
+            expect(() => {data.HasDataInstance}).toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no data instance attached.")
         })
     })
 
@@ -104,7 +104,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
         test("Unit test: DataAuthorization - getInheritsFromAuthorization with wrong scope of authorization as All", async () => {
             const data = await getResource(DataAuthorization, session.fetch, pod + "test-unchangeable/wrong-rdfs/wrongDataAuthPredicates/wrongDataAuthHasDataAuth1");
             await expect(async () => data.getInheritsFromAuthorization()).rejects.toThrow(SAIViolationError)
-            await expect(async () => data.getInheritsFromAuthorization()).rejects.toThrow("Since the scope of authorization is " + GrantScope.All + " it has no inherited authorization attacted.")
+            await expect(async () => data.getInheritsFromAuthorization()).rejects.toThrow("Since the scope of authorization is " + GrantScope.All + " it has no inherited authorization attached.")
         })
 
         test("Unit test: DataAuthorization - getInheritsFromAuthorization with wrong scope of authorization as AllFromAgent", async () => {
@@ -114,7 +114,7 @@ describe("DataAuthorization - test get and set methods/properties", () => {
             }).rejects.toThrow(SAIViolationError)
             await expect(async () => {
                 await data.getInheritsFromAuthorization()
-            }).rejects.toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no inherited authorization attacted.")
+            }).rejects.toThrow("Since the scope of authorization is " + GrantScope.AllFromAgent + " it has no inherited authorization attached.")
         })
     })
 

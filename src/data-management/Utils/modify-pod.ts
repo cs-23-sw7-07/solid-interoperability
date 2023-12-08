@@ -1,8 +1,11 @@
-import { Fetch } from "../../fetch";
-import { serializeTurtle } from "../turtle/turtle-serializer";
-import { ParserResult, parseTurtle } from "../turtle/turtle-parser";
-import { Store } from "n3";
-import { DatasetCore } from "@rdfjs/types";
+import {Fetch} from "../../fetch";
+import {serializeTurtle} from "../turtle/turtle-serializer";
+import {ParserResult, parseTurtle} from "../turtle/turtle-parser";
+import {Store} from "n3";
+import {DatasetCore} from "@rdfjs/types";
+import {InsertResourceError} from "../../Errors/insert-resource-error";
+import {ReadResourceError} from "../../Errors/read-resource-error";
+import {FetchError} from "../../Errors/fetch-error";
 
 export async function insertTurtleResource(
   fetch: Fetch,
@@ -54,48 +57,6 @@ export async function create(fetch: Fetch, uriContainer: string) {
     throw new Error(`failed to create containers ${uriContainer} ${response}`);
   }
 }
-
-// export function getDescriptionResource(linkHeaderText: string): string | undefined {
-//     const links = LinkHeader.parse(linkHeaderText).refs;
-//     return links.find((link) => link.rel === 'describedby')?.uri;
-//   }
-
-// export async function discoverDescriptionResource(session : Session, iri : string): Promise<string> {
-//     const headResponse = await session.fetch(iri, {
-//       method: 'HEAD'
-//     });
-
-//     return getDescriptionResource(headResponse.headers.get('Link')!)!;
-//   }
-
-async function insertPatch(dataset: Store): Promise<string> {
-  return `
-      PREFIX interop: <http://www.w3.org/ns/solid/interop#>
-      INSERT DATA {
-        ${await serializeTurtle(dataset, {})}
-      }
-    `;
-}
-
-export async function updateContainerResource(
-  fetch: Fetch,
-  containerIri: string,
-  dataset: Store,
-) {
-  const body = await insertPatch(dataset);
-  await fetch(containerIri + ".meta", {
-    method: "PATCH",
-    body: body,
-    headers: {
-      "Content-Type": "application/sparql-update",
-    },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(`failed to patch ${containerIri}`);
-    }
-  });
-}
-
 export async function deleteContainerResource(
   fetch: Fetch,
   containerIRI: string,
@@ -123,66 +84,34 @@ export async function readParseResource(
   if (!res.ok) {
     throw new FetchError(res.statusText + " " + url);
   }
-  const res_1 = await res.text();
-  return await parseTurtle(res_1, url);
+  const body = await res.text();
+  return await parseTurtle(body, url);
 }
 
-class InsertResourceError extends Error {
-  constructor(public message: string) {
-    super(message);
-  }
-}
-
-class ReadResourceError extends Error {
-  constructor(public message: string) {
-    super(message);
-  }
-}
-
-class FetchError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export function patchSPARQLUpdate(
-  fetch: Fetch,
-  uri: string,
-  body: string,
-  withMeta: boolean = true,
+export async function patchSPARQLUpdate(
+    fetch: Fetch,
+    uri: string,
+    body: string,
+    withMeta: boolean = true,
 ): Promise<Response> {
-  return fetch(uri + (withMeta ? ".meta" : ""), {
+  let res = await fetch(uri + (withMeta ? ".meta" : ""), {
     method: "PATCH",
     body: body,
     headers: {
       "Content-Type": "application/sparql-update",
     },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(
-        `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
-      );
-    }
-    return res;
   });
+  if (!res.ok) {
+    throw new Error(
+        `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
+    );
+  }
+  return res;
 }
 
 export async function deleteSPARQLUpdate(
   dataset: DatasetCore,
-  subject?: string,
-  predicate?: string,
 ): Promise<string> {
-  if (subject && predicate) {
-    return `
-        PREFIX interop: <http://www.w3.org/ns/solid/interop#>
-
-        DELETE WHERE
-        { 
-            <${subject}> <${predicate}> ?o .
-        }
-    `;
-  }
-
   return `
         PREFIX interop: <http://www.w3.org/ns/solid/interop#>
 
