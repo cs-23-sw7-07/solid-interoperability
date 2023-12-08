@@ -13,34 +13,42 @@ export class Rdf {
 
 export class ProfileDocument extends Rdf implements ISocialAgent {
   private pod: URL | undefined;
-  private document: string | undefined
+  private document: string | undefined;
 
   static async fetch(webId: URL) {
     const response = await fetch(webId.toString(), {
       headers: { "Content-Type": "text/turtle" },
     });
     const profile = await response.text();
-    console.log("THIS IS PROFILE: " +profile)
-    return this.parse(profile);
+    const pd = await this.parse(profile);
+    pd.pod = await this.getPod(pd.WebId.toString());
+    return pd;
   }
 
-  static async parse(document: string){
+  static async parse(document: string) {
     const parser = new N3.Parser();
     const pd = new ProfileDocument(parser.parse(document));
-    pd.document = document
-    pd.pod = await this.getPod(pd.WebId.toString());
-    console.log("Returning Profile")
-    return pd
+    pd.document = document;
+    return pd;
   }
 
-  get Document(): string{
-    if(this.document)
-      return this.document
-    else throw new Error("Profile document did not have its document property set. It may not have been created correctly.")
+  get Document(): string {
+    if (this.document) return this.document;
+    else
+      throw new Error(
+        "Profile document did not have its document property set. It may not have been created correctly.",
+      );
   }
 
   static async getPod(webId: string) {
-    const pd = await fetch(webId, { headers: { Accept: "text/turtle" } });
+    let pd;
+    try {
+      pd = await fetch(webId, { headers: { Accept: "text/turtle" } });
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
     for (const link of pd.headers.get("link")!.split(",")) {
       if (
         link.includes("http://www.w3.org/ns/solid/terms#storageDescription")
@@ -48,6 +56,7 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
         const podUrl = await fetch(link.split(";")[0].slice(2, -1), {
           headers: { Accept: "text/turtle" },
         });
+
         const parser = new N3.Parser();
         const quads = parser.parse(await podUrl.text());
         for (const quad of quads) {
@@ -77,7 +86,9 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
 
   get WebId() {
     const id = this.Quads.find(
-      (x) => x.object.value == "http://xmlns.com/foaf/0.1/Person" || x.object.value == "http://www.w3.org/ns/solid/interop#Application",
+      (x) =>
+        x.object.value == "http://xmlns.com/foaf/0.1/Person" ||
+        x.object.value == "http://www.w3.org/ns/solid/interop#Application",
     )?.subject.value;
     if (id == undefined) {
       throw new Error("Did not find WebId in profile document.");

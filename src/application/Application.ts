@@ -64,7 +64,8 @@ export class Application implements IApplication {
           "instantiation.",
       );
     }
-    return ProfileDocument.parse(profile)
+
+    return ProfileDocument.parse(profile);
   }
 
   /**
@@ -79,10 +80,8 @@ export class Application implements IApplication {
       this.authStore = authStore;
     }
 
-    console.log("Getting profile")
     const profile = await ProfileDocument.fetch(webId);
-    console.log("Getting auth")
-    const auth = await Authorization.create(this, profile)
+    const auth = await Authorization.create(this, profile);
 
     authStore.addAuthorization(auth);
   }
@@ -156,16 +155,18 @@ export class Application implements IApplication {
         ) != undefined
       );
     });
-    if (accessGrant){
+    if (accessGrant) {
       const dataRegistration = accessGrant?.hasDataGrant.find(
         (grant) => grant.hasDataRegistration.registeredShapeTree == shape,
       )?.hasDataRegistration;
-      if (!dataRegistration){
-        throw new Error(`There were no Data Registration for type: ${shape} in AccessGrant.`)
+      if (!dataRegistration) {
+        throw new Error(
+          `There were no Data Registration for type: ${shape} in AccessGrant.`,
+        );
       }
       await auth.store(instance, new URL(dataRegistration.id));
     }
-    throw new Error(`There are no Access Grants for the type: ${shape}.`)
+    throw new Error(`There are no Access Grants for the type: ${shape}.`);
   }
 
   async *dataInstances(webId: URL) {
@@ -184,7 +185,8 @@ export class Application implements IApplication {
    * "text/turtle" as content type.
    */
   async getRouter() {
-    const profile = await this.getProfile()
+    const profile = await this.getProfile();
+
     return (req: any, res: any, next: any) => {
       for (const type of req.accepts()) {
         if (type.includes("turtle")) {

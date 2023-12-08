@@ -1,4 +1,0 @@
-<http://localhost:3000/alice-pod/Registries/> a <http://www.w3.org/ns/solid/interop#RegistrySet>;
-    <http://www.w3.org/ns/solid/interop#hasAgentRegistry> <http://localhost:3000/alice-pod/Registries/agentregisties/>;
-    <http://www.w3.org/ns/solid/interop#hasAuthorizationRegistry> <http://localhost:3000/alice-pod/Registries/accessregisties/>;
-    <http://www.w3.org/ns/solid/interop#hasDataRegistry> <http://localhost:3000/alice-pod/data/>.
