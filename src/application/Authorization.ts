@@ -46,13 +46,13 @@ export class Authorization implements IAuthorization {
       console.error(await res.text());
       throw new Error("Application did not respond 'OK' to 'want-access'");
     }
-    const res2 = await fetch(`${socialAgent.AuthorizationAgent}`, {
+    const res2 = await fetch(`${socialAgent.AuthorizationAgent}?client_id=${encodeURIComponent(appId.toString())}`, {
       method: "HEAD",
       headers: { Accept: "text/turtle" },
     });
     if (!res2.ok) {
       throw new Error(
-        "Application did not respond with Authorization Agent when requested.",
+        `Application did not respond with Authorization Agent when requested.\nResponse: ${res2.status}\n${await res2.text()}`,
       );
     }
     const registries = await res2.text();

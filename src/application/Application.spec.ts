@@ -45,7 +45,7 @@ describe("Application", () => {
     try {
       await app.register(new URL(ALICE_WEBID));
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       throw e;
     }
 
