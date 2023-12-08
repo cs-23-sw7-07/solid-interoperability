@@ -267,7 +267,6 @@ export class RdfFactory {
           break;
         }
         default: {
-          console.log(JSON.stringify(quad, null, 4));
           // throw new NotImplementedYet(JSON.stringify(quad, null, 4));
         }
       }

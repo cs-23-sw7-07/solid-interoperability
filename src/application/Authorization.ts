@@ -30,10 +30,11 @@ export class Authorization implements IAuthorization {
     socialAgent: ProfileDocument,
   ): Promise<Authorization> {
     const appId = (await app.getProfile()).WebId;
-    const url = new URL(
-      `${socialAgent.AuthorizationAgent}/wants-access?client_id=${appId}`,
-    );
-    const res = await fetch(url.toString(), {
+
+    const url =
+      `${socialAgent.AuthorizationAgent}/wants-access?client_id=${encodeURIComponent(appId.toString())}`
+    console.log(url)
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         Accept: "text/turtle",

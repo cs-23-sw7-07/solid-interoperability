@@ -34,7 +34,7 @@ describe("Application", () => {
   });
 
   it("should provide profile document.", async () => {
-    const res = await fetch("http://localhost:3002/", {
+    const res = await fetch("http://localhost:3002/#id", {
       headers: { Accept: "text/turtle" },
     });
 

@@ -3,8 +3,9 @@ import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
 
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
-  const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
-
+  const http = accessMode.split(':')[0]
+  const solidAcl: string = `${http}://www.w3.org/ns/auth/acl#`;
+  console.log(`Using ${http}`)
   switch (accessMode) {
     case solidAcl + "Read": {
       accessModeEnum = AccessMode.Read;

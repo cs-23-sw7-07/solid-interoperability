@@ -188,11 +188,16 @@ export class Application implements IApplication {
     const profile = await this.getProfile();
 
     return (req: any, res: any, next: any) => {
+      let content;
       for (const type of req.accepts()) {
         if (type.includes("turtle")) {
-          res.send(profile.Document);
-          return;
+          content = profile.Document;
+          break;
         }
+      }
+      if (content != undefined){
+        req.
+        res.send(content)
       }
       next();
     };
