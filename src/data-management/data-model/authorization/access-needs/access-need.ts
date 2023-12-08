@@ -4,6 +4,7 @@ import { getResource, Rdf } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { AccessMode } from "../access";
 import { getAccessmode } from "../../../Utils";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 export class AccessNeed extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -11,7 +12,9 @@ export class AccessNeed extends Rdf {
   }
 
   get RegisteredShapeTree(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree");
+    const shapeTree = this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree");
+    if (shapeTree) return shapeTree;
+    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredShapeTree");
   }
 
   get AccessModes(): AccessMode[] {
@@ -21,7 +24,7 @@ export class AccessNeed extends Rdf {
     if (values) {
       return values.map((mode) => getAccessmode(mode));
     }
-    return [];
+    throw new SAIViolationMissingTripleError(this, INTEROP + "accessMode");
   }
 
   get CreatorAccessModes() {

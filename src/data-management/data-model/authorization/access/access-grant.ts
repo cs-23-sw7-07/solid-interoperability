@@ -8,16 +8,29 @@ import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 import { Access } from "./access";
 
+/**
+ * Represents an access grant in the Solid interoperability specification.
+ * An access grant is a permission given to an agent to access a resource.
+ * It contains information such as the granting agent, the grantee, and the associated data grants.
+ * Definition of the structure: https://solid.github.io/data-interoperability-panel/specification/#access-grant
+ * @extends Access
+ */
 export class AccessGrant extends Access {
-  /**
-   * A class which has the fields to conform to the `Access Grant` graph defined in the Solid interoperability specification.
-   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-grant
-   */
-
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 
+  /**
+   * Creates a new AccessGrant instance.
+   * @param id - The ID of the AccessGrant.
+   * @param fetch - The fetch function used for making HTTP requests.
+   * @param grantedBy - The SocialAgent who granted the access.
+   * @param grantedAt - The date when the access was granted.
+   * @param grantee - The Agent who is granted access.
+   * @param hasAccessNeedGroup - The AccessNeedGroup associated with the access.
+   * @param hasDataGrant - An array of DataGrant instances associated with the access.
+   * @returns A new AccessGrant instance.
+   */
   static async new(
     id: string,
     fetch: Fetch,
@@ -42,6 +55,11 @@ export class AccessGrant extends Access {
     return newResource(AccessGrant, fetch, id, "AccessGrant", quads);
   }
 
+  /**
+   * Retrieves the data grants associated with this access grant.
+   * @returns A promise that resolves to an array of DataGrant objects.
+   * @throws {SAIViolationMissingTripleError} If the "hasDataGrant" predicate is missing.
+   */
   public async getHasDataGrant(): Promise<DataGrant[]> {
     const uris = this.getObjectValuesFromPredicate(INTEROP + "hasDataGrant");
     if (uris) {

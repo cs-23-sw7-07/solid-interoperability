@@ -1,27 +1,24 @@
-import { Prefixes, Store } from "n3";
 import { Agent, SocialAgent } from "../../agent";
 import { createTriple, getResource, Rdf } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
 import { INTEROP } from "../../namespace";
 import { getDate } from "../../../Utils";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { getAgent } from "../../../Utils/get-grantee";
 
+/**
+ * Represents an abstract class for access authorization and grant.
+ */
 export abstract class Access extends Rdf {
   /**
-   * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
-   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
+   * Creates an array of quads representing the access.
+   * @param id - The identifier of the access.
+   * @param grantedBy - The social agent who granted the access.
+   * @param grantedAt - The date when the access was granted.
+   * @param grantee - The agent who was granted the access.
+   * @param hasAccessNeedGroup - The access need group associated with the access.
+   * @returns An array of quads representing the access.
    */
-  protected constructor(
-    id: string,
-    fetch: Fetch,
-    dataset?: Store,
-    prefixes?: Prefixes,
-  ) {
-    super(id, fetch, dataset, prefixes);
-  }
-
   static newQuadsAccess(
     id: string,
     grantedBy: SocialAgent,
@@ -39,22 +36,41 @@ export abstract class Access extends Rdf {
     ];
   }
 
+  /**
+   * Gets the social agent who granted the access.
+   * @returns The social agent who granted the access.
+   * @throws SAIViolationMissingTripleError if the triple is missing.
+   */
   get GrantedBy(): SocialAgent {
     const grantedBy = this.getObjectValueFromPredicate(INTEROP + "grantedBy");
     if (grantedBy) return new SocialAgent(grantedBy);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedBy");
   }
 
+  /**
+   * Gets the date when the access was granted.
+   * @returns The date when the access was granted.
+   * @throws SAIViolationMissingTripleError if the triple is missing.
+   */
   get GrantedAt(): Date {
     const grantedAt = this.getObjectValueFromPredicate(INTEROP + "grantedAt");
     if (grantedAt) return getDate(grantedAt);
     throw new SAIViolationMissingTripleError(this, INTEROP + "grantedAt");
   }
 
+  /**
+   * Gets the grantee associated with the access.
+   * @returns A promise that resolves to the grantee agent.
+   */
   getGrantee(): Promise<Agent> {
     return getAgent(this, this.fetch, "grantee");
   }
 
+  /**
+   * Gets the access need group associated with the access.
+   * @returns A promise that resolves to the access need group.
+   * @throws SAIViolationMissingTripleError if the triple is missing.
+   */
   public async getHasAccessNeedGroup(): Promise<AccessNeedGroup> {
     const uri = this.getObjectValueFromPredicate(
       INTEROP + "hasAccessNeedGroup",
