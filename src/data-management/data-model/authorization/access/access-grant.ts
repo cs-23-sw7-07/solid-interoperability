@@ -1,12 +1,12 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataGrant } from "../data";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
-import { createTriple, getResources, newResource } from "../../RDF/rdf";
-import { AccessNeedGroup } from "../access-needs/access-need-group";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
-import { Access } from "./access";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataGrant} from "../data";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {createTriple, getResources, newResource} from "../../RDF/rdf";
+import {AccessNeedGroup} from "../access-needs/access-need-group";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
+import {Access} from "./access";
 
 /**
  * Represents an access grant in the Solid interoperability specification.
@@ -16,6 +16,13 @@ import { Access } from "./access";
  * @extends Access
  */
 export class AccessGrant extends Access {
+  /**
+   * Creates an instance of the AccessGrant class.
+   * @param id - The ID of the access grant.
+   * @param fetch - The fetch function used for making HTTP requests.
+   * @param dataset - The dataset associated with the access grant.
+   * @param prefixes - The prefixes used for in RDF.
+   */
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }

@@ -1,13 +1,13 @@
-import { DataFactory, Prefixes, Quad, Store } from "n3";
-import { Fetch } from "../../../fetch";
+import {DataFactory, Prefixes, Quad, Store} from "n3";
+import {Fetch} from "../../../fetch";
 import {
-  createContainer,
-  deleteSPARQLUpdate,
-  insertSPARQLUpdate,
-  patchSPARQLUpdate,
-  readParseResource,
+    createContainer,
+    deleteSPARQLUpdate,
+    insertSPARQLUpdate,
+    patchSPARQLUpdate,
+    readParseResource,
 } from "../../Utils/modify-pod";
-import { TYPE_A } from "../namespace";
+import {TYPE_A} from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -98,6 +98,13 @@ export class Rdf {
       });
   }
 
+  /**
+   * Adds the given quads to the dataset. First it inserts the quads remote, and if that is successful, it adds the quads to the local dataset.
+   * 
+   * @param quads - The quads to be added.
+   * @returns A promise that resolves when the quads are successfully added.
+   * @throws An error if there is an issue adding the quads.
+   */
   protected async add(quads: Quad[]): Promise<void> {
     await insertSPARQLUpdate(new Store(quads))
       .then((body) => this.patchSPARQLUpdate(body))
@@ -109,6 +116,13 @@ export class Rdf {
       });
   }
 
+  /**
+   * Executes a SPARQL update operation by sending a PATCH request to the specified URI.
+   * 
+   * @param body - The SPARQL update query as a string.
+   * @param withMeta - Optional parameter indicating whether to include metadata in the request.
+   * @returns A Promise that resolves to a Response object representing the server's response.
+   */
   protected async patchSPARQLUpdate(
     body: string,
     withMeta: boolean = true,
@@ -117,6 +131,17 @@ export class Rdf {
   }
 }
 
+/**
+ * Creates a new resource of type T and performs necessary operations to store it.
+ * The type T extends the Rdf class.
+ * @param c - The constructor function for the resource type T.
+ * @param fetch - The fetch function used for making HTTP requests.
+ * @param uri - The URI of the resource.
+ * @param type - The type of the resource.
+ * @param quads - The RDF quads representing the resource.
+ * @returns A promise that resolves to the created resource of type T.
+ * @throws An error if there is an issue creating the resource.
+ */
 export async function newResource<T extends Rdf>(
   c: {
     new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
@@ -135,6 +160,19 @@ export async function newResource<T extends Rdf>(
   return new c(uri, fetch, store, {});
 }
 
+/**
+ * Creates a new resource container of type T.
+ * The resource is created by first creating a new resource container, and then inserting the quads into the resource container.
+ * The type T extends the Rdf class.
+ * @template T - The type of the resource container.
+ * @param c - The constructor function for the resource container.
+ * @param fetch - The fetch function used for HTTP requests.
+ * @param uri - The URI of the resource container.
+ * @param type - The type of the resource container.
+ * @param quads - The quads to be added to the resource container.
+ * @returns {Promise<T>} - A promise that resolves to the created resource container.
+ * @throws {Error} - If there is an error creating the resource container.
+ */
 export async function newResourceContainer<T extends Rdf>(
   c: {
     new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
@@ -157,6 +195,16 @@ export async function newResourceContainer<T extends Rdf>(
     });
 }
 
+/**
+ * Retrieves a resource of type T from the specified URI.
+ * The type T extends the Rdf class.
+ * 
+ * @template T - The type of the resource.
+ * @param c - The constructor function for creating an instance of T.
+ * @param fetch - The fetch function used for making HTTP requests.
+ * @param uri - The URI of the resource.
+ * @returns A promise that resolves to an instance of T.
+ */
 export async function getResource<T extends Rdf>(
   c: {
     new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
@@ -169,6 +217,16 @@ export async function getResource<T extends Rdf>(
   return new c(uri, fetch, result.dataset, result.prefixes);
 }
 
+/**
+ * Retrieves multiple resources of type T from the given URIs.
+ * The type T extends the Rdf class.
+ * 
+ * @template T - The type of the resource.
+ * @param c - The constructor function for creating instances of T.
+ * @param fetch - The fetch function used for making HTTP requests.
+ * @param uris - The URIs of the resources to retrieve.
+ * @returns A promise that resolves to an array of resources of type T.
+ */
 export async function getResources<T extends Rdf>(
   c: {
     new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
@@ -185,6 +243,13 @@ export async function getResources<T extends Rdf>(
   return rdfs;
 }
 
+/**
+ * Creates a triple in RDF format.
+ * @param subject - The subject of the triple.
+ * @param predicate - The predicate of the triple.
+ * @param object - The object of the triple, which can be a string or a Date object.
+ * @returns The created triple in Quad format.
+ */
 export function createTriple(
   subject: string,
   predicate: string,

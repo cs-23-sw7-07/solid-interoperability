@@ -1,18 +1,13 @@
-import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
-import { AccessGrant } from "./access-grant";
-import { DataAuthorization, DataGrant } from "../data";
-import { Fetch } from "../../../../fetch";
-import { INTEROP } from "../../namespace";
-import { Access } from "./access";
-import {
-  createTriple,
-  getResource,
-  getResources,
-  newResource,
-} from "../../RDF/rdf";
-import { AccessNeedGroup } from "../access-needs";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
+import {Prefixes, Store} from "n3";
+import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
+import {AccessGrant} from "./access-grant";
+import {DataAuthorization, DataGrant} from "../data";
+import {Fetch} from "../../../../fetch";
+import {INTEROP} from "../../namespace";
+import {Access} from "./access";
+import {createTriple, getResource, getResources, newResource,} from "../../RDF/rdf";
+import {AccessNeedGroup} from "../access-needs";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
 
 /**
  * Represents an access authorization in the Solid interoperability specification.
@@ -22,6 +17,13 @@ import { SAIViolationMissingTripleError } from "../../../../Errors";
  * @extends Access
  */
 export class AccessAuthorization extends Access {
+  /**
+   * Creates an instance of AccessAuthorization.
+   * @param id - The identifier for the access authorization.
+   * @param fetch - The fetch function used for making HTTP requests.
+   * @param dataset - The quads associated with the access authorization.
+   * @param prefixes - The prefixes used in the RDF.
+   */
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }

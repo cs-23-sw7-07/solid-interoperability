@@ -1,5 +1,8 @@
-import { Rdf } from "..";
+import {Rdf} from "..";
 
+/**
+ * Represents an error that occurs when there is a violation of the Solid Application Interoperability (SAI).
+ */
 export class SAIViolationError extends Error {
   constructor(
     public rdf: Rdf,
@@ -9,6 +12,9 @@ export class SAIViolationError extends Error {
   }
 }
 
+/**
+ * Represents an error that occurs when a triple is missing but requires in the Solid Application Interoperability specification.
+ */
 export class SAIViolationMissingTripleError extends SAIViolationError {
   constructor(
     rdf: Rdf,

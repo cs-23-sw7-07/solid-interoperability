@@ -1,9 +1,9 @@
-import { INTEROP } from "../../namespace";
-import { AccessNeed } from "./access-need";
-import { Prefixes, Store } from "n3";
-import { getResources, Rdf } from "../../RDF/rdf";
-import { Fetch } from "../../../../fetch";
-import { SAIViolationMissingTripleError } from "../../../../Errors";
+import {INTEROP} from "../../namespace";
+import {AccessNeed} from "./access-need";
+import {Prefixes, Store} from "n3";
+import {getResources, Rdf} from "../../RDF/rdf";
+import {Fetch} from "../../../../fetch";
+import {SAIViolationMissingTripleError} from "../../../../Errors";
 
 /**
  * Represents a AccessNeedsGroup.

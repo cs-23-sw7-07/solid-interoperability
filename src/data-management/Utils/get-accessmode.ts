@@ -1,6 +1,12 @@
-import { AccessMode } from "../data-model/authorization/access/access-mode";
-import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
+import {AccessMode} from "../data-model/authorization/access/access-mode";
+import {InvalidAccessMode} from "../../Errors/InvalidAccessMode";
 
+/**
+ * Converts a string representation of an access mode to its corresponding AccessMode enum value.
+ * @param accessMode - The string representation of the access mode.
+ * @returns The AccessMode enum value.
+ * @throws InvalidAccessMode - If the access mode cannot be inferred from the provided string.
+ */
 export function getAccessmode(accessMode: string): AccessMode {
   let accessModeEnum: AccessMode;
   const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
@@ -37,6 +43,12 @@ export function getAccessmode(accessMode: string): AccessMode {
   return accessModeEnum!;
 }
 
+/**
+ * Converts an AccessMode enum value to its corresponding string representation.
+ * @param accessModeEnum The AccessMode enum value to convert.
+ * @returns The string representation of the AccessMode enum value.
+ * @throws {InvalidAccessMode} If the accessModeEnum is not a valid AccessMode enum value.
+ */
 export function accessModeFromEnum(accessModeEnum: AccessMode): string {
   const solidAcl: string = "http://www.w3.org/ns/auth/acl#";
 

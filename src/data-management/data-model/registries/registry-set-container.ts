@@ -1,16 +1,30 @@
-import { Prefixes, Store } from "n3";
-import { createTriple, newResourceContainer, Rdf } from "../RDF/rdf";
-import { Fetch } from "../../../fetch";
-import { INTEROP } from "../namespace";
-import { SocialAgentProfileDocument } from "../profile-documents";
-import { createContainer } from "../../Utils/modify-pod";
-import { IRandom } from "../../../random/IRandom";
+import {Prefixes, Store} from "n3";
+import {createTriple, getResource, newResourceContainer, Rdf} from "../RDF/rdf";
+import {Fetch} from "../../../fetch";
+import {INTEROP} from "../namespace";
+import {SocialAgentProfileDocument} from "../profile-documents";
+import {createContainer} from "../../Utils/modify-pod";
+import {IRandom} from "../../../random/IRandom";
+import {AgentRegistryResource} from "./agent-registry-container";
+import {SAIViolationMissingTripleError} from "../../../Errors";
+import {DataRegistryResource} from "./data-registry-container";
 
+/**
+ * Represents a registry set resource.
+ */
 export class RegistrySetResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 
+  /**
+   * Creates a new registry set.
+   * @param fetch - The fetch function used to make HTTP requests.
+   * @param pod - The URL of the pod.
+   * @param profileDocument - The social agent profile document.
+   * @param randomgen - The random generator.
+   * @returns The created registry set.
+   */
   static async createRegistriesSet(
     fetch: Fetch,
     pod: string,
@@ -49,17 +63,41 @@ export class RegistrySetResource extends Rdf {
     return set;
   }
 
-  get HasAgentRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
+  /**
+   * Retrieves the AgentRegistryResource associated with this RegistrySetContainer.
+   * @returns A Promise that resolves to the AgentRegistryResource.
+   * @throws {SAIViolationMissingTripleError} If the AgentRegistryResource is not found.
+   */
+  async getHasAgentRegistry(): Promise<AgentRegistryResource> {
+    const uri = this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
+    if (uri) return getResource(AgentRegistryResource, this.fetch, uri);
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasAgentRegistry");
   }
 
-  get HasAuthorizationRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate(
+  /**
+   * Retrieves the authorization registry associated with this registry set.
+   * @returns The URI of the authorization registry.
+   * @throws {SAIViolationMissingTripleError} If the authorization registry is missing.
+   */
+  get HasAuthorizationRegistry(): string {
+    const uri = this.getObjectValueFromPredicate(
+      INTEROP + "hasAuthorizationRegistry",
+    );
+    if (uri) return uri;
+    throw new SAIViolationMissingTripleError(
+      this,
       INTEROP + "hasAuthorizationRegistry",
     );
   }
 
-  get HasDataRegistry(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
+  /**
+   * Retrieves the data registry associated with this registry set container.
+   * @returns A promise that resolves to a DataRegistryResource object.
+   * @throws {SAIViolationMissingTripleError} If the data registry URI is missing.
+   */
+  async getHasDataRegistry(): Promise<DataRegistryResource> {
+    const uri = this.getObjectValueFromPredicate(INTEROP + "hasDataRegistry");
+    if (uri) return getResource(DataRegistryResource, this.fetch, uri);
+    throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataRegistry");
   }
 }

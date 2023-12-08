@@ -1,30 +1,51 @@
-import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
-import { DataRegistration } from "../../registration/data-registration";
-import { GrantScope } from "../grant-scope";
-import { Fetch } from "../../../../fetch";
-import { AccessMode } from "../access";
-import { Data } from "./data";
-import { createTriple, getResource, newResource } from "../../RDF/rdf";
-import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
-import { AccessNeed } from "../access-needs";
-import {
-  SAIViolationError,
-  SAIViolationMissingTripleError,
-} from "../../../../Errors";
-import { IDataGrantBuilder } from "./IDataGrantBuilder";
-import { DataGrant } from "./data-grant";
+import {Prefixes, Store} from "n3";
+import {Agent, SocialAgent} from "../../agent";
+import {DataRegistration} from "../../registration/data-registration";
+import {GrantScope} from "../grant-scope";
+import {Fetch} from "../../../../fetch";
+import {AccessMode} from "../access";
+import {Data} from "./data";
+import {createTriple, getResource, newResource} from "../../RDF/rdf";
+import {INTEROP} from "../../namespace";
+import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
+import {AccessNeed} from "../access-needs";
+import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
+import {IDataGrantBuilder} from "./IDataGrantBuilder";
+import {DataGrant} from "./data-grant";
 
+/**
+ * Represents a class that conforms to the `Data Authorization` graph defined in the Solid interoperability specification.
+ * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
+ */
 export class DataAuthorization extends Data {
   /**
-   * A class which has the fields to conform to the `Data Authorization` graph defined in the Solid interoperability specification.
-   * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#data-authorization
+   * Creates an instance of the DataAuthorization class.
+   * @param id - The identifier for the data authorization.
+   * @param fetch - The fetch function used for making HTTP requests.
+   * @param dataset - The quads associated with the data authorization.
+   * @param prefixes - The prefixes used in the RDF.
    */
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
     super(id, fetch, dataset, prefixes);
   }
 
+  /**
+   * Creates a new instance of DataAuthorization.
+   * 
+   * @param id - The ID of the data authorization.
+   * @param fetch - The fetch function used for making HTTP requests.
+   * @param grantee - The agent being granted access.
+   * @param registeredShapeTree - The registered shape tree for the data.
+   * @param satisfiesAccessNeed - The access need that is satisfied by this authorization.
+   * @param accessMode - The access mode(s) granted by this authorization.
+   * @param scopeOfAuthorization - The scope of the authorization.
+   * @param creatorAccessMode - The access mode(s) granted to the creator of the authorization (optional).
+   * @param dataOwner - The social agent that owns the data (optional).
+   * @param hasDataRegistration - The data registration associated with the authorization (optional).
+   * @param hasDataInstance - The array of data instance IRIs associated with the authorization (optional).
+   * @param inheritsFromAuthorization - The authorization from which this authorization inherits (optional).
+   * @returns A new instance of DataAuthorization.
+   */
   static new(
     id: string,
     fetch: Fetch,
@@ -79,6 +100,11 @@ export class DataAuthorization extends Data {
     );
   }
 
+  /**
+   * Gets the scope of authorization.
+   * @returns The scope of authorization.
+   * @throws {SAIViolationMissingTripleError} If the scope of authorization is missing.
+   */
   public get ScopeOfAuthorization(): GrantScope {
     const scope = this.getObjectValueFromPredicate(
       INTEROP + "scopeOfAuthorization",
@@ -90,6 +116,12 @@ export class DataAuthorization extends Data {
     );
   }
 
+  /**
+   * Gets the data owner of the authorization.
+   * @returns The data owner as a SocialAgent object.
+   * @throws {SAIViolationError} If the scope of authorization is GrantScope.All.
+   * @throws {SAIViolationMissingTripleError} If the data owner triple is missing.
+   */
   public get DataOwner(): SocialAgent {
     if (this.ScopeOfAuthorization == GrantScope.All)
       throw new SAIViolationError(
@@ -103,6 +135,12 @@ export class DataAuthorization extends Data {
     throw new SAIViolationMissingTripleError(this, INTEROP + "dataOwner");
   }
 
+  /**
+   * Retrieves the data registration associated with this authorization.
+   * @returns A promise that resolves to the data registration object.
+   * @throws {SAIViolationError} If the scope of authorization is "All" or "AllFromAgent" as they do not have data registration attached.
+   * @throws {SAIViolationMissingTripleError} If the data registration triple is missing.
+   */
   public async getHasDataRegistration(): Promise<DataRegistration> {
     const scope = this.ScopeOfAuthorization;
     if (scope == GrantScope.All || scope == GrantScope.AllFromAgent)
@@ -124,6 +162,12 @@ export class DataAuthorization extends Data {
     );
   }
 
+  /**
+   * Gets the data instances associated with the authorization.
+   * @returns An array of strings representing the data instances.
+   * @throws {SAIViolationError} If the scope of authorization is not "SelectedFromRegistry".
+   * @throws {SAIViolationMissingTripleError} If the data instances are missing.
+   */
   public get HasDataInstance(): string[] {
     if (this.ScopeOfAuthorization != GrantScope.SelectedFromRegistry)
       throw new SAIViolationError(
@@ -137,6 +181,12 @@ export class DataAuthorization extends Data {
     throw new SAIViolationMissingTripleError(this, INTEROP + "hasDataInstance");
   }
 
+  /**
+   * Retrieves the inherited authorization associated with this data authorization.
+   * @returns A Promise that resolves to the inherited DataAuthorization object.
+   * @throws {SAIViolationError} If the scope of authorization is not "Inherited".
+   * @throws {SAIViolationMissingTripleError} If the "inheritsFromAuthorization" triple is missing.
+   */
   public async getInheritsFromAuthorization(): Promise<DataAuthorization> {
     if (this.ScopeOfAuthorization != GrantScope.Inherited)
       throw new SAIViolationError(
@@ -157,6 +207,11 @@ export class DataAuthorization extends Data {
     );
   }
 
+  /**
+   * Converts the authorization data to an array of DataGrant objects.
+   * @param builder The IDataGrantBuilder used to build the DataGrant objects.
+   * @returns A promise that resolves to an array of DataGrant objects.
+   */
   async toDataGrant(builder: IDataGrantBuilder): Promise<DataGrant[]> {
     const grants: DataGrant[] = [];
 
