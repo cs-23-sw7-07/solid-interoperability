@@ -1,13 +1,18 @@
-import {Prefixes, Store} from "n3";
-import {createTriple, getResource, newResourceContainer, Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {SocialAgentProfileDocument} from "../profile-documents";
-import {createContainer} from "../../Utils/modify-pod";
-import {IRandom} from "../../../random/IRandom";
-import {AgentRegistryResource} from "./agent-registry-container";
-import {SAIViolationMissingTripleError} from "../../../Errors";
-import {DataRegistryResource} from "./data-registry-container";
+import { Prefixes, Store } from "n3";
+import {
+  createTriple,
+  getResource,
+  newResourceContainer,
+  Rdf,
+} from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { SocialAgentProfileDocument } from "../profile-documents";
+import { createContainer } from "../../Utils/modify-pod";
+import { IRandom } from "../../../random/IRandom";
+import { AgentRegistryResource } from "./agent-registry-container";
+import { SAIViolationMissingTripleError } from "../../../Errors";
+import { DataRegistryResource } from "./data-registry-container";
 
 /**
  * Represents a registry set resource.
@@ -71,7 +76,10 @@ export class RegistrySetResource extends Rdf {
   async getHasAgentRegistry(): Promise<AgentRegistryResource> {
     const uri = this.getObjectValueFromPredicate(INTEROP + "hasAgentRegistry");
     if (uri) return getResource(AgentRegistryResource, this.fetch, uri);
-    throw new SAIViolationMissingTripleError(this, INTEROP + "hasAgentRegistry");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "hasAgentRegistry",
+    );
   }
 
   /**

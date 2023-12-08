@@ -1,15 +1,18 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../registration/data-registration";
-import {GrantScope} from "../grant-scope";
-import {AccessMode} from "../access/access-mode";
-import {createTriple, getResource, newResource} from "../../RDF/rdf";
-import {Fetch} from "../../../../fetch";
-import {Data} from "./data";
-import {INTEROP} from "../../namespace";
-import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs/access-need";
-import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../registration/data-registration";
+import { GrantScope } from "../grant-scope";
+import { AccessMode } from "../access/access-mode";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
+import { Fetch } from "../../../../fetch";
+import { Data } from "./data";
+import { INTEROP } from "../../namespace";
+import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
+import { AccessNeed } from "../access-needs/access-need";
+import {
+  SAIViolationError,
+  SAIViolationMissingTripleError,
+} from "../../../../Errors";
 
 /**
  * Represents a data grant in the Solid interoperability specification.
@@ -17,7 +20,6 @@ import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Er
  * For more information, refer to the specification: https://solid.github.io/data-interoperability-panel/specification/#data-grant
  */
 export class DataGrant extends Data {
-
   /**
    * Represents a DataGrant object.
    * @constructor
@@ -32,7 +34,7 @@ export class DataGrant extends Data {
 
   /**
    * Creates a new DataGrant instance.
-   * 
+   *
    * @param id - The ID of the data grant.
    * @param fetch - The fetch function used for making HTTP requests.
    * @param grantee - The agent being granted access.
@@ -99,10 +101,7 @@ export class DataGrant extends Data {
     if (dataOwner) {
       return new SocialAgent(dataOwner);
     }
-    throw new SAIViolationMissingTripleError(
-      this,
-      INTEROP + "dataOwner",
-    );
+    throw new SAIViolationMissingTripleError(this, INTEROP + "dataOwner");
   }
 
   /**
@@ -155,7 +154,7 @@ export class DataGrant extends Data {
 
   /**
    * Retrieves the inherited grant associated with this data grant.
-   * 
+   *
    * @returns A promise that resolves to the inherited DataGrant object.
    * @throws {SAIViolationError} If the scope of the grant is not "Inherited".
    * @throws {SAIViolationMissingTripleError} If the "inheritsFromGrant" triple is missing.

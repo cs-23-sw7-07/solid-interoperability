@@ -1,9 +1,9 @@
-import {INTEROP} from "../../namespace";
-import {AccessNeed} from "./access-need";
-import {Prefixes, Store} from "n3";
-import {getResources, Rdf} from "../../RDF/rdf";
-import {Fetch} from "../../../../fetch";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
+import { INTEROP } from "../../namespace";
+import { AccessNeed } from "./access-need";
+import { Prefixes, Store } from "n3";
+import { getResources, Rdf } from "../../RDF/rdf";
+import { Fetch } from "../../../../fetch";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 /**
  * Represents a AccessNeedsGroup.
@@ -36,7 +36,9 @@ export class AccessNeedGroup extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the access necessity are not provided.
    */
   get AccessNecessity(): string | undefined {
-    const necessity = this.getObjectValueFromPredicate(INTEROP + "accessNecessity");
+    const necessity = this.getObjectValueFromPredicate(
+      INTEROP + "accessNecessity",
+    );
     if (necessity) return necessity;
     throw new SAIViolationMissingTripleError(this, INTEROP + "accessNecessity");
   }
@@ -47,7 +49,9 @@ export class AccessNeedGroup extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the access scenario are not provided.
    */
   get AccessScenario(): string[] {
-    const accessScenario = this.getObjectValuesFromPredicate(INTEROP + "accessScenario");
+    const accessScenario = this.getObjectValuesFromPredicate(
+      INTEROP + "accessScenario",
+    );
     if (accessScenario) return accessScenario;
     throw new SAIViolationMissingTripleError(this, INTEROP + "accessScenario");
   }
@@ -58,7 +62,9 @@ export class AccessNeedGroup extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the authenticate as are not provided.
    */
   get AuthenticatesAs(): string {
-    const authenticatesAs = this.getObjectValueFromPredicate(INTEROP + "authenticatesAs");
+    const authenticatesAs = this.getObjectValueFromPredicate(
+      INTEROP + "authenticatesAs",
+    );
     if (authenticatesAs) return authenticatesAs;
     throw new SAIViolationMissingTripleError(this, INTEROP + "authenticatesAs");
   }
@@ -69,8 +75,9 @@ export class AccessNeedGroup extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the access needs are not provided.
    */
   async getHasAccessNeed(): Promise<AccessNeed[]> {
-    const needUris =
-      this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeed");
+    const needUris = this.getObjectValuesFromPredicate(
+      INTEROP + "hasAccessNeed",
+    );
     if (needUris) return getResources(AccessNeed, this.fetch, needUris);
     throw new SAIViolationMissingTripleError(this, INTEROP + "hasAccessNeed");
   }

@@ -1,5 +1,5 @@
-import {INTEROP} from "../namespace";
-import {ProfileDocument} from "./profile-document";
+import { INTEROP } from "../namespace";
+import { ProfileDocument } from "./profile-document";
 
 /**
  * Checks if the given profile document represents an application agent.

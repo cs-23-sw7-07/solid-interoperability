@@ -1,8 +1,8 @@
-import {Prefixes, Store} from "n3";
-import {getResources, Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {DataRegistration} from "../registration/data-registration";
-import {DATA_REGISTRATION, INTEROP} from "../namespace";
+import { Prefixes, Store } from "n3";
+import { getResources, Rdf } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { DataRegistration } from "../registration/data-registration";
+import { DATA_REGISTRATION, INTEROP } from "../namespace";
 
 /**
  * Represents a data registry resource.

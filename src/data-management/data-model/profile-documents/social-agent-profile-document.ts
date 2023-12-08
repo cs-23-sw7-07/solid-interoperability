@@ -1,10 +1,10 @@
-import {Prefixes, Store} from "n3";
-import {INTEROP} from "../namespace";
-import {getResource} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {RegistrySetResource} from "../registries";
-import {ProfileDocument} from "./profile-document";
-import {SAIViolationError} from "../../../Errors";
+import { Prefixes, Store } from "n3";
+import { INTEROP } from "../namespace";
+import { getResource } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { RegistrySetResource } from "../registries";
+import { ProfileDocument } from "./profile-document";
+import { SAIViolationError } from "../../../Errors";
 
 /**
  * Represents a Social Agent Profile Document.

@@ -1,4 +1,4 @@
-import {Rdf} from "..";
+import { Rdf } from "..";
 
 /**
  * Represents an error that occurs when there is a violation of the Solid Application Interoperability (SAI).

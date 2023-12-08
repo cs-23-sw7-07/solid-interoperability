@@ -1,11 +1,11 @@
-import {Agent} from "../../agent";
-import {createTriple, getResource, Rdf} from "../../RDF/rdf";
-import {AccessMode} from "../access/access-mode";
-import {INTEROP} from "../../namespace";
-import {accessModeFromEnum, getAccessmode} from "../../../Utils";
-import {AccessNeed} from "../access-needs/access-need";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
-import {getAgent} from "../../../Utils/get-grantee";
+import { Agent } from "../../agent";
+import { createTriple, getResource, Rdf } from "../../RDF/rdf";
+import { AccessMode } from "../access/access-mode";
+import { INTEROP } from "../../namespace";
+import { accessModeFromEnum, getAccessmode } from "../../../Utils";
+import { AccessNeed } from "../access-needs/access-need";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
+import { getAgent } from "../../../Utils/get-grantee";
 
 /**
  * Represents an abstract class for data in the authorization or grant.

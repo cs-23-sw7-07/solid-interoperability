@@ -1,10 +1,10 @@
-import {SAIViolationMissingTripleError} from "../../Errors";
-import {Fetch} from "../../fetch";
-import {getResource, Rdf} from "../data-model/RDF/rdf";
-import {Agent, ApplicationAgent, SocialAgent} from "../data-model/agent";
-import {INTEROP} from "../data-model/namespace";
-import {ProfileDocument} from "../data-model/profile-documents/profile-document";
-import {isApplicationAgent} from "../data-model/profile-documents/utils";
+import { SAIViolationMissingTripleError } from "../../Errors";
+import { Fetch } from "../../fetch";
+import { getResource, Rdf } from "../data-model/RDF/rdf";
+import { Agent, ApplicationAgent, SocialAgent } from "../data-model/agent";
+import { INTEROP } from "../data-model/namespace";
+import { ProfileDocument } from "../data-model/profile-documents/profile-document";
+import { isApplicationAgent } from "../data-model/profile-documents/utils";
 
 export async function getAgent(
   rdf: Rdf,

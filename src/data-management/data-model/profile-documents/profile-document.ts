@@ -1,6 +1,6 @@
-import {Prefixes, Store} from "n3";
-import {Fetch} from "../../../fetch";
-import {Rdf} from "../RDF/rdf";
+import { Prefixes, Store } from "n3";
+import { Fetch } from "../../../fetch";
+import { Rdf } from "../RDF/rdf";
 
 /**
  * Represents a profile document.

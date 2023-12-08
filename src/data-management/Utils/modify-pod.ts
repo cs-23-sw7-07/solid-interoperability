@@ -1,10 +1,10 @@
-import {Fetch} from "../../fetch";
-import {serializeTurtle} from "../turtle/turtle-serializer";
-import {ParserResult, parseTurtle} from "../turtle/turtle-parser";
-import {DatasetCore} from "@rdfjs/types";
-import {InsertResourceError} from "../../Errors/insert-resource-error";
-import {ReadResourceError} from "../../Errors/read-resource-error";
-import {FetchError} from "../../Errors/fetch-error";
+import { Fetch } from "../../fetch";
+import { serializeTurtle } from "../turtle/turtle-serializer";
+import { ParserResult, parseTurtle } from "../turtle/turtle-parser";
+import { DatasetCore } from "@rdfjs/types";
+import { InsertResourceError } from "../../Errors/insert-resource-error";
+import { ReadResourceError } from "../../Errors/read-resource-error";
+import { FetchError } from "../../Errors/fetch-error";
 
 export async function insertTurtleResource(
   fetch: Fetch,

@@ -1,10 +1,10 @@
-import {INTEROP} from "../namespace";
-import {Prefixes, Store} from "n3";
-import {getResources} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {AccessNeedGroup} from "../authorization/access-needs";
-import {ProfileDocument} from "./profile-document";
-import {SAIViolationMissingTripleError} from "../../../Errors";
+import { INTEROP } from "../namespace";
+import { Prefixes, Store } from "n3";
+import { getResources } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { AccessNeedGroup } from "../authorization/access-needs";
+import { ProfileDocument } from "./profile-document";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * Represents an application profile document.
@@ -38,9 +38,14 @@ export class ApplicationProfileDocument extends ProfileDocument {
    * @throws {SAIViolationMissingTripleError} If the application description is missing.
    */
   get ApplicationDescription(): string {
-    const description = this.getObjectValueFromPredicate(INTEROP + "applicationDescription");
+    const description = this.getObjectValueFromPredicate(
+      INTEROP + "applicationDescription",
+    );
     if (description) return description;
-    throw new SAIViolationMissingTripleError(this, INTEROP + "applicationDescription");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "applicationDescription",
+    );
   }
 
   /**
@@ -49,9 +54,14 @@ export class ApplicationProfileDocument extends ProfileDocument {
    * @throws {SAIViolationMissingTripleError} If the application author is missing.
    */
   get ApplicationAuthor(): string {
-    const author = this.getObjectValueFromPredicate(INTEROP + "applicationAuthor");
+    const author = this.getObjectValueFromPredicate(
+      INTEROP + "applicationAuthor",
+    );
     if (author) return author;
-    throw new SAIViolationMissingTripleError(this, INTEROP + "applicationAuthor");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "applicationAuthor",
+    );
   }
 
   /**
@@ -68,9 +78,14 @@ export class ApplicationProfileDocument extends ProfileDocument {
    * @throws {SAIViolationMissingTripleError} If the access need groups are missing.
    */
   getHasAccessNeedGroup(): Promise<AccessNeedGroup[]> {
-    const uris = this.getObjectValuesFromPredicate(INTEROP + "hasAccessNeedGroup");
+    const uris = this.getObjectValuesFromPredicate(
+      INTEROP + "hasAccessNeedGroup",
+    );
     if (uris) return getResources(AccessNeedGroup, this.fetch, uris);
-    throw new SAIViolationMissingTripleError(this, INTEROP + "hasAccessNeedGroup");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "hasAccessNeedGroup",
+    );
   }
 
   /**
@@ -78,6 +93,8 @@ export class ApplicationProfileDocument extends ProfileDocument {
    * @returns The authorization callback endpoint, or undefined if it is missing.
    */
   get HasAuthorizationCallbackEndpoint(): string | undefined {
-    return this.getObjectValueFromPredicate(INTEROP + "hasAuthorizationCallbackEndpoint");
+    return this.getObjectValueFromPredicate(
+      INTEROP + "hasAuthorizationCallbackEndpoint",
+    );
   }
 }

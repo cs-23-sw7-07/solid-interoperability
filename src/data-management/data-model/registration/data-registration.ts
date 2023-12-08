@@ -1,9 +1,9 @@
-import {Prefixes, Store} from "n3";
-import {ApplicationAgent, SocialAgent} from "../agent";
-import {Registration} from "./registration";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {createTriple, newResourceContainer} from "../RDF/rdf";
+import { Prefixes, Store } from "n3";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { Registration } from "./registration";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { createTriple, newResourceContainer } from "../RDF/rdf";
 
 /**
  * Represents a data registration in the Solid interoperability specification.
@@ -65,7 +65,7 @@ export class DataRegistration extends Registration {
 
   /**
    * Gets the registered shape tree.
-   * 
+   *
    * @returns The registered shape tree.
    */
   get RegisteredShapeTree(): string {
@@ -74,7 +74,7 @@ export class DataRegistration extends Registration {
 
   /**
    * Sets the registered shape tree for the data registration.
-   * 
+   *
    * @param shapeTree - The shape tree to be set.
    * @returns A promise that resolves when the shape tree is successfully set.
    */

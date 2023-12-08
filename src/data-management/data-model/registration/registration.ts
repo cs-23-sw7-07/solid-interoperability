@@ -1,9 +1,9 @@
-import {createTriple, Rdf} from "../RDF/rdf";
-import {ApplicationAgent, SocialAgent} from "../agent";
-import {INTEROP} from "../namespace";
-import {getDate} from "../../Utils";
-import {Quad} from "n3";
-import {SAIViolationMissingTripleError} from "../../../Errors";
+import { createTriple, Rdf } from "../RDF/rdf";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { INTEROP } from "../namespace";
+import { getDate } from "../../Utils";
+import { Quad } from "n3";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * Represents an abstract class for registration.
@@ -50,7 +50,7 @@ export abstract class Registration extends Rdf {
 
   /**
    * Sets the agent who registered the registration.
-   * 
+   *
    * @param agent The social agent who registered the registration.
    */
   async setRegisteredBy(agent: SocialAgent) {
@@ -74,7 +74,7 @@ export abstract class Registration extends Rdf {
 
   /**
    * Sets the agent that the registration is associated with.
-   * 
+   *
    * @param agent The application agent to set as the registered agent.
    */
   async setRegisteredWith(agent: ApplicationAgent) {
@@ -98,7 +98,7 @@ export abstract class Registration extends Rdf {
 
   /**
    * Sets the registered date for the registration.
-   * 
+   *
    * @param date - The date to set as the registered date.
    */
   async setRegisteredAt(date: Date) {

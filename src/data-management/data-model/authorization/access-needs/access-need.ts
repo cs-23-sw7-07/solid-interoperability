@@ -1,10 +1,10 @@
-import {Prefixes, Store} from "n3";
-import {INTEROP} from "../../namespace";
-import {getResource, Rdf} from "../../RDF/rdf";
-import {Fetch} from "../../../../fetch";
-import {AccessMode} from "../access";
-import {getAccessmode} from "../../../Utils";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
+import { Prefixes, Store } from "n3";
+import { INTEROP } from "../../namespace";
+import { getResource, Rdf } from "../../RDF/rdf";
+import { Fetch } from "../../../../fetch";
+import { AccessMode } from "../access";
+import { getAccessmode } from "../../../Utils";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 /**
  * Represents an access need in the Solid interoperability specification.
@@ -20,9 +20,14 @@ export class AccessNeed extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the registered shape tree is missing.
    */
   get RegisteredShapeTree(): string | undefined {
-    const shapeTree = this.getObjectValueFromPredicate(INTEROP + "registeredShapeTree");
+    const shapeTree = this.getObjectValueFromPredicate(
+      INTEROP + "registeredShapeTree",
+    );
     if (shapeTree) return shapeTree;
-    throw new SAIViolationMissingTripleError(this, INTEROP + "registeredShapeTree");
+    throw new SAIViolationMissingTripleError(
+      this,
+      INTEROP + "registeredShapeTree",
+    );
   }
 
   /**
@@ -56,7 +61,9 @@ export class AccessNeed extends Rdf {
    * @throws {SAIViolationMissingTripleError} If the access necessity is missing.
    */
   get AccessNecessity(): string {
-    const necessity = this.getObjectValueFromPredicate(INTEROP + "accessNecessity");
+    const necessity = this.getObjectValueFromPredicate(
+      INTEROP + "accessNecessity",
+    );
     if (necessity) return necessity;
     throw new SAIViolationMissingTripleError(this, INTEROP + "accessNecessity");
   }

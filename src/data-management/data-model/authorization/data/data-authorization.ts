@@ -1,17 +1,20 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../registration/data-registration";
-import {GrantScope} from "../grant-scope";
-import {Fetch} from "../../../../fetch";
-import {AccessMode} from "../access";
-import {Data} from "./data";
-import {createTriple, getResource, newResource} from "../../RDF/rdf";
-import {INTEROP} from "../../namespace";
-import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs";
-import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
-import {IDataGrantBuilder} from "./IDataGrantBuilder";
-import {DataGrant} from "./data-grant";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../registration/data-registration";
+import { GrantScope } from "../grant-scope";
+import { Fetch } from "../../../../fetch";
+import { AccessMode } from "../access";
+import { Data } from "./data";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
+import { INTEROP } from "../../namespace";
+import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
+import { AccessNeed } from "../access-needs";
+import {
+  SAIViolationError,
+  SAIViolationMissingTripleError,
+} from "../../../../Errors";
+import { IDataGrantBuilder } from "./IDataGrantBuilder";
+import { DataGrant } from "./data-grant";
 
 /**
  * Represents a class that conforms to the `Data Authorization` graph defined in the Solid interoperability specification.
@@ -31,7 +34,7 @@ export class DataAuthorization extends Data {
 
   /**
    * Creates a new instance of DataAuthorization.
-   * 
+   *
    * @param id - The ID of the data authorization.
    * @param fetch - The fetch function used for making HTTP requests.
    * @param grantee - The agent being granted access.

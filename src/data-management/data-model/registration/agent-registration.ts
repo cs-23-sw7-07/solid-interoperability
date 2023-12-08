@@ -1,10 +1,10 @@
-import {Quad} from "n3";
-import {ApplicationAgent, SocialAgent} from "../agent";
-import {AccessGrant} from "../authorization/access";
-import {Registration} from "./registration";
-import {INTEROP} from "../namespace";
-import {createTriple, getResources} from "../RDF/rdf";
-import {SAIViolationMissingTripleError} from "../../../Errors";
+import { Quad } from "n3";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { AccessGrant } from "../authorization/access";
+import { Registration } from "./registration";
+import { INTEROP } from "../namespace";
+import { createTriple, getResources } from "../RDF/rdf";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * An abstract class which is used polymorphic where functions which both a `Social Agent Registration` or `Application Agent Registration` can perform.
@@ -62,7 +62,7 @@ export abstract class AgentRegistration extends Registration {
 
   /**
    * Adds an access grant to the agent registration.
-   * 
+   *
    * @param grant The access grant to be added.
    */
   async AddAccessGrant(grant: AccessGrant) {

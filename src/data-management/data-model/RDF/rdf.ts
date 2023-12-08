@@ -1,13 +1,13 @@
-import {DataFactory, Prefixes, Quad, Store} from "n3";
-import {Fetch} from "../../../fetch";
+import { DataFactory, Prefixes, Quad, Store } from "n3";
+import { Fetch } from "../../../fetch";
 import {
-    createContainer,
-    deleteSPARQLUpdate,
-    insertSPARQLUpdate,
-    patchSPARQLUpdate,
-    readParseResource,
+  createContainer,
+  deleteSPARQLUpdate,
+  insertSPARQLUpdate,
+  patchSPARQLUpdate,
+  readParseResource,
 } from "../../Utils/modify-pod";
-import {TYPE_A} from "../namespace";
+import { TYPE_A } from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -100,7 +100,7 @@ export class Rdf {
 
   /**
    * Adds the given quads to the dataset. First it inserts the quads remote, and if that is successful, it adds the quads to the local dataset.
-   * 
+   *
    * @param quads - The quads to be added.
    * @returns A promise that resolves when the quads are successfully added.
    * @throws An error if there is an issue adding the quads.
@@ -118,7 +118,7 @@ export class Rdf {
 
   /**
    * Executes a SPARQL update operation by sending a PATCH request to the specified URI.
-   * 
+   *
    * @param body - The SPARQL update query as a string.
    * @param withMeta - Optional parameter indicating whether to include metadata in the request.
    * @returns A Promise that resolves to a Response object representing the server's response.
@@ -198,7 +198,7 @@ export async function newResourceContainer<T extends Rdf>(
 /**
  * Retrieves a resource of type T from the specified URI.
  * The type T extends the Rdf class.
- * 
+ *
  * @template T - The type of the resource.
  * @param c - The constructor function for creating an instance of T.
  * @param fetch - The fetch function used for making HTTP requests.
@@ -220,7 +220,7 @@ export async function getResource<T extends Rdf>(
 /**
  * Retrieves multiple resources of type T from the given URIs.
  * The type T extends the Rdf class.
- * 
+ *
  * @template T - The type of the resource.
  * @param c - The constructor function for creating instances of T.
  * @param fetch - The fetch function used for making HTTP requests.

@@ -1,13 +1,18 @@
-import {Prefixes, Store} from "n3";
-import {Agent, ApplicationAgent, SocialAgent} from "../../agent";
-import {AccessGrant} from "./access-grant";
-import {DataAuthorization, DataGrant} from "../data";
-import {Fetch} from "../../../../fetch";
-import {INTEROP} from "../../namespace";
-import {Access} from "./access";
-import {createTriple, getResource, getResources, newResource,} from "../../RDF/rdf";
-import {AccessNeedGroup} from "../access-needs";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
+import { Prefixes, Store } from "n3";
+import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
+import { AccessGrant } from "./access-grant";
+import { DataAuthorization, DataGrant } from "../data";
+import { Fetch } from "../../../../fetch";
+import { INTEROP } from "../../namespace";
+import { Access } from "./access";
+import {
+  createTriple,
+  getResource,
+  getResources,
+  newResource,
+} from "../../RDF/rdf";
+import { AccessNeedGroup } from "../access-needs";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 /**
  * Represents an access authorization in the Solid interoperability specification.
@@ -30,7 +35,7 @@ export class AccessAuthorization extends Access {
 
   /**
    * Creates a new AccessAuthorization instance.
-   * 
+   *
    * @param id - The ID of the access authorization.
    * @param fetch - The fetch function used to fetch resources.
    * @param grantedBy - The social agent who granted the access.

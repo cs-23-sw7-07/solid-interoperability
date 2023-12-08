@@ -1,5 +1,5 @@
-import {AccessMode} from "../data-model/authorization/access/access-mode";
-import {InvalidAccessMode} from "../../Errors/InvalidAccessMode";
+import { AccessMode } from "../data-model/authorization/access/access-mode";
+import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
 
 /**
  * Converts a string representation of an access mode to its corresponding AccessMode enum value.
