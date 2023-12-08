@@ -42,7 +42,12 @@ describe("Application", () => {
   });
 
   it("can register", async () => {
-    await app.register(new URL(ALICE_WEBID));
+    try {
+      await app.register(new URL(ALICE_WEBID));
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
 
     expect(app.authStore.Authorizations.length).toBe(1);
   });

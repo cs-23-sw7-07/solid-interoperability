@@ -2,6 +2,7 @@ import { fetch } from "solid-auth-fetcher";
 import N3 from "n3";
 import { URL } from "url";
 import { ISocialAgent } from "./SocialAgent";
+import {HttpError} from "../Errors/HttpError";
 
 export class Rdf {
   constructor(private quads: N3.Quad[]) {}
@@ -19,6 +20,15 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
     const response = await fetch(webId.toString(), {
       headers: { "Content-Type": "text/turtle" },
     });
+    if (!response.ok) {
+      const text = JSON.parse(await response.text());
+      throw new HttpError(
+          text.name,
+          text.message == "" ? "Received invalid response" : text.message,
+          text.statusCode,
+          text.errorCode,
+          text.details);
+    }
     const profile = await response.text();
     const pd = await this.parse(profile);
     pd.pod = await this.getPod(pd.WebId.toString());
@@ -27,7 +37,13 @@ export class ProfileDocument extends Rdf implements ISocialAgent {
 
   static async parse(document: string) {
     const parser = new N3.Parser();
-    const pd = new ProfileDocument(parser.parse(document));
+    let pd: ProfileDocument;
+    try {
+      pd = new ProfileDocument(parser.parse(document));
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
     pd.document = document;
     return pd;
   }
