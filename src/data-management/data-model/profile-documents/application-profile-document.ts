@@ -1,9 +1,9 @@
-import {INTEROP} from "../namespace";
-import {Prefixes, Store} from "n3";
-import {getResources} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {AccessNeedGroup} from "../authorization/access-needs";
-import {ProfileDocument} from "./profile-document";
+import { INTEROP } from "../namespace";
+import { Prefixes, Store } from "n3";
+import { getResources } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { AccessNeedGroup } from "../authorization/access-needs";
+import { ProfileDocument } from "./profile-document";
 
 export class ApplicationProfileDocument extends ProfileDocument {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {

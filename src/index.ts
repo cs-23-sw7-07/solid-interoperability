@@ -19,7 +19,7 @@ export * from "./data-management/data-model/registries/index";
 export * from "./data-management/data-model/registration/data-registration";
 export * from "./data-management/data-model/agent";
 export * from "./data-management/data-model/RDF/rdf";
-export * from "./data-management/data-model/registration";
+export * from "./data-management/data-model/registration/registration";
 
 export * from "./data-management/Utils/index";
 

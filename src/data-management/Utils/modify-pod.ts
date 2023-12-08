@@ -1,11 +1,10 @@
-import {Fetch} from "../../fetch";
-import {serializeTurtle} from "../turtle/turtle-serializer";
-import {ParserResult, parseTurtle} from "../turtle/turtle-parser";
-import {Store} from "n3";
-import {DatasetCore} from "@rdfjs/types";
-import {InsertResourceError} from "../../Errors/insert-resource-error";
-import {ReadResourceError} from "../../Errors/read-resource-error";
-import {FetchError} from "../../Errors/fetch-error";
+import { Fetch } from "../../fetch";
+import { serializeTurtle } from "../turtle/turtle-serializer";
+import { ParserResult, parseTurtle } from "../turtle/turtle-parser";
+import { DatasetCore } from "@rdfjs/types";
+import { InsertResourceError } from "../../Errors/insert-resource-error";
+import { ReadResourceError } from "../../Errors/read-resource-error";
+import { FetchError } from "../../Errors/fetch-error";
 
 export async function insertTurtleResource(
   fetch: Fetch,
@@ -89,12 +88,12 @@ export async function readParseResource(
 }
 
 export async function patchSPARQLUpdate(
-    fetch: Fetch,
-    uri: string,
-    body: string,
-    withMeta: boolean = true,
+  fetch: Fetch,
+  uri: string,
+  body: string,
+  withMeta: boolean = true,
 ): Promise<Response> {
-  let res = await fetch(uri + (withMeta ? ".meta" : ""), {
+  const res = await fetch(uri + (withMeta ? ".meta" : ""), {
     method: "PATCH",
     body: body,
     headers: {
@@ -103,7 +102,7 @@ export async function patchSPARQLUpdate(
   });
   if (!res.ok) {
     throw new Error(
-        `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
+      `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
     );
   }
   return res;

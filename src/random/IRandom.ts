@@ -1,3 +1,3 @@
-interface IRandom {
-    random(): string
+export interface IRandom {
+  randomID(): string;
 }

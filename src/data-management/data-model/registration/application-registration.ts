@@ -1,11 +1,11 @@
-import {Prefixes, Store} from "n3";
-import {ApplicationAgent, SocialAgent} from "../agent";
-import {AgentRegistration} from "./agent-registration";
-import {AccessGrant} from "../authorization/access";
-import {Fetch} from "../../../fetch";
-import {createTriple, newResourceContainer} from "../RDF/rdf";
-import {INTEROP} from "../namespace";
-import {SAIViolationMissingTripleError} from "../../../Errors";
+import { Prefixes, Store } from "n3";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { AgentRegistration } from "./agent-registration";
+import { AccessGrant } from "../authorization/access";
+import { Fetch } from "../../../fetch";
+import { createTriple, newResourceContainer } from "../RDF/rdf";
+import { INTEROP } from "../namespace";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 /**
  * A class which has the fields to conform to the `Application Agent Registration` graph defined in the Solid interoperability specification.
@@ -35,7 +35,7 @@ export class ApplicationRegistration extends AgentRegistration {
       new Date(),
       hasAccessGrant,
     );
-    quads.push(triple("registeredAgent", registeredAgent.webID));
+    quads.push(triple("registeredAgent", registeredAgent.getWebID()));
 
     return newResourceContainer(
       ApplicationRegistration,
@@ -56,7 +56,7 @@ export class ApplicationRegistration extends AgentRegistration {
 
   async setRegisteredAgent(agent: ApplicationAgent) {
     const predicate = INTEROP + "registeredAgent";
-    const quad = this.createTriple(predicate, agent.webID);
+    const quad = this.createTriple(predicate, agent.getWebID());
     await this.update(predicate, [quad]);
   }
 }

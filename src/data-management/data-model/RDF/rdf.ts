@@ -1,5 +1,5 @@
-import {DataFactory, Prefixes, Quad, Store} from "n3";
-import {Fetch} from "../../../fetch";
+import { DataFactory, Prefixes, Quad, Store } from "n3";
+import { Fetch } from "../../../fetch";
 import {
   createContainer,
   deleteSPARQLUpdate,
@@ -7,7 +7,7 @@ import {
   patchSPARQLUpdate,
   readParseResource,
 } from "../../Utils/modify-pod";
-import {TYPE_A} from "../namespace";
+import { TYPE_A } from "../namespace";
 
 const { namedNode, literal } = DataFactory;
 
@@ -51,7 +51,7 @@ export class Rdf {
 
   /**
    * Retrieves the values of the objects that match the given predicate.
-   * 
+   *
    * @param predicate - The predicate to match against.
    * @returns An array of string values if there are matching objects, otherwise undefined.
    */

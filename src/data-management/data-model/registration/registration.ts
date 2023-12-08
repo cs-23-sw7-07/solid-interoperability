@@ -1,13 +1,18 @@
-import {createTriple, Rdf} from "./RDF/rdf";
-import {ApplicationAgent, SocialAgent} from "./agent";
-import {INTEROP} from "./namespace";
-import {Fetch} from "../../fetch";
-import {getDate} from "../Utils";
-import {Prefixes, Quad, Store} from "n3";
-import {SAIViolationMissingTripleError} from "../../Errors";
+import { createTriple, Rdf } from "../RDF/rdf";
+import { ApplicationAgent, SocialAgent } from "../agent";
+import { INTEROP } from "../namespace";
+import { Fetch } from "../../../fetch";
+import { getDate } from "../../Utils";
+import { Prefixes, Quad, Store } from "n3";
+import { SAIViolationMissingTripleError } from "../../../Errors";
 
 export abstract class Registration extends Rdf {
-  constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+  protected constructor(
+    id: string,
+    fetch: Fetch,
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
     super(id, fetch, dataset, prefixes);
   }
 
@@ -21,8 +26,8 @@ export abstract class Registration extends Rdf {
     const triple = (predicate: string, object: string | Date) =>
       createTriple(id, INTEROP + predicate, object);
     return [
-      triple("registeredBy", registeredBy.webID),
-      triple("registeredWith", registeredWith.webID),
+      triple("registeredBy", registeredBy.getWebID()),
+      triple("registeredWith", registeredWith.getWebID()),
       triple("registeredAt", registeredAt),
       triple("updatedAt", updatedAt),
     ];
@@ -37,7 +42,7 @@ export abstract class Registration extends Rdf {
 
   async setRegisteredBy(agent: SocialAgent) {
     const predicate = INTEROP + "registeredBy";
-    const quad = this.createTriple(predicate, agent.webID);
+    const quad = this.createTriple(predicate, agent.getWebID());
     await this.update(predicate, [quad]);
     await this.updateDate();
   }
@@ -51,7 +56,7 @@ export abstract class Registration extends Rdf {
 
   async setRegisteredWith(agent: ApplicationAgent) {
     const predicate = INTEROP + "registeredWith";
-    const quad = this.createTriple(predicate, agent.webID);
+    const quad = this.createTriple(predicate, agent.getWebID());
     await this.update(predicate, [quad]);
     await this.updateDate();
   }

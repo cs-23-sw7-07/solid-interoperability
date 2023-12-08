@@ -1,19 +1,24 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {createTriple, getResource, Rdf} from "../../RDF/rdf";
-import {Fetch} from "../../../../fetch";
-import {INTEROP} from "../../namespace";
-import {getDate} from "../../../Utils";
-import {SAIViolationMissingTripleError} from "../../../../Errors";
-import {AccessNeedGroup} from "../access-needs/access-need-group";
-import {getAgent} from "../../../Utils/get-grantee";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { createTriple, getResource, Rdf } from "../../RDF/rdf";
+import { Fetch } from "../../../../fetch";
+import { INTEROP } from "../../namespace";
+import { getDate } from "../../../Utils";
+import { SAIViolationMissingTripleError } from "../../../../Errors";
+import { AccessNeedGroup } from "../access-needs/access-need-group";
+import { getAgent } from "../../../Utils/get-grantee";
 
 export abstract class Access extends Rdf {
   /**
    * A class which has the fields to conform to the `Access Authorization` graph defined in the Solid interoperability specification.
    * Definition of the graph: https://solid.github.io/data-interoperability-panel/specification/#access-authorization
    */
-  protected constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+  protected constructor(
+    id: string,
+    fetch: Fetch,
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
     super(id, fetch, dataset, prefixes);
   }
 
@@ -27,9 +32,9 @@ export abstract class Access extends Rdf {
     const triple = (predicate: string, object: string | Date) =>
       createTriple(id, INTEROP + predicate, object);
     return [
-      triple("grantedBy", grantedBy.webID),
+      triple("grantedBy", grantedBy.getWebID()),
       triple("grantedAt", grantedAt),
-      triple("grantee", grantee.webID),
+      triple("grantee", grantee.getWebID()),
       triple("hasAccessNeedGroup", hasAccessNeedGroup.uri),
     ];
   }

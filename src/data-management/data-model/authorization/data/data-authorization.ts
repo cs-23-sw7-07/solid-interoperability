@@ -1,17 +1,20 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../registration/data-registration";
-import {GrantScope} from "../grant-scope";
-import {Fetch} from "../../../../fetch";
-import {AccessMode} from "../access";
-import {Data} from "./data";
-import {createTriple, getResource, newResource} from "../../RDF/rdf";
-import {INTEROP} from "../../namespace";
-import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs";
-import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
-import {IDataGrantBuilder} from "./IDataGrantBuilder";
-import {DataGrant} from "./data-grant";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../registration/data-registration";
+import { GrantScope } from "../grant-scope";
+import { Fetch } from "../../../../fetch";
+import { AccessMode } from "../access";
+import { Data } from "./data";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
+import { INTEROP } from "../../namespace";
+import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
+import { AccessNeed } from "../access-needs";
+import {
+  SAIViolationError,
+  SAIViolationMissingTripleError,
+} from "../../../../Errors";
+import { IDataGrantBuilder } from "./IDataGrantBuilder";
+import { DataGrant } from "./data-grant";
 
 export class DataAuthorization extends Data {
   /**
@@ -51,9 +54,10 @@ export class DataAuthorization extends Data {
       triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)),
     );
 
-    if (dataOwner) quads.push(triple("dataOwner", dataOwner.webID));
+    if (dataOwner) quads.push(triple("dataOwner", dataOwner.getWebID()));
 
-    if (hasDataRegistration) quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
+    if (hasDataRegistration)
+      quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {
       for (const iri of hasDataInstance) {
@@ -61,7 +65,8 @@ export class DataAuthorization extends Data {
       }
     }
 
-    if (inheritsFromAuthorization) quads.push(
+    if (inheritsFromAuthorization)
+      quads.push(
         triple("inheritsFromAuthorization", inheritsFromAuthorization.uri),
       );
 

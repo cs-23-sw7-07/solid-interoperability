@@ -1,5 +1,5 @@
-import {DatasetCore} from "@rdfjs/types";
-import {DataFactory, NamedNode, Prefixes, Store, Writer} from "n3";
+import { DatasetCore } from "@rdfjs/types";
+import { DataFactory, NamedNode, Prefixes, Store, Writer } from "n3";
 
 const trimNamedGraph = (dataset: DatasetCore): Store => {
   const newDataset = new Store();

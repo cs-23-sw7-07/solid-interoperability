@@ -1,15 +1,18 @@
-import {Prefixes, Store} from "n3";
-import {Agent, SocialAgent} from "../../agent";
-import {DataRegistration} from "../../registration/data-registration";
-import {GrantScope} from "../grant-scope";
-import {AccessMode} from "../access/access-mode";
-import {createTriple, getResource, newResource} from "../../RDF/rdf";
-import {Fetch} from "../../../../fetch";
-import {Data} from "./data";
-import {INTEROP} from "../../namespace";
-import {getScopeOfAuth, scopeOfAuthFromEnum} from "../../../Utils";
-import {AccessNeed} from "../access-needs/access-need";
-import {SAIViolationError, SAIViolationMissingTripleError,} from "../../../../Errors";
+import { Prefixes, Store } from "n3";
+import { Agent, SocialAgent } from "../../agent";
+import { DataRegistration } from "../../registration/data-registration";
+import { GrantScope } from "../grant-scope";
+import { AccessMode } from "../access/access-mode";
+import { createTriple, getResource, newResource } from "../../RDF/rdf";
+import { Fetch } from "../../../../fetch";
+import { Data } from "./data";
+import { INTEROP } from "../../namespace";
+import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
+import { AccessNeed } from "../access-needs/access-need";
+import {
+  SAIViolationError,
+  SAIViolationMissingTripleError,
+} from "../../../../Errors";
 
 export class DataGrant extends Data {
   /**
@@ -46,7 +49,7 @@ export class DataGrant extends Data {
     );
 
     quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)));
-    quads.push(triple("dataOwner", dataOwner.webID));
+    quads.push(triple("dataOwner", dataOwner.getWebID()));
     quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {

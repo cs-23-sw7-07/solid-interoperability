@@ -1,9 +1,10 @@
-import {Prefixes, Store} from "n3";
-import {createTriple, newResourceContainer, Rdf} from "../RDF/rdf";
-import {Fetch} from "../../../fetch";
-import {INTEROP} from "../namespace";
-import {SocialAgentProfileDocument} from "../profile-documents";
-import {createContainer} from "../../Utils/modify-pod";
+import { Prefixes, Store } from "n3";
+import { createTriple, newResourceContainer, Rdf } from "../RDF/rdf";
+import { Fetch } from "../../../fetch";
+import { INTEROP } from "../namespace";
+import { SocialAgentProfileDocument } from "../profile-documents";
+import { createContainer } from "../../Utils/modify-pod";
+import { IRandom } from "../../../random/IRandom";
 
 export class RegistrySetResource extends Rdf {
   constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
@@ -14,12 +15,14 @@ export class RegistrySetResource extends Rdf {
     fetch: Fetch,
     pod: string,
     profileDocument: SocialAgentProfileDocument,
+    randomgen: IRandom,
   ) {
-    const registriesContainer = pod + "Registries/";
-    const agentRegistryContainer = registriesContainer + "agentregistries/";
+    const registriesContainer = pod + randomgen.randomID() + "/";
+    const agentRegistryContainer =
+      registriesContainer + randomgen.randomID() + "/";
     const authorizationRegistryContainer =
-      registriesContainer + "accessregistries/";
-    const dataRegistryContainer = pod + "data/";
+      registriesContainer + randomgen.randomID() + "/";
+    const dataRegistryContainer = pod + randomgen.randomID() + "/";
 
     await createContainer(fetch, registriesContainer);
     await createContainer(fetch, agentRegistryContainer);
