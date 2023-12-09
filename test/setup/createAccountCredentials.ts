@@ -11,7 +11,7 @@ type User = {
 };
 
 const testUser1: User = {
-  email: 'alice@example.com',
+  email: 'alicevykubvjtfbnkl@example.com',
   password: 'alice-secret',
   podName: 'Alice-pod',
 };
