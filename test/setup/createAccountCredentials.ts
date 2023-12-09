@@ -1,7 +1,7 @@
 if (process.argv.length !== 3) {
   throw new Error('Exactly 1 parameter is needed: the server URL.');
 }
-const solidServer = "CSS";
+
 const baseUrl = process.argv[2];
 
 type User = {
@@ -10,16 +10,10 @@ type User = {
   podName: string;
 };
 
-// const alice: User = {
-//   email: 'alice@example.com',
-//   password: 'alice-secret',
-//   podName: 'alice',
-// };
-
-const bob: User = {
-  email: 'bob@example.com',
-  password: 'bob-secret',
-  podName: 'bob',
+const testUser1: User = {
+  email: 'alice@example.com',
+  password: 'alice-secret',
+  podName: 'Alice-pod',
 };
 
 /**
@@ -105,12 +99,15 @@ async function outputCredentials(user: User): Promise<void> {
   const { webId, authorization } = await register(user);
   const { id, secret } = await createCredentials(webId, authorization);
 
-  console.log(`E2E_TEST_ENVIRONMENT=${solidServer}`);
+  console.log(`E2E_TEST_ENVIRONMENT=CSS`);
   console.log(`E2E_TEST_IDP=${baseUrl}`);
   console.log(`E2E_TEST_OWNER_CLIENT_ID=${id}`);
   console.log(`E2E_TEST_OWNER_CLIENT_SECRET=${secret}`);
   console.log(`E2E_TEST_USER=${user.podName}`);
   console.log(`E2E_TEST_PASSWORD=${user.password}`);
+  console.log(`E2E_TEST_FEATURE_FLAG_ACP="true"
+  E2E_TEST_FEATURE_FLAG_WAC="true"
+  E2E_TEST_FEATURE_FLAG_ACP_V3="true"`);
 }
 
 /**
@@ -121,6 +118,5 @@ function endProcess(error: Error): never {
   process.exit(1);
 }
 
-// Create tokens for Alice and Bob
-// outputCredentials(alice).catch(endProcess);
-outputCredentials(bob).catch(endProcess);
+// Create tokens for Alice
+outputCredentials(testUser1).catch(endProcess);

@@ -1,0 +1,7 @@
+<http://localhost:3000/Alice-pod/test-created/applicationRegistration1/> a <http://localhost:3000/Alice-pod/test-created/applicationRegistration1/ApplicationRegistration>;
+    <http://www.w3.org/ns/solid/interop#registeredBy> <http://localhost:3000/Alice-pod/profile/card#me>;
+    <http://www.w3.org/ns/solid/interop#registeredWith> <http://localhost:3000/test>;
+    <http://www.w3.org/ns/solid/interop#registeredAt> "2023-12-09T18:54:54.879Z"^^<xsd:dateTime>;
+    <http://www.w3.org/ns/solid/interop#updatedAt> "2023-12-09T18:54:54.879Z"^^<xsd:dateTime>;
+    <http://www.w3.org/ns/solid/interop#hasAccessGrant> <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant>;
+    <http://www.w3.org/ns/solid/interop#registeredAgent> <http://localhost:3000/projectron/#id>.

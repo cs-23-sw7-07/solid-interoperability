@@ -1,0 +1,9 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+
+<http://localhost:3000/Alice-pod/registries-unchangeable/authorization/f54a1b6a0DataAuth> a interop:DataAuthorization;
+    interop:grantee <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
+    interop:registeredShapeTree <http://shapetrees.example/solid/Project>.

@@ -15,11 +15,11 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "npm run testServer & jest",
+    "pretest": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
+    "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-    "prepublishOnly": "npm run tsc",
     "testServer": "community-solid-server -c @css:config/file.json -f solid-server/"
   },
   "keywords": [],
@@ -33,6 +33,7 @@
     "@types/n3": "^1.16.3",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "fs-extra": "^11.2.0",

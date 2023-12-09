@@ -1,0 +1,6 @@
+<http://localhost:3000/Alice-pod/test-created/dataRegistration1/> a <http://localhost:3000/Alice-pod/test-created/dataRegistration1/DataRegistration>;
+    <http://www.w3.org/ns/solid/interop#registeredBy> <http://localhost:3000/Alice-pod/profile/card#me>;
+    <http://www.w3.org/ns/solid/interop#registeredWith> <http://localhost:3000/Alice-pod/profile-documents/authorization-agent#id>;
+    <http://www.w3.org/ns/solid/interop#registeredAt> "2023-12-09T18:54:55.897Z"^^<xsd:dateTime>;
+    <http://www.w3.org/ns/solid/interop#updatedAt> "2023-12-09T18:54:55.897Z"^^<xsd:dateTime>;
+    <http://www.w3.org/ns/solid/interop#registeredShapeTree> <http://localhost:3000/Alice-pod/registries-unchangeable/shapeTrees/8501f084ShapeTree/>.
