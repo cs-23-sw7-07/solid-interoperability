@@ -49,9 +49,7 @@ jobs:
     - name: Start CSS in the background
       run: npm run testServer &
     - name: Wait until the server has started
-      run: >
-        curl --output /dev/null --silent --head --fail --retry 30
-        --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+      run: curl -v --output /dev/null --silent --head --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
     - name: Create test account credentials
       run: npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env
     - name: Load environment variables and run tests with coverage
