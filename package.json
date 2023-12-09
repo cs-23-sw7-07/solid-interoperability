@@ -26,7 +26,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@inrupt/internal-test-env": "^2.4.1",
     "@jest/globals": "^29.7.0",
+    "@solid/community-server": "^7.0.2",
     "@types/jest": "^29.5.5",
     "@types/n3": "^1.16.3",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
@@ -37,9 +39,9 @@
     "jest": "^29.7.0",
     "prettier": "3.0.3",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2",
-    "@inrupt/internal-test-env": "^2.4.1",
-    "@solid/community-server": "^7.0.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "url-join": "^5.0.0"
   },
   "dependencies": {
     "@inrupt/solid-client-authn-node": "^1.17.3",

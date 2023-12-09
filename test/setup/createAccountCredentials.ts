@@ -1,7 +1,7 @@
 if (process.argv.length !== 3) {
   throw new Error('Exactly 1 parameter is needed: the server URL.');
 }
-
+const solidServer = "CSS";
 const baseUrl = process.argv[2];
 
 type User = {
@@ -28,7 +28,7 @@ const bob: User = {
  */
 async function register(user: User): Promise<{ webId: string; authorization: string }> {
   // Get controls
-  let res = await fetch(urljoin(baseUrl, '.account/'));
+  let res = await fetch(baseUrl + '.account/');
   let { controls } = await res.json();
 
   // Create account
@@ -78,7 +78,7 @@ async function register(user: User): Promise<{ webId: string; authorization: str
  * @returns The id/secret for the client credentials request.
  */
 async function createCredentials(webId: string, authorization: string): Promise<{ id: string; secret: string }> {
-  let res = await fetch(urljoin(baseUrl, '.account/'), {
+  let res = await fetch(baseUrl + '.account/', {
     headers: { authorization },
   });
   const { controls } = await res.json();
@@ -105,9 +105,8 @@ async function outputCredentials(user: User): Promise<void> {
   const { webId, authorization } = await register(user);
   const { id, secret } = await createCredentials(webId, authorization);
 
-  const name = user.podName.toUpperCase();
-  console.log(`E2E_TEST_ENVIRONMENT="CSS"`);
-  console.log(`E2E_TEST_IDP=http://localhost:3000/`);
+  console.log(`E2E_TEST_ENVIRONMENT=${solidServer}`);
+  console.log(`E2E_TEST_IDP=${baseUrl}`);
   console.log(`E2E_TEST_OWNER_CLIENT_ID=${id}`);
   console.log(`E2E_TEST_OWNER_CLIENT_SECRET=${secret}`);
   console.log(`E2E_TEST_USER=${user.podName}`);
