@@ -1,4 +1,4 @@
-import {ACL} from "../../namespace";
+import { ACL } from "../../namespace";
 
 /**
  * These access modes are all the different modes which the Solid interoperability specification defines on Data Grant and Data Authorization.

@@ -9,8 +9,6 @@ import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
  */
 export function getAccessmode(accessMode: string): AccessMode {
   if (Object.values(AccessMode).includes(accessMode as AccessMode))
-    return (accessMode as AccessMode);
-  throw new InvalidAccessMode(
-      "Invalid access mode: " + accessMode,
-  );
+    return accessMode as AccessMode;
+  throw new InvalidAccessMode("Invalid access mode: " + accessMode);
 }

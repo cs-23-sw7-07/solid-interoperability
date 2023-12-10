@@ -12,7 +12,7 @@ import {
   SAIViolationError,
   SAIViolationMissingTripleError,
 } from "../../../../Errors";
-import {getScopeOfGrant} from "../../../Utils";
+import { getScopeOfGrant } from "../../../Utils";
 
 /**
  * Represents a data grant in the Solid interoperability specification.

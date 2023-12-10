@@ -2,16 +2,21 @@ import { createTriple, Rdf } from "../RDF/rdf";
 import { ApplicationAgent, SocialAgent } from "../agent";
 import { INTEROP } from "../namespace";
 import { getDate } from "../../Utils";
-import {Prefixes, Quad, Store} from "n3";
+import { Prefixes, Quad, Store } from "n3";
 import { SAIViolationMissingTripleError } from "../../../Errors";
-import {Fetch} from "../../../fetch";
+import { Fetch } from "../../../fetch";
 
 /**
  * Represents an abstract class for registration.
  * Provides methods for setting and getting registration details such as registeredBy, registeredWith, registeredAt, and updatedAt.
  */
 export abstract class Registration extends Rdf {
-  protected constructor(id: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes) {
+  protected constructor(
+    id: string,
+    fetch: Fetch,
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
     super(id, fetch, dataset, prefixes);
   }
   /**
