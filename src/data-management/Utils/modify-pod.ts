@@ -37,7 +37,7 @@ export async function createContainer(fetch: Fetch, uriContainer: string) {
 
   const response = await fetch(uriContainer, requestOptions);
   if (!response.ok) {
-    throw new Error(`failed to create containers ${uriContainer} ${response}`);
+    throw new Error(`Failed to create containers ${uriContainer} ${response}`);
   }
 }
 
