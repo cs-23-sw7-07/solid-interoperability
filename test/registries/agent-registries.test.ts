@@ -32,7 +32,7 @@ describe("Agent registry set - test properties/methods", () => {
         })
 
         test("Unit test: AgentRegistryResource - getHasApplicationRegistration", async () => {
-            const expected: ApplicationRegistration[] = [await getResource(ApplicationRegistration, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration")];
+            const expected: ApplicationRegistration[] = [await getResource(ApplicationRegistration, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/")];
             expect(await agentRegistry.getHasApplicationRegistration()).toStrictEqual(expected);
         })
     })
@@ -40,7 +40,7 @@ describe("Agent registry set - test properties/methods", () => {
 
     describe("Replaces no authorization", () => {
         const container = "registries-unchangeable"
-        const root = "../../solid-server/Alice-pod/";
+        const root = "./solid-server/Alice-pod/";
         const containerNewName = container + randomUUID()
         let agentReg: AgentRegistryResource;
 
@@ -55,21 +55,21 @@ describe("Agent registry set - test properties/methods", () => {
         });
 
         test("Unit test: AgentRegistryResource - addRegistration #1", async () => {
-            const applicationReg = new ApplicationRegistration(pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/", session.fetch);
+            const applicationReg = await getResource(ApplicationRegistration, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/")
             await agentReg.addRegistration(applicationReg);
 
             const regs = await agentReg.getHasApplicationRegistration();
 
-            expect(regs).toContain([applicationReg]);
+            expect(regs).toContainEqual(applicationReg);
         })
 
         test("Unit test: AgentRegistryResource - addRegistration #2", async () => {
-            const socialReg = new SocialAgentRegistration(pod + "registries-unchangeable/agents/2f2f3628SocialRegistration/", session.fetch);
+            const socialReg = await getResource(SocialAgentRegistration, session.fetch, pod + "registries-unchangeable/agents/c4562da9SocialAgentRegistration/");
             await agentReg.addRegistration(socialReg);
 
             const regs = await agentReg.getHasSocialAgentRegistration();
 
-            expect(regs).toContain([socialReg]);
+            expect(regs).toContainEqual(socialReg);
         })
     })
 })

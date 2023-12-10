@@ -1,5 +1,4 @@
 import {
-    ApplicationProfileDocument,
     getResource,
     RegistrySetResource,
     SAIViolationError,
@@ -7,6 +6,7 @@ import {
 } from "../../src";
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
+import {copyFolder, deleteFolder} from "../Utils/folder-management";
 
 describe("SocialAgentProfileDocument", () => {
     let session: Session;
@@ -22,7 +22,7 @@ describe("SocialAgentProfileDocument", () => {
         await session.logout();
     });
 
-    describe("Unit test - ApplicationProfileDocument - test get and methods", () => {
+    describe("Unit test - SocialAgentProfileDocument - test get and methods", () => {
         let socialAgentProfileDocument: SocialAgentProfileDocument;
         beforeAll(async () => {
             const id = pod + "profile/card#me";
@@ -59,7 +59,7 @@ describe("SocialAgentProfileDocument", () => {
         });
     });
 
-    describe("Unit test - ApplicationProfileDocument - addHasAuthorizationAgent", () => {
+    describe("Unit test - SocialAgentProfileDocument - addHasAuthorizationAgent", () => {
         it("Unit test - addHasAuthorizationAgent", async () => {
             const id = pod + "profile-example/example#id";
 
@@ -77,9 +77,26 @@ describe("SocialAgentProfileDocument", () => {
         });
     });
 
-    describe("Unit test - ApplicationProfileDocument - addHasRegistrySet", () => {
+    describe("Unit test - SocialAgentProfileDocument - getRegistrySet", () => {
+        it("Unit test - getRegistrySet throws SAIViolationError", async () => {
+            const id = pod + "profile-example/example#id";
+
+            const socialAgentProfileDocument: SocialAgentProfileDocument = await getResource(SocialAgentProfileDocument, session.fetch, id);
+
+            await expect(async () => {await socialAgentProfileDocument.getRegistrySet()}).rejects.toThrow(SAIViolationError);
+        });
+    });
+
+    describe("Unit test - SocialAgentProfileDocument - addHasRegistrySet", () => {
+        beforeEach(async () => {
+            await copyFolder("./solid-server/Alice-pod/profile-example", "./solid-server/Alice-pod/profile-example-copy")
+        })
+        afterEach(async () => {
+            await copyFolder("./solid-server/Alice-pod/profile-example-copy", "./solid-server/Alice-pod/profile-example")
+            await deleteFolder("./solid-server/Alice-pod/profile-example-copy")
+        })
         it("Unit test - addHasRegistrySet", async () => {
-            const id = pod + "registries-example";
+            const id = pod + "registries-example/";
             const webId = pod + "profile-example/example#id";
 
             const registries = await getResource(RegistrySetResource, session.fetch, id);
@@ -91,60 +108,18 @@ describe("SocialAgentProfileDocument", () => {
             const local_version = await socialAgentProfileDocument.getRegistrySet();
             expect(local_version).toEqual(registries);
             
-            const remote_version = await getResource(SocialAgentProfileDocument, session.fetch, id);
+            const remote_version = await getResource(SocialAgentProfileDocument, session.fetch, webId);
             expect(await remote_version.getRegistrySet()).toEqual(registries);
         });
 
         it("Unit test - addHasRegistrySet - should throw a SAIViolationError since it already has a registry set", async () => {
-            const id = pod + "registries-example";
+            const id = pod + "registries-example/";
             const webId = pod + "profile/card#id";
 
             const registries = await getResource(RegistrySetResource, session.fetch, id);
             const socialAgentProfileDocument: SocialAgentProfileDocument = await getResource(SocialAgentProfileDocument, session.fetch, webId);
             
-            expect(() => socialAgentProfileDocument.addHasRegistrySet(registries)).rejects.toThrow(SAIViolationError);
-        });
-    });
-
-
-    describe("Unit test - ApplicationProfileDocument - test getters and methods returns undefined", () => {
-        let applicationProfileDocument: ApplicationProfileDocument;
-        beforeAll(async () => {
-            const id = "http://example-app.com/profile-document/projectron#id";
-            applicationProfileDocument = new ApplicationProfileDocument(id, session.fetch);
-        });
-    
-        it("Unit test - get ApplicationName", () => {
-            const actualApplicationName = applicationProfileDocument.ApplicationName;
-
-            expect(actualApplicationName).toEqual(undefined);
-        });
-    
-        it("Unit test - get ApplicationDescription", () => {
-            const actualApplicationDescription = applicationProfileDocument.ApplicationDescription;
-    
-            expect(actualApplicationDescription).toEqual(undefined);
-        });
-    
-        it("Unit test - get ApplicationAuthor", () => {
-            const actual = applicationProfileDocument.ApplicationAuthor;
-            expect(actual).toEqual(undefined);
-        });
-    
-        it("Unit test - get ApplicationThumbnail", () => {
-            const actual = applicationProfileDocument.ApplicationThumbnail;
-            expect(actual).toEqual(undefined);
-        });
-        
-        it("Unit test - get getHasAccessNeedGroup", async () => {
-            const expected = [];
-            const actual = await applicationProfileDocument.getHasAccessNeedGroup();
-            expect(actual).toEqual(expected);
-        });
-    
-        it("Unit test - get HasAuthorizationCallbackEndpoint", () => {
-            const actual = applicationProfileDocument.HasAuthorizationCallbackEndpoint;
-            expect(actual).toEqual(undefined);
+            await expect(() => socialAgentProfileDocument.addHasRegistrySet(registries)).rejects.toThrow(SAIViolationError);
         });
     });
 });

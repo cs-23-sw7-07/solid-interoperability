@@ -2,6 +2,6 @@
 
 <> a interop:AgentRegistry ;
   interop:hasSocialAgentRegistration
-    <c4562da9SocialAgentRegistration/> ,
+    <c4562da9SocialAgentRegistration/> ;
   interop:hasApplicationRegistration
-    <2f2f3628ApplicationRegistration/> ,
+    <2f2f3628ApplicationRegistration/> .

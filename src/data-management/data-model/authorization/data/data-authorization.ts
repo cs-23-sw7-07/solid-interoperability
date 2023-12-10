@@ -7,7 +7,6 @@ import { AccessMode } from "../access";
 import { Data } from "./data";
 import { createTriple, getResource, newResource } from "../../RDF/rdf";
 import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
 import { AccessNeed } from "../access-needs";
 import {
   SAIViolationError,
@@ -15,6 +14,7 @@ import {
 } from "../../../../Errors";
 import { IDataGrantBuilder } from "./IDataGrantBuilder";
 import { DataGrant } from "./data-grant";
+import {getScopeOfGrant} from "../../../Utils";
 
 /**
  * Represents a class that conforms to the `Data Authorization` graph defined in the Solid interoperability specification.
@@ -75,7 +75,7 @@ export class DataAuthorization extends Data {
     );
 
     quads.push(
-      triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)),
+      triple("scopeOfAuthorization", scopeOfAuthorization),
     );
 
     if (dataOwner) quads.push(triple("dataOwner", dataOwner.getWebID()));
@@ -112,7 +112,7 @@ export class DataAuthorization extends Data {
     const scope = this.getObjectValueFromPredicate(
       INTEROP + "scopeOfAuthorization",
     );
-    if (scope) return getScopeOfAuth(scope);
+    if (scope) return getScopeOfGrant(scope)
     throw new SAIViolationMissingTripleError(
       this,
       INTEROP + "scopeOfAuthorization",
