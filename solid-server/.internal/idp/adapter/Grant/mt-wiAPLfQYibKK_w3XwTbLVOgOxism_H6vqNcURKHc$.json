@@ -1,0 +1,1 @@
+{"key":"idp/adapter/Grant/mt-wiAPLfQYibKK_w3XwTbLVOgOxism_H6vqNcURKHc","payload":{"expires":"2023-12-08T10:25:30.972Z","payload":{"iat":1700821530,"exp":1702031130,"accountId":"http://localhost:3000/Alice-pod/profile/card#me","clientId":"Gfrfwajec0YrXDZgh3DMA","kind":"Grant","jti":"mt-wiAPLfQYibKK_w3XwTbLVOgOxism_H6vqNcURKHc","openid":{"scope":"openid offline_access webid"}}}}
