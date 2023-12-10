@@ -114,7 +114,7 @@ describe("SocialAgentProfileDocument", () => {
 
         it("Unit test - addHasRegistrySet - should throw a SAIViolationError since it already has a registry set", async () => {
             const id = pod + "registries-example/";
-            const webId = pod + "profile/card#id";
+            const webId = pod + "profile/card#me";
 
             const registries = await getResource(RegistrySetResource, session.fetch, id);
             const socialAgentProfileDocument: SocialAgentProfileDocument = await getResource(SocialAgentProfileDocument, session.fetch, webId);
