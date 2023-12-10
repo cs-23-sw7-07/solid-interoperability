@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "jest access-authorization.test",
+    "test": "jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
