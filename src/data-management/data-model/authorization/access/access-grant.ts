@@ -32,7 +32,6 @@ export class AccessGrant extends Access {
    * @param id - The ID of the AccessGrant.
    * @param fetch - The fetch function used for making HTTP requests.
    * @param grantedBy - The SocialAgent who granted the access.
-   * @param grantedAt - The date when the access was granted.
    * @param grantee - The Agent who is granted access.
    * @param hasAccessNeedGroup - The AccessNeedGroup associated with the access.
    * @param hasDataGrant - An array of DataGrant instances associated with the access.
@@ -42,7 +41,6 @@ export class AccessGrant extends Access {
     id: string,
     fetch: Fetch,
     grantedBy: SocialAgent,
-    grantedAt: Date,
     grantee: Agent,
     hasAccessNeedGroup: AccessNeedGroup,
     hasDataGrant: DataGrant[],
@@ -52,7 +50,7 @@ export class AccessGrant extends Access {
     const quads = super.newQuadsAccess(
       id,
       grantedBy,
-      grantedAt,
+      new Date(),
       grantee,
       hasAccessNeedGroup,
     );
