@@ -2,7 +2,7 @@ import {getRDFFromPath} from "../Utils/get-RDF";
 import {ParserResult, parseTurtle} from "../../src/data-management/turtle/turtle-parser";
 import {DataFactory, Store} from "n3";
 import {INTEROP} from "../../src/data-management/data-model/namespace";
-import {NotParsable, SAIViolationError} from "../../src";
+import {NotParsable} from "../../src";
 
 const { namedNode, quad, literal } = DataFactory;
 
