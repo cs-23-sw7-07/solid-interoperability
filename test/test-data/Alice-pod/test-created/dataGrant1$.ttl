@@ -1,8 +1,0 @@
-<http://localhost:3000/Alice-pod/test-created/dataGrant1> <http://www.w3.org/ns/solid/interop#grantee> <http://localhost:3000/Alice-pod/profile/card#me>;
-    <http://www.w3.org/ns/solid/interop#registeredShapeTree> <http://shapetrees.example/solid/Project>;
-    <http://www.w3.org/ns/solid/interop#satisfiesAccessNeed> <http://localhost:3000/Alice-pod/profile-documents/projectron#need-project>;
-    <http://www.w3.org/ns/solid/interop#accessMode> <http://www.w3.org/ns/auth/acl#Read>;
-    <http://www.w3.org/ns/solid/interop#scopeOfGrant> <http://www.w3.org/ns/solid/interop#All>;
-    <http://www.w3.org/ns/solid/interop#dataOwner> <http://localhost:3000/Alice-pod/profile/card#me>;
-    <http://www.w3.org/ns/solid/interop#hasDataRegistration> <http://localhost:3000/Alice-pod/data/1234567DataRegistration/>;
-    a <http://localhost:3000/Alice-pod/test-created/DataGrant>.
