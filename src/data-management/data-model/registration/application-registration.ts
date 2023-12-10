@@ -53,7 +53,7 @@ export class ApplicationRegistration extends AgentRegistration {
       new Date(),
       hasAccessGrant,
     );
-    quads.push(triple("registeredAgent", registeredAgent.getWebID()));
+    quads.push(triple("registeredAgent", registeredAgent.WebID));
 
     return newResourceContainer(
       ApplicationRegistration,
@@ -79,7 +79,7 @@ export class ApplicationRegistration extends AgentRegistration {
 
   async setRegisteredAgent(agent: ApplicationAgent) {
     const predicate = INTEROP + "registeredAgent";
-    const quad = this.createTriple(predicate, agent.getWebID());
+    const quad = this.createTriple(predicate, agent.WebID);
     await this.update(predicate, [quad]);
   }
 }

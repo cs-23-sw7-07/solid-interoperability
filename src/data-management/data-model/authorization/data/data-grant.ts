@@ -75,7 +75,7 @@ export class DataGrant extends Data {
     );
 
     quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)));
-    quads.push(triple("dataOwner", dataOwner.getWebID()));
+    quads.push(triple("dataOwner", dataOwner.WebID));
     quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
     if (hasDataInstance) {

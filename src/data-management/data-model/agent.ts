@@ -8,7 +8,7 @@ export abstract class Agent {
    * Gets the WebID of the agent.
    * @returns The WebID of the agent.
    */
-  getWebID(): string {
+  get WebID(): string {
     return this.webID;
   }
 }

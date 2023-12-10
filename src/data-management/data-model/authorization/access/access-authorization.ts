@@ -68,7 +68,7 @@ export class AccessAuthorization extends Access {
       hasAccessNeedGroup,
     );
 
-    quads.push(triple("grantedWith", grantedWith.getWebID()));
+    quads.push(triple("grantedWith", grantedWith.WebID));
 
     for (const dataAuth of hasDataAuthorization) {
       quads.push(triple("hasDataAuthorization", dataAuth.uri));
