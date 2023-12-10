@@ -13,7 +13,7 @@ export class SAIViolationError extends Error {
 }
 
 /**
- * Represents an error that occurs when a triple is missing but requires in the Solid Application Interoperability specification.
+ * Represents an error that occurs when a triple is missing but required by the Solid Application Interoperability specification.
  */
 export class SAIViolationMissingTripleError extends SAIViolationError {
   constructor(
