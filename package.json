@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "pretest": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
+    "createAccountCredentials": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
     "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
@@ -41,8 +41,7 @@
     "prettier": "3.0.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "url-join": "^5.0.0"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@inrupt/solid-client-authn-node": "^1.17.3",

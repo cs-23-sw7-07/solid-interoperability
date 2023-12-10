@@ -49,11 +49,11 @@ jobs:
     - name: Start CSS in the background
       run: npm run testServer &    
     - name: Wait until the server has started
-      run: >
-        curl -v --output /dev/null --silent --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+      run: curl -v --output /dev/null --silent --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+    - name: Create test account and credentials
+      run: npm run createAccountCredentials
     - name: Load environment variables and run tests with coverage
-      run: |
-        npx dotenv -e ./test/setup/.env npm test -- --coverage
+      run: npx dotenv -e ./test/setup/.env npm test -- --coverage
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       env:
