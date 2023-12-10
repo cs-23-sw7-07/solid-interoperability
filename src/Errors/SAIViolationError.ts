@@ -22,7 +22,7 @@ export class SAIViolationMissingTripleError extends SAIViolationError {
   ) {
     super(
       rdf,
-      `Predicate "${missingPredicate}" is not provide, but according to the Solid Application Interoperability specification it must be specified.`,
+      `Predicate "${missingPredicate}" is not provided, but according to the Solid Application Interoperability specification it must be specified.`,
     );
   }
 }
