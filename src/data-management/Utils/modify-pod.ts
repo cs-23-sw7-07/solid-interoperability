@@ -102,7 +102,7 @@ export async function patchSPARQLUpdate(
   });
   if (!res.ok) {
     throw new Error(
-      `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
+      `Failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
     );
   }
   return res;
