@@ -6,7 +6,7 @@ import { Fetch } from "../../../../fetch";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 
 /**
- * Represents a AccessNeedsGroup.
+ * Represents an AccessNeedsGroup.
  */
 export class AccessNeedGroup extends Rdf {
   /**
