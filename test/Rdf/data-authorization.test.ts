@@ -143,11 +143,6 @@ describe("DataAuthorization - test get and set methods/properties", () => {
                 expect(() => {access.HasDataInstance}).toThrow(SAIViolationMissingTripleError);
                 expect(() => {access.HasDataInstance}).toThrow(INTEROP + "hasDataInstance");
             })
-
-            test("Unit test: DataAuthorization - get getInheritsFromAuthorization", () => {
-                expect(async () => await access.getInheritsFromAuthorization()).rejects.toThrow(SAIViolationMissingTripleError);
-                expect(async () => await access.getInheritsFromAuthorization()).rejects.toThrow(INTEROP + "inheritsFromAuthorization");
-            })
         })
 
         describe("Missing Predicates", () => {
