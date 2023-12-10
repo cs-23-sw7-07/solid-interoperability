@@ -12,12 +12,3 @@ export function isApplicationAgent(profile: ProfileDocument): boolean {
   if (types) return types.includes(INTEROP + "Application");
   throw new Error("The subject in the profile document has no agent type");
 }
-
-/**
- * Checks if the given profile is a social agent.
- * @param profile The profile document to check.
- * @returns True if the profile is a social agent, false otherwise.
- */
-export function isSocialAgent(profile: ProfileDocument): boolean {
-  return !isApplicationAgent(profile);
-}

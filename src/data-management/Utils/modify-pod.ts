@@ -37,7 +37,7 @@ export async function createContainer(fetch: Fetch, uriContainer: string) {
 
   const response = await fetch(uriContainer, requestOptions);
   if (!response.ok) {
-    throw new Error(`failed to create containers ${uriContainer} ${response}`);
+    throw new Error(`Failed to create containers ${uriContainer} ${response}`);
   }
 }
 
@@ -53,7 +53,7 @@ export async function create(fetch: Fetch, uriContainer: string) {
 
   const response = await fetch(uriContainer, requestOptions);
   if (!response.ok) {
-    throw new Error(`failed to create containers ${uriContainer} ${response}`);
+    throw new Error(`Failed to create containers ${uriContainer} ${response}`);
   }
 }
 export async function deleteContainerResource(
@@ -102,7 +102,7 @@ export async function patchSPARQLUpdate(
   });
   if (!res.ok) {
     throw new Error(
-      `failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
+      `Failed to patch ${uri}, body: ${body}, Response: ${res.statusText} ${res.status}`,
     );
   }
   return res;

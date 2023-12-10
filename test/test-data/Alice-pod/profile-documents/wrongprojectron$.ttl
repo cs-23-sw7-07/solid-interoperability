@@ -1,0 +1,8 @@
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+@prefix projectron: <http://localhost:3000/Alice-pod/profile-documents/projectron>.
+@prefix acme: <http://acme.example/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix solidtrees: <http://shapetrees.example/solid/>.
+
+projectron:\#id
+  a interop:Application .

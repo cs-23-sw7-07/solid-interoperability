@@ -135,3 +135,5 @@ lib
 .vscode
 
 solid-server/
+# Avoid CSS data
+.internal
