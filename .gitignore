@@ -132,3 +132,6 @@ lib
 
 .idea
 .vscode
+
+# Avoid CSS data
+.internal
