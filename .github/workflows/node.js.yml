@@ -58,3 +58,50 @@ jobs:
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  testwindows:
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present    
+    - name: Start CSS in the background
+      run: npm run testServer &    
+    - name: Wait until the server has started
+      shell: pwsh
+      run: |
+        $url = "http://localhost:3000/"
+        $maxRetries = 30
+        $retryDelaySeconds = 0
+
+        for ($i = 0; $i -lt $maxRetries; $i++) {
+            try {
+                $response = Invoke-WebRequest -Uri $url -Method Head -TimeoutSec 1
+                if ($response.StatusCode -eq 200) {
+                    Write-Host "Success! HTTP 200 OK"
+                    break
+                }
+            } catch {
+                Write-Host "Retry $($i + 1): $_.Exception.Message"
+            }
+
+            Start-Sleep -Seconds $retryDelaySeconds
+        }
+
+        if ($i -eq $maxRetries) {
+            Write-Host "Failed after $maxRetries retries"
+            exit 1
+        }
+    - name: Create test account and credentials
+      run: npm run createAccountCredentials
+    - name: Load environment variables and run tests
+      run: npx dotenv -e ./test/setup/.env npm test
