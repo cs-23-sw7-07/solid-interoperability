@@ -49,7 +49,14 @@ jobs:
     - name: Start CSS in the background
       run: npm run testServer &    
     - name: Wait until the server has started
-      run: curl -v --output /dev/null --silent --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # Use the Windows-specific command
+          curl -v --output NUL --silent --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+        else
+          # Use the Linux-specific command
+          curl -v --output /dev/null --silent --fail --retry 30 --retry-connrefused --retry-delay 0 -k http://localhost:3000/
+        fi
     - name: Create test account and credentials
       run: npm run createAccountCredentials
     - name: Load environment variables and run tests with coverage
