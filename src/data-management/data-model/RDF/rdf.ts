@@ -1,5 +1,5 @@
-import { DataFactory, Prefixes, Quad, Store } from "n3";
-import { Fetch } from "../../../fetch";
+import {DataFactory, Prefixes, Quad, Store} from "n3";
+import {Fetch} from "../../../fetch";
 import {
   createContainer,
   deleteSPARQLUpdate,
@@ -7,9 +7,9 @@ import {
   patchSPARQLUpdate,
   readParseResource,
 } from "../../Utils/modify-pod";
-import { TYPE_A } from "../namespace";
-import { parseTurtle } from "../../turtle/turtle-parser";
-import { serializeTurtle } from "../../turtle/turtle-serializer";
+import {SHAPE, TYPE_A} from "../namespace";
+import {parseTurtle} from "../../turtle/turtle-parser";
+import {serializeTurtle} from "../../turtle/turtle-serializer";
 
 const { namedNode, literal } = DataFactory;
 
@@ -134,6 +134,11 @@ export class Rdf {
 
   get Serialized() {
     return serializeTurtle(this.dataset, this.prefixes);
+  }
+
+
+  get HasShape(){
+    return this.getObjectValueFromPredicate(SHAPE)
   }
 }
 

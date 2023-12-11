@@ -15,7 +15,7 @@ describe("Application", () => {
   let app: Application;
   let expressApp;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const profile = await parseResource(
       ApplicationProfileDocument,
       readResource("testAppProfile.ttl"),
@@ -31,9 +31,11 @@ describe("Application", () => {
   });
 
   afterEach(() => {});
-  it("should register", () => {
-    app.register("http://localhost:3000/Alice-pod/profile/card#me");
+  it("should register", async () => {
+    await app.register("http://localhost:3000/Bob-pod/profile/card#me");
   });
-  it("should store RDF data correctly", () => {});
+  it("should store RDF data correctly", async () => {
+
+  });
   it("should retrieve RDF data correctly", () => {});
 });

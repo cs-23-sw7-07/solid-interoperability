@@ -1,16 +1,16 @@
-import { AccessAuthorization } from "../data-management/data-model/authorization/access";
-import { Fetch } from "../fetch";
-import { getResource } from "../data-management/data-model/RDF/rdf";
+import {getResource, newResource, Rdf} from "../data-management/data-model/RDF/rdf";
 import {
   ApplicationProfileDocument,
-  ProfileDocument,
   SocialAgentProfileDocument,
 } from "../data-management/data-model/profile-documents";
-import { SocialAgent } from "../data-management/data-model/agents/socialAgent";
 import { AuthorizationAgent } from "../data-management/data-model/agents/authorizationAgent";
+import {ApplicationRegistration} from "../data-management/data-model/registration";
+import {Quad} from "n3";
+import {SHAPE} from "../data-management/data-model/namespace";
+import {Fetch} from "../fetch";
 
 export class Application {
-  private authStore: AccessAuthorization[];
+  private authStore = new Map<string, ApplicationRegistration>;
   private fetch: Fetch;
 
   constructor(
@@ -19,8 +19,6 @@ export class Application {
   ) {
     if (!_fetch) this.fetch = fetch;
     else this.fetch = _fetch;
-
-    this.authStore = [];
   }
 
   get WebId() {
@@ -38,14 +36,14 @@ export class Application {
         }
       }
       if (content != undefined) {
-        res.send(content);
+        res.contentType("text/turtle").send(content);
       }
       next();
     };
   }
 
   async register(webId: string) {
-    const current = this.authStore.find((auth) => auth.GrantedBy.WebID);
+    const current = this.authStore.get(webId);
     if (current != undefined)
       throw new RegistrationError(`${webId} is all ready ready registered.`);
 
@@ -62,10 +60,43 @@ export class Application {
       );
 
     const authAgent = new AuthorizationAgent(authAgentStr[0], fetch);
-    const access = await authAgent.requestAccess();
+
+    const access = await authAgent.requestAccess(this.WebId);
+    this.authStore.set(webId, access)
   }
 
-  store(webId: string, data: string) {}
+  async store(webId: string, data: Quad[]) {
+    const shape = data.find(quad => quad.predicate.value == SHAPE)?.object.value
+    if (!shape)
+      throw new Error("Data has no Shape.")
+
+    const registry = this.authStore.get(webId);
+    if (registry === undefined){
+      throw new Error(`Application registration was not found for WebId ${webId}. Did you forget to register?`)
+    }
+    const accessGrants = await registry.getHasAccessGrants()
+    const accessGrant = accessGrants.find(async (grant) => {
+      return (
+          (await grant.getHasDataGrant()).find(
+              (dataGrant) => dataGrant.RegisteredShapeTree == shape,
+          ) != undefined
+      );
+    });
+    if (accessGrant) {
+
+      const dataRegistration =await (await accessGrant?.getHasDataGrant()).find(
+          async (grant) => (await grant.getHasDataRegistration()).RegisteredShapeTree == shape,
+      )?.getHasDataRegistration();
+      if (!dataRegistration) {
+        throw new Error(
+            `There were no Data Registration for type: ${shape} in AccessGrant.`,
+        );
+      }
+
+      //STORE
+    }
+    throw new Error(`There are no Access Grants for the type: ${shape}.`);
+  }
 
   retrieve(webId: string, uri: string) {}
 }

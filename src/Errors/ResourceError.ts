@@ -1,1 +1,1 @@
-class ResourceError extends Error {}
+export class ResourceError extends Error {}
