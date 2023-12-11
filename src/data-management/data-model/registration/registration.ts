@@ -1,9 +1,10 @@
 import { createTriple, Rdf } from "../RDF/rdf";
-import { ApplicationAgent, SocialAgent } from "../agent";
 import { INTEROP } from "../namespace";
 import { getDate } from "../../Utils";
 import { Quad } from "n3";
 import { SAIViolationMissingTripleError } from "../../../Errors";
+import { SocialAgent } from "../agents/socialAgent";
+import { ApplicationAgent } from "../agents/applicationAgent";
 
 /**
  * Represents an abstract class for registration.

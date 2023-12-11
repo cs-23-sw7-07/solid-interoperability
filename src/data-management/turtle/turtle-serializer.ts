@@ -26,7 +26,7 @@ const trimNamedGraph = (dataset: DatasetCore): Store => {
  */
 export function serializeTurtle(
   dataset: DatasetCore,
-  prefixes: Prefixes<string | NamedNode>,
+  prefixes: Prefixes,
 ): Promise<string> {
   const writer = new Writer({
     format: "text/turtle",

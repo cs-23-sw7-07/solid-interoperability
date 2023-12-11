@@ -85,4 +85,8 @@ export class SocialAgentProfileDocument extends ProfileDocument {
       this.createTriple(INTEROP + "hasRegistrySet", registriesContainer.uri),
     ]);
   }
+
+  async getAuthorizationAgents() {
+    return this.getObjectValuesFromPredicate(INTEROP + "hasAuthorizationAgent");
+  }
 }

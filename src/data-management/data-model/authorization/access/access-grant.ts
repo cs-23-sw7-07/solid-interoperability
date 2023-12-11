@@ -1,5 +1,5 @@
 import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
+import { Agent } from "../../agents/agent";
 import { DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
 import { INTEROP } from "../../namespace";
@@ -7,6 +7,7 @@ import { createTriple, getResources, newResource } from "../../RDF/rdf";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 import { Access } from "./access";
+import { SocialAgent } from "../../agents/socialAgent";
 
 /**
  * Represents an access grant in the Solid interoperability specification.

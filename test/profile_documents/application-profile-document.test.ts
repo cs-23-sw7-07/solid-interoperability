@@ -100,7 +100,7 @@ describe("ApplicationProfileDocument", () => {
         });
         
         it("Unit test - get getHasAccessNeedGroup", async () => {
-            const expected = [];
+            const expected: any[] = [];
             const actual = await applicationProfileDocument.getHasAccessNeedGroup();
             expect(actual).toEqual(expected);
         });

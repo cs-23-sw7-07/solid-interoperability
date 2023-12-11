@@ -1,5 +1,5 @@
 import { Prefixes, Store } from "n3";
-import { Agent, ApplicationAgent, SocialAgent } from "../../agent";
+import { Agent } from "../../agents/agent";
 import { AccessGrant } from "./access-grant";
 import { DataAuthorization, DataGrant } from "../data";
 import { Fetch } from "../../../../fetch";
@@ -13,6 +13,8 @@ import {
 } from "../../RDF/rdf";
 import { AccessNeedGroup } from "../access-needs";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
+import { SocialAgent } from "../../agents/socialAgent";
+import { ApplicationAgent } from "../../agents/applicationAgent";
 
 /**
  * Represents an access authorization in the Solid interoperability specification.

@@ -1,0 +1,1 @@
+class RegistrationError extends Error {}

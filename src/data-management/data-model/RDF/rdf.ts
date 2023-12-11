@@ -8,6 +8,8 @@ import {
   readParseResource,
 } from "../../Utils/modify-pod";
 import { TYPE_A } from "../namespace";
+import { parseTurtle } from "../../turtle/turtle-parser";
+import { serializeTurtle } from "../../turtle/turtle-serializer";
 
 const { namedNode, literal } = DataFactory;
 
@@ -129,6 +131,10 @@ export class Rdf {
   ): Promise<Response> {
     return patchSPARQLUpdate(this.fetch, this.uri, body, withMeta);
   }
+
+  get Serialized() {
+    return serializeTurtle(this.dataset, this.prefixes);
+  }
 }
 
 /**
@@ -215,6 +221,17 @@ export async function getResource<T extends Rdf>(
   const url = uri + (uri.endsWith("/") ? ".meta" : "");
   const result = await readParseResource(fetch, url);
   return new c(uri, fetch, result.dataset, result.prefixes);
+}
+
+export async function parseResource<T extends Rdf>(
+  c: {
+    new (uri: string, fetch: Fetch, dataset?: Store, prefixes?: Prefixes): T;
+  },
+  resource: string,
+  source: string,
+): Promise<T> {
+  const result = await parseTurtle(resource, source);
+  return new c(source, fetch, result.dataset, result.prefixes);
 }
 
 /**

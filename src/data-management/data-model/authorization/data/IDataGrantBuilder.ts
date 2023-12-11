@@ -1,7 +1,7 @@
-import { SocialAgent } from "../../agent";
 import { DataRegistration } from "../../registration/data-registration";
 import { DataAuthorization } from "./data-authorization";
 import { DataGrant } from "./data-grant";
+import { SocialAgent } from "../../agents/socialAgent";
 
 /**
  * The `IDataGrantBuilder` interface represents a builder for creating data grants.

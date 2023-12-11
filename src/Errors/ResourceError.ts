@@ -1,0 +1,1 @@
+class ResourceError extends Error {}
