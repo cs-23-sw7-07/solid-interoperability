@@ -217,7 +217,27 @@ export class DataAuthorization extends Data {
     const grants: DataGrant[] = [];
 
     switch (this.ScopeOfAuthorization) {
-      case GrantScope.All:
+      case GrantScope.All: {
+        for (const reg of await builder.getAllDataRegistrations(
+          this.RegisteredShapeTree,
+        )) {
+          grants.push(
+            await DataGrant.new(
+              builder.generateId(),
+              this.fetch,
+              await this.getGrantee(),
+              this.RegisteredShapeTree,
+              await this.getSatisfiesAccessNeed(),
+              this.AccessMode,
+              GrantScope.AllFromRegistry,
+              reg.RegisteredBy,
+              reg,
+              this.CreatorAccessMode,
+            ),
+          );
+        }
+        break;
+      }
       case GrantScope.AllFromAgent: {
         for (const reg of await builder.getAllDataRegistrations(
           this.RegisteredShapeTree,

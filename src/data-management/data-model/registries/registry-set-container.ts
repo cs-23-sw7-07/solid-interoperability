@@ -44,11 +44,6 @@ export class RegistrySetResource extends Rdf {
       registriesContainer + randomgen.randomID() + "/";
     const dataRegistryContainer = pod + randomgen.randomID() + "/";
 
-    await createContainer(fetch, registriesContainer);
-    await createContainer(fetch, agentRegistryContainer);
-    await createContainer(fetch, authorizationRegistryContainer);
-    await createContainer(fetch, dataRegistryContainer);
-
     const triple = (predicate: string, object: string | Date) =>
       createTriple(registriesContainer, INTEROP + predicate, object);
     const quads = [];
@@ -65,6 +60,11 @@ export class RegistrySetResource extends Rdf {
       "RegistrySet",
       quads,
     );
+    
+    await createContainer(fetch, agentRegistryContainer);
+    await createContainer(fetch, authorizationRegistryContainer);
+    await createContainer(fetch, dataRegistryContainer);
+
     await profileDocument.addHasRegistrySet(set);
     return set;
   }
