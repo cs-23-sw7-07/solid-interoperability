@@ -22,6 +22,14 @@
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "testServer": "community-solid-server -c @css:config/file.json -f solid-server/"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": ["lib/"],
+    "setupFiles": ["dotenv/config"],
+    "globalSetup": "./test/setup-test.ts",
+    "globalTeardown": "./test/tear-down-test.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
