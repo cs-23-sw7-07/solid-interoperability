@@ -14,6 +14,7 @@
     }
   },
   "scripts": {
+    "prepare": "npm run build",
     "createAccountCredentials": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
     "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
