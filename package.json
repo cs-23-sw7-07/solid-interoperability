@@ -14,12 +14,21 @@
     }
   },
   "scripts": {
+    "prepare": "npm run build",
     "createAccountCredentials": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
     "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "testServer": "community-solid-server -c @css:config/file.json -f solid-server/"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": ["lib/"],
+    "setupFiles": ["dotenv/config"],
+    "globalSetup": "./test/setup-test.ts",
+    "globalTeardown": "./test/tear-down-test.ts"
   },
   "keywords": [],
   "author": "",
