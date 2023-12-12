@@ -8,6 +8,7 @@ import { InvalidAccessMode } from "../../Errors/InvalidAccessMode";
  * @throws InvalidAccessMode - If the access mode cannot be inferred from the provided string.
  */
 export function getAccessmode(accessMode: string): AccessMode {
+  // TODO: Handle https and http
   if (Object.values(AccessMode).includes(accessMode as AccessMode))
     return accessMode as AccessMode;
   throw new InvalidAccessMode("Invalid access mode: " + accessMode);

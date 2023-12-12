@@ -79,7 +79,7 @@ export async function readParseResource(
   fetch: Fetch,
   url: string,
 ): Promise<ParserResult> {
-  const res = await fetch(url);
+  const res = await fetch(url, {headers: {Accept:"text/turtle"}});
   if (!res.ok) {
     throw new FetchError(res.statusText + " " + url);
   }
