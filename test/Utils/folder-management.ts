@@ -5,7 +5,7 @@ import * as fs from 'fs-extra';
  * @param {string} sourcePath - Path of the folder to be copied.
  * @param {string} destinationPath - Path where the folder should be copied to.
  */
-async function copyFolder(sourcePath: string, destinationPath: string): Promise<void> {
+export async function copyFolder(sourcePath: string, destinationPath: string): Promise<void> {
     try {
         await fs.copy(sourcePath, destinationPath);
         console.log(`Folder copied from ${sourcePath} to ${destinationPath}`);
@@ -20,7 +20,7 @@ async function copyFolder(sourcePath: string, destinationPath: string): Promise<
  * @param {string} sourcePath - Path of the folder whose contents should replace the destination folder.
  * @param {string} destinationPath - Path of the folder to be replaced.
  */
-async function replaceFolder(sourcePath: string, destinationPath: string): Promise<void> {
+export async function replaceFolder(sourcePath: string, destinationPath: string): Promise<void> {
     try {
         await fs.remove(destinationPath);
         await fs.copy(sourcePath, destinationPath);
@@ -32,7 +32,7 @@ async function replaceFolder(sourcePath: string, destinationPath: string): Promi
     }
 }
 
-async function deleteFolder(path: string): Promise<void> {
+export async function deleteFolder(path: string): Promise<void> {
     try {
         await fs.remove(path);
         console.log(`Delete folder at ${path}`);
@@ -42,9 +42,24 @@ async function deleteFolder(path: string): Promise<void> {
     }
 }
 
-// Export the functions, so they can be accessed from other files
-export {
-    deleteFolder,
-    copyFolder,
-    replaceFolder
-};
+export async function copyContentOfFolder(source: string, destination: string): Promise<void> {
+    try {
+      // Ensure the source folder exists
+      const sourceExists = await fs.pathExists(source);
+      console.log(__dirname);
+      if (!sourceExists) {
+        console.error(`Source folder '${source}' does not exist.`);
+        return;
+      }
+  
+      // Ensure the destination folder exists; create it if not
+      await fs.ensureDir(destination);
+  
+      // Copy the contents of the source folder to the destination folder
+      await fs.copy(source, destination, { overwrite: true });
+  
+      console.log(`Successfully copied contents from '${source}' to '${destination}'.`);
+    } catch (error) {
+      console.error(`Error copying folder: ${(error as Error).message}`);
+    }
+  }

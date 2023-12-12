@@ -40,7 +40,6 @@ export class AccessAuthorization extends Access {
    * @param fetch - The fetch function used to fetch resources.
    * @param grantedBy - The social agent who granted the access.
    * @param grantedWith - The application agent used to grant the access.
-   * @param grantedAt - The date when the access was granted.
    * @param grantee - The agent who is granted the access.
    * @param hasAccessNeedGroup - The access need group associated with the access.
    * @param hasDataAuthorization - The data authorizations associated with the access.
@@ -52,7 +51,6 @@ export class AccessAuthorization extends Access {
     fetch: Fetch,
     grantedBy: SocialAgent,
     grantedWith: ApplicationAgent,
-    grantedAt: Date,
     grantee: Agent,
     hasAccessNeedGroup: AccessNeedGroup,
     hasDataAuthorization: DataAuthorization[],
@@ -63,7 +61,7 @@ export class AccessAuthorization extends Access {
     const quads = super.newQuadsAccess(
       id,
       grantedBy,
-      grantedAt,
+      new Date(),
       grantee,
       hasAccessNeedGroup,
     );
@@ -96,7 +94,6 @@ export class AccessAuthorization extends Access {
       id,
       this.fetch,
       this.GrantedBy,
-      this.GrantedAt,
       await this.getGrantee(),
       await this.getHasAccessNeedGroup(),
       data_grants,

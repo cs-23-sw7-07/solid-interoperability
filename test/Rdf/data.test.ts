@@ -1,7 +1,7 @@
 import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@inrupt/internal-test-env";
 import {Session} from "@inrupt/solid-client-authn-node";
 import {AccessMode, ApplicationAgent, DataAuthorization, getResource, SAIViolationMissingTripleError} from "../../src";
-import {AccessNeed} from "../../src/data-management/data-model/authorization/access-needs/access-need";
+import {AccessNeed} from "../../src";
 
 describe(" - test get and set methods/properties", () => {
     let session: Session;
