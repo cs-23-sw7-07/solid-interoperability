@@ -14,12 +14,11 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
     "createAccountCredentials": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
     "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "testServer": "community-solid-server -c @css:config/file.json -f solid-server/"
   },
   "jest": {
