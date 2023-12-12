@@ -1,8 +1,8 @@
 import { INTEROP } from "../namespace";
 import { ProfileDocument } from "./profile-document";
 import N3 from "n3";
-import {URL} from "url";
-import {Fetch} from "../../../fetch";
+import { URL } from "url";
+import { Fetch } from "../../../fetch";
 
 /**
  * Checks if the given profile document represents an application agent.
@@ -26,9 +26,7 @@ export async function getPod(webId: string, fetch: Fetch) {
   }
 
   for (const link of pd.headers.get("link")!.split(",")) {
-    if (
-        link.includes("http://www.w3.org/ns/solid/terms#storageDescription")
-    ) {
+    if (link.includes("http://www.w3.org/ns/solid/terms#storageDescription")) {
       const podUrl = await fetch(link.split(";")[0].slice(2, -1), {
         headers: { Accept: "text/turtle" },
       });
