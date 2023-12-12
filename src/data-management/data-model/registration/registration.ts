@@ -38,8 +38,8 @@ export abstract class Registration extends Rdf {
     const triple = (predicate: string, object: string | Date) =>
       createTriple(id, INTEROP + predicate, object);
     return [
-      triple("registeredBy", registeredBy.getWebID()),
-      triple("registeredWith", registeredWith.getWebID()),
+      triple("registeredBy", registeredBy.WebID),
+      triple("registeredWith", registeredWith.WebID),
       triple("registeredAt", registeredAt),
       triple("updatedAt", updatedAt),
     ];
@@ -64,7 +64,7 @@ export abstract class Registration extends Rdf {
    */
   async setRegisteredBy(agent: SocialAgent) {
     const predicate = INTEROP + "registeredBy";
-    const quad = this.createTriple(predicate, agent.getWebID());
+    const quad = this.createTriple(predicate, agent.WebID);
     await this.update(predicate, [quad]);
     await this.updateDate();
   }
@@ -88,7 +88,7 @@ export abstract class Registration extends Rdf {
    */
   async setRegisteredWith(agent: ApplicationAgent) {
     const predicate = INTEROP + "registeredWith";
-    const quad = this.createTriple(predicate, agent.getWebID());
+    const quad = this.createTriple(predicate, agent.WebID);
     await this.update(predicate, [quad]);
     await this.updateDate();
   }

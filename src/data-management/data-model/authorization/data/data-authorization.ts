@@ -76,7 +76,7 @@ export class DataAuthorization extends Data {
 
     quads.push(triple("scopeOfAuthorization", scopeOfAuthorization));
 
-    if (dataOwner) quads.push(triple("dataOwner", dataOwner.getWebID()));
+    if (dataOwner) quads.push(triple("dataOwner", dataOwner.WebID));
 
     if (hasDataRegistration)
       quads.push(triple("hasDataRegistration", hasDataRegistration.uri));

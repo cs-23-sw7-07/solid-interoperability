@@ -29,9 +29,9 @@ export abstract class Access extends Rdf {
     const triple = (predicate: string, object: string | Date) =>
       createTriple(id, INTEROP + predicate, object);
     return [
-      triple("grantedBy", grantedBy.getWebID()),
+      triple("grantedBy", grantedBy.WebID),
       triple("grantedAt", grantedAt),
-      triple("grantee", grantee.getWebID()),
+      triple("grantee", grantee.WebID),
       triple("hasAccessNeedGroup", hasAccessNeedGroup.uri),
     ];
   }

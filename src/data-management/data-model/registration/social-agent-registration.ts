@@ -56,7 +56,7 @@ export class SocialAgentRegistration extends AgentRegistration {
       hasAccessGrant,
     );
     quads.push(
-      triple("registeredAgent", registeredAgent.getWebID()),
+      triple("registeredAgent", registeredAgent.WebID),
       triple("reciprocalRegistration", reciprocalRegistration),
     );
 

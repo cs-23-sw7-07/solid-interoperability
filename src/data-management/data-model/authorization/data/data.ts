@@ -32,7 +32,7 @@ export abstract class Data extends Rdf {
     const triple = (predicate: string, object: string | Date) =>
       createTriple(id, INTEROP + predicate, object);
     const quads = [
-      triple("grantee", grantee.getWebID()),
+      triple("grantee", grantee.WebID),
       triple("registeredShapeTree", registeredShapeTree),
       triple("satisfiesAccessNeed", satisfiesAccessNeed.uri),
     ];
