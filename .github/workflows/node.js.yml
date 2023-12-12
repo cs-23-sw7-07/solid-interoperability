@@ -39,18 +39,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
-    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test -- --coverage
-    
+    - run: npm run build --if-present    
+    - name: Start CSS in the background
+      run: npm run testServer &    
+    - name: Wait until the server has started
+      run: npx tsc test/setup/wait-until-server-runs.ts && node test/setup/wait-until-server-runs.js
+    - name: Create test account and credentials
+      run: npm run createAccountCredentials
+    - name: Load environment variables and run tests with coverage
+      run: npx dotenv -e ./test/setup/.env npm test -- --coverage
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    
