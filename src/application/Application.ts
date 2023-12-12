@@ -1,4 +1,4 @@
-import {getResource, newResource, Rdf} from "../data-management/data-model/RDF/rdf";
+import {getResource, parseResource, Rdf} from "../data-management/data-model/RDF/rdf";
 import {
   ApplicationProfileDocument,
   SocialAgentProfileDocument,
@@ -6,7 +6,7 @@ import {
 import { AuthorizationAgent } from "../data-management/data-model/agents/authorizationAgent";
 import {ApplicationRegistration} from "../data-management/data-model/registration";
 import {Quad} from "n3";
-import {SHAPE} from "../data-management/data-model/namespace";
+import {TYPE_A} from "../data-management/data-model/namespace";
 import {Fetch} from "../fetch";
 
 export class Application {
@@ -66,7 +66,15 @@ export class Application {
   }
 
   async store(webId: string, data: Quad[]) {
-    const shape = data.find(quad => quad.predicate.value == SHAPE)?.object.value
+    const type = data.find(quad => quad.predicate.value == TYPE_A)?.object.value
+    if (!type)
+          throw new Error("Data has no type.")
+
+    const shape = await fetch(type, {headers:{Accept:"text/turtle"}})
+        .then(res => res.text())
+        .then(text => parseResource(Rdf, text, type))
+        .then(rdf => rdf.HasShape)
+
     if (!shape)
       throw new Error("Data has no Shape.")
 
@@ -94,6 +102,7 @@ export class Application {
       }
 
       //STORE
+
     }
     throw new Error(`There are no Access Grants for the type: ${shape}.`);
   }

@@ -23,10 +23,15 @@ describe("Application", () => {
     );
 
     app = new Application(profile);
-    const router = await app.getRouter();
+    const appRouter = await app.getRouter();
+    const testRouter = express.Router();
+    testRouter.get("/testdata", (req, res, next) => {
+      res.send()
+    })
 
     expressApp = express();
-    expressApp.get("/", router);
+    expressApp.get("/", appRouter);
+    expressApp.use("/ldp", testRouter);
     expressApp.listen(3002);
   });
 
