@@ -60,7 +60,7 @@ export class RegistrySetResource extends Rdf {
       "RegistrySet",
       quads,
     );
-    
+
     await createContainer(fetch, agentRegistryContainer);
     await createContainer(fetch, authorizationRegistryContainer);
     await createContainer(fetch, dataRegistryContainer);

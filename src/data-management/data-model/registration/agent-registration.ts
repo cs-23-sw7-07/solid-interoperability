@@ -76,7 +76,7 @@ export abstract class AgentRegistration extends Registration {
    */
   async AddAccessGrants(grants: AccessGrant[]) {
     const predicate = INTEROP + "hasAccessGrant";
-    const quads = []
+    const quads = [];
     for (const grant of grants) {
       quads.push(this.createTriple(predicate, grant.uri));
     }
