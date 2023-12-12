@@ -130,3 +130,10 @@ dist
 .pnp.*
 .DS_Store
 lib
+
+.idea
+.vscode
+
+solid-server/
+# Avoid CSS data
+.internal
