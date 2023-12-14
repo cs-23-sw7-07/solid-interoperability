@@ -4,7 +4,7 @@ import {
   SocialAgentProfileDocument,
 } from "../data-management/data-model/profile-documents";
 import { AuthorizationAgent } from "../data-management/data-model/agents/authorizationAgent";
-import {ApplicationRegistration} from "../data-management/data-model/registration";
+import {ApplicationRegistration} from "../data-management/data-model/registration/application-registration";
 import {Quad} from "n3";
 import {TYPE_A} from "../data-management/data-model/namespace";
 import {Fetch} from "../fetch";

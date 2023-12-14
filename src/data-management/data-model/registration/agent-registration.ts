@@ -1,6 +1,4 @@
-import { Quad } from "n3";
 import { Prefixes, Quad, Store } from "n3";
-import { ApplicationAgent, SocialAgent } from "../agent";
 import { AccessGrant } from "../authorization/access";
 import { Registration } from "./registration";
 import { INTEROP } from "../namespace";

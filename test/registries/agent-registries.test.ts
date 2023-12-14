@@ -51,7 +51,7 @@ describe("Agent registry set - test properties/methods", () => {
         });
 
         afterAll(async () => {
-            await deleteFolder(root + containerNewName)
+            //await deleteFolder(root + containerNewName)
         });
 
         test("Unit test: AgentRegistryResource - addRegistration #1", async () => {

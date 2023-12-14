@@ -1,6 +1,0 @@
-<http://localhost:3000/Alice-pod/test-created/accessGrant1> <http://www.w3.org/ns/solid/interop#grantedBy> <http://localhost:3000/Alice-pod/profile/card#me>;
-    <http://www.w3.org/ns/solid/interop#grantedAt> "2023-12-10T19:50:28.773Z"^^<xsd:dateTime>, "2023-12-10T19:55:52.996Z"^^<xsd:dateTime>, "2023-12-10T19:59:03.235Z"^^<xsd:dateTime>;
-    <http://www.w3.org/ns/solid/interop#grantee> <http://localhost:3000/Alice-pod/profile-documents/projectron#id>;
-    <http://www.w3.org/ns/solid/interop#hasAccessNeedGroup> <http://localhost:3000/Alice-pod/profile-documents/projectron#need-group-pm>;
-    <http://www.w3.org/ns/solid/interop#hasDataGrant> <http://localhost:3000/Alice-pod/registries-unchangeable/agents/2f2f3628ApplicationRegistration/f54a1b6a0DataGrant>;
-    a <http://localhost:3000/Alice-pod/test-created/AccessGrant>.

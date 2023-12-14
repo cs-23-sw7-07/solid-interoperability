@@ -1,5 +1,5 @@
 import { getResource, Rdf } from "../RDF/rdf";
-import { ApplicationRegistration } from "../registration";
+import { ApplicationRegistration } from "../registration/application-registration";
 import { Fetch } from "../../../fetch";
 import {INTEROP, REGISTERED_AGENT} from "../namespace";
 import { AuthorizationError } from "../../../Errors/authorizationError";
