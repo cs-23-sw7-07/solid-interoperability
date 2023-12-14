@@ -16,7 +16,7 @@
   "scripts": {
     "prepare": "npm run build",
     "createAccountCredentials": "npx ts-node test/setup/createAccountCredentials.ts http://localhost:3000/ >> test/setup/.env",
-    "test": "npx dotenv -e ./test/setup/.env jest --coverage",
+    "test": "npx dotenv -e ./test/setup/.env jest",
     "check": "prettier --check src && eslint src test",
     "fmt": "prettier --write src && eslint src test",
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
@@ -32,7 +32,12 @@
       "dotenv/config"
     ],
     "globalSetup": "./test/setup-test.ts",
-    "globalTeardown": "./test/tear-down-test.ts"
+    "globalTeardown": "./test/tear-down-test.ts",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ]
   },
   "keywords": [],
   "author": "",
