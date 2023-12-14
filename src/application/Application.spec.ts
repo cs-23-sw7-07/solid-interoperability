@@ -61,13 +61,13 @@ describe("Application", () => {
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
         "\n" +
         "<#Test> {\n" +
-        "  a [localhost:TestShape] ;\n" +
+        "  a [localhost:Test] ;\n" +
         "  rdfs:label xsd:string;\n" +
         "  localhost:hasThing IRI *\n" +
         "}\n" +
         "\n" +
         "<#Thing> {\n" +
-        "  a [localhost:ThingShape] ;\n" +
+        "  a [localhost:Thing] ;\n" +
         "  rdfs:label xsd:string\n" +
         "}",
     );
