@@ -15,7 +15,6 @@ import {
 import { SocialAgent } from "../../agents/socialAgent";
 import { getScopeOfGrant } from "../../../Utils";
 
-
 /**
  * Represents a data grant in the Solid interoperability specification.
  * This class conforms to the `Data Grant` graph defined in the specification.

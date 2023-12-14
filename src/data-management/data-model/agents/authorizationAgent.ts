@@ -1,7 +1,7 @@
 import { getResource, Rdf } from "../RDF/rdf";
 import { ApplicationRegistration } from "../registration/application-registration";
 import { Fetch } from "../../../fetch";
-import {INTEROP, REGISTERED_AGENT} from "../namespace";
+import { INTEROP, REGISTERED_AGENT } from "../namespace";
 import { AuthorizationError } from "../../../Errors/authorizationError";
 import { ResourceError } from "../../../Errors/ResourceError";
 import parseLinkHeader from "parse-link-header";
@@ -24,23 +24,28 @@ export class AuthorizationAgent {
       endpoint = response.getObjectValueFromPredicate(
         INTEROP + "hasAuthorizationRedirectEndpoint",
       );
-
     } catch (e) {
       throw new Error(`Error contacting Authorization Service:\n${e}`);
     }
 
     if (!endpoint) throw new ResourceError("No authorization endpoint found.");
 
-    const clientQuery = `?client_id=${encodeURIComponent(webId)}`
-    endpoint += clientQuery
+    const clientQuery = `?client_id=${encodeURIComponent(webId)}`;
+    endpoint += clientQuery;
 
     // Get Access
-    const wantAccess = await this.fetch(endpoint, {method: "POST", headers: {Accept:"text/turtle"}});
+    const wantAccess = await this.fetch(endpoint, {
+      method: "POST",
+      headers: { Accept: "text/turtle" },
+    });
 
     if (!wantAccess.ok)
       throw new AuthorizationError("Could not authorize access.");
 
-    const linkHeader = await fetch(this.url + clientQuery, {method:"HEAD", headers: {Accept:"text/turtle"}})
+    const linkHeader = await fetch(this.url + clientQuery, {
+      method: "HEAD",
+      headers: { Accept: "text/turtle" },
+    });
     const links = linkHeader.headers.get("Link");
 
     const link = parseLinkHeader(links);
@@ -52,14 +57,13 @@ export class AuthorizationAgent {
 
     let accessUrl;
     try {
-      const agentLink = link[REGISTERED_AGENT]
+      const agentLink = link[REGISTERED_AGENT];
       accessUrl = agentLink?.anchor;
-    }catch (e){
-      throw Error("Could not get Registered Agent Link")
+    } catch (e) {
+      throw Error("Could not get Registered Agent Link");
     }
 
-    if (!accessUrl)
-      throw Error("Registered Agent Link was undefined.")
+    if (!accessUrl) throw Error("Registered Agent Link was undefined.");
 
     // Get Agent Registration url.
     // TODO: This fails without authentication.

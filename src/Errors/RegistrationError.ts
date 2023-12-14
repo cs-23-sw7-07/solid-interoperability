@@ -1,1 +1,1 @@
-class RegistrationError extends Error {}
+export class RegistrationError extends Error {}

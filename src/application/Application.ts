@@ -1,16 +1,16 @@
-import {getResource, parseResource, Rdf} from "../data-management/data-model/RDF/rdf";
+import { getResource } from "../data-management/data-model/RDF/rdf";
 import {
   ApplicationProfileDocument,
   SocialAgentProfileDocument,
 } from "../data-management/data-model/profile-documents";
 import { AuthorizationAgent } from "../data-management/data-model/agents/authorizationAgent";
-import {ApplicationRegistration} from "../data-management/data-model/registration/application-registration";
-import {Quad} from "n3";
-import {TYPE_A} from "../data-management/data-model/namespace";
-import {Fetch} from "../fetch";
+import { ApplicationRegistration } from "../data-management/data-model/registration/application-registration";
+import { Fetch } from "../fetch";
+import { RegistrationError } from "../Errors/RegistrationError";
+import { randomUUID } from "crypto";
 
 export class Application {
-  private authStore = new Map<string, ApplicationRegistration>;
+  private authStore = new Map<string, ApplicationRegistration>();
   private fetch: Fetch;
 
   constructor(
@@ -27,6 +27,7 @@ export class Application {
 
   async getRouter() {
     const profile = await this.profile.Serialized;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (req: any, res: any, next: any) => {
       let content;
       for (const type of req.accepts()) {
@@ -62,50 +63,58 @@ export class Application {
     const authAgent = new AuthorizationAgent(authAgentStr[0], fetch);
 
     const access = await authAgent.requestAccess(this.WebId);
-    this.authStore.set(webId, access)
+    this.authStore.set(webId, access);
+    return access;
   }
 
-  async store(webId: string, data: Quad[]) {
-    const type = data.find(quad => quad.predicate.value == TYPE_A)?.object.value
-    if (!type)
-          throw new Error("Data has no type.")
-
-    const shape = await fetch(type, {headers:{Accept:"text/turtle"}})
-        .then(res => res.text())
-        .then(text => parseResource(Rdf, text, type))
-        .then(rdf => rdf.HasShape)
-
-    if (!shape)
-      throw new Error("Data has no Shape.")
-
+  async store(webId: string, data: string, shapetree: string) {
     const registry = this.authStore.get(webId);
-    if (registry === undefined){
-      throw new Error(`Application registration was not found for WebId ${webId}. Did you forget to register?`)
-    }
-    const accessGrants = await registry.getHasAccessGrants()
-    const accessGrant = accessGrants.find(async (grant) => {
-      return (
-          (await grant.getHasDataGrant()).find(
-              (dataGrant) => dataGrant.RegisteredShapeTree == shape,
-          ) != undefined
+    if (registry === undefined) {
+      throw new Error(
+        `Application registration was not found for WebId ${webId}. Did you forget to register?`,
       );
-    });
-    if (accessGrant) {
+    }
+    const accessGrants = await registry.getHasAccessGrants();
+    let dataGrant;
+    for (const grant of accessGrants) {
+      dataGrant = (await grant.getHasDataGrant()).find(
+        (Grant) => Grant.RegisteredShapeTree == shapetree,
+      );
+      if (dataGrant) break;
+    }
 
-      const dataRegistration =await (await accessGrant?.getHasDataGrant()).find(
-          async (grant) => (await grant.getHasDataRegistration()).RegisteredShapeTree == shape,
-      )?.getHasDataRegistration();
+    if (dataGrant != undefined) {
+      const dataRegistration = await dataGrant.getHasDataRegistration();
+
       if (!dataRegistration) {
         throw new Error(
-            `There were no Data Registration for type: ${shape} in AccessGrant.`,
+          `There were no Data Registration for type: ${shapetree} in AccessGrant.`,
         );
       }
 
-      //STORE
+      const location = dataRegistration.uri + randomUUID();
 
-    }
-    throw new Error(`There are no Access Grants for the type: ${shape}.`);
+      const res = await this.fetch(location, {
+        headers: { "Content-Type": "text/turtle" },
+        method: "PUT",
+        body: data,
+      });
+
+      if (!res.ok)
+        throw Error(
+          `Response from server was: ${res.status}: ${await res.text()}`,
+        );
+
+      return location;
+    } else
+      throw new Error(`There are no Access Grants for the type: ${shapetree}.`);
   }
 
-  retrieve(webId: string, uri: string) {}
+  async retrieve(webId: string, uri: string) {
+    if (!this.authStore.get(webId))
+      throw new Error(`${webId} is not registered.`);
+    return await fetch(uri, { headers: { Accept: "text/turtle" } }).then(
+      (res) => res.text(),
+    );
+  }
 }
