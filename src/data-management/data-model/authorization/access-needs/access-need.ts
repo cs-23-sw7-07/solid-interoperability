@@ -19,7 +19,7 @@ export class AccessNeed extends Rdf {
    * @returns The registered shape tree URL.
    * @throws {SAIViolationMissingTripleError} If the registered shape tree is missing.
    */
-  get RegisteredShapeTree(): string | undefined {
+  get RegisteredShapeTree(): string {
     const shapeTree = this.getObjectValueFromPredicate(
       INTEROP + "registeredShapeTree",
     );

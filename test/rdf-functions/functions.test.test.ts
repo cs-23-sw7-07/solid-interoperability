@@ -18,7 +18,7 @@ describe("Application-registration-test", () => {
     });
 
     test("Able to get a resource", async () => {
-        await getResource(AccessGrant, session.fetch, pod + "e2765d6dAccessGrant")
+        await getResource(AccessGrant, session.fetch, pod + "registries-unchangeable/agents/2f2f3628ApplicationRegistration/e2765d6dAccessGrant")
     })
 
 

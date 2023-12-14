@@ -1,4 +1,6 @@
 import { Quad } from "n3";
+import { Prefixes, Quad, Store } from "n3";
+import { ApplicationAgent, SocialAgent } from "../agent";
 import { AccessGrant } from "../authorization/access";
 import { Registration } from "./registration";
 import { INTEROP } from "../namespace";
@@ -6,12 +8,21 @@ import { createTriple, getResources } from "../RDF/rdf";
 import { SAIViolationMissingTripleError } from "../../../Errors";
 import { SocialAgent } from "../agents/socialAgent";
 import { ApplicationAgent } from "../agents/applicationAgent";
+import { Fetch } from "../../../fetch";
 
 /**
  * An abstract class which is used polymorphic where functions which both a `Social Agent Registration` or `Application Agent Registration` can perform.
  * Has the fields which both the agent types share.
  */
 export abstract class AgentRegistration extends Registration {
+  protected constructor(
+    id: string,
+    fetch: Fetch,
+    dataset?: Store,
+    prefixes?: Prefixes,
+  ) {
+    super(id, fetch, dataset, prefixes);
+  }
   /**
    * Creates new quads for an agent registration.
    * @param id - The ID of the agent registration.
@@ -66,10 +77,13 @@ export abstract class AgentRegistration extends Registration {
    *
    * @param grant The access grant to be added.
    */
-  async AddAccessGrant(grant: AccessGrant) {
+  async AddAccessGrants(grants: AccessGrant[]) {
     const predicate = INTEROP + "hasAccessGrant";
-    const quad = this.createTriple(predicate, grant.uri);
-    await this.add([quad]);
+    const quads = [];
+    for (const grant of grants) {
+      quads.push(this.createTriple(predicate, grant.uri));
+    }
+    await this.add(quads);
     await this.updateDate();
   }
 }

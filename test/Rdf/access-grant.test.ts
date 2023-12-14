@@ -72,13 +72,13 @@ describe("Testing pod communication for Access Grant", () => {
         const grantee: ApplicationAgent = new ApplicationAgent(pod + "profile-documents/projectron#id");
         const hasAccessNeedGroup: AccessNeedGroup = await getResource(AccessNeedGroup, session.fetch, pod + "profile-documents/projectron#need-group-pm");
         const hasDataGrant: DataGrant[] = [dataGrant];
-
-        await AccessGrant.new(id, session.fetch, grantedBy, grantedAt, grantee, hasAccessNeedGroup, hasDataGrant);
+        
+        await AccessGrant.new(id, session.fetch, grantedBy, grantee, hasAccessNeedGroup, hasDataGrant);
         
         const addedGrant = await getResource(AccessGrant, session.fetch, id)
         expect(addedGrant.uri).toStrictEqual(id)
         expect(addedGrant.GrantedBy).toStrictEqual(grantedBy)
-        expect(addedGrant.GrantedAt).toStrictEqual(grantedAt)
+        expect(addedGrant.GrantedAt.getTime()).toBeGreaterThanOrEqual(grantedAt.getTime())
         expect(await addedGrant.getGrantee()).toStrictEqual(grantee)
         expect(await addedGrant.getHasDataGrant()).toStrictEqual(hasDataGrant)
     })

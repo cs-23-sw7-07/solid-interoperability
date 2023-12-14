@@ -13,6 +13,7 @@ import { IRandom } from "../../../random/IRandom";
 import { AgentRegistryResource } from "./agent-registry-container";
 import { SAIViolationMissingTripleError } from "../../../Errors";
 import { DataRegistryResource } from "./data-registry-container";
+import { AuthorizationRegistryResource } from "./authorization-registry-container";
 
 /**
  * Represents a registry set resource.
@@ -43,11 +44,6 @@ export class RegistrySetResource extends Rdf {
       registriesContainer + randomgen.randomID() + "/";
     const dataRegistryContainer = pod + randomgen.randomID() + "/";
 
-    await createContainer(fetch, registriesContainer);
-    await createContainer(fetch, agentRegistryContainer);
-    await createContainer(fetch, authorizationRegistryContainer);
-    await createContainer(fetch, dataRegistryContainer);
-
     const triple = (predicate: string, object: string | Date) =>
       createTriple(registriesContainer, INTEROP + predicate, object);
     const quads = [];
@@ -64,6 +60,11 @@ export class RegistrySetResource extends Rdf {
       "RegistrySet",
       quads,
     );
+
+    await createContainer(fetch, agentRegistryContainer);
+    await createContainer(fetch, authorizationRegistryContainer);
+    await createContainer(fetch, dataRegistryContainer);
+
     await profileDocument.addHasRegistrySet(set);
     return set;
   }
@@ -84,14 +85,14 @@ export class RegistrySetResource extends Rdf {
 
   /**
    * Retrieves the authorization registry associated with this registry set.
-   * @returns The URI of the authorization registry.
+   * @returns A Promise that resolves to the AuthorizationRegistryResource.
    * @throws {SAIViolationMissingTripleError} If the authorization registry is missing.
    */
-  get HasAuthorizationRegistry(): string {
+  async getHasAuthorizationRegistry(): Promise<AuthorizationRegistryResource> {
     const uri = this.getObjectValueFromPredicate(
       INTEROP + "hasAuthorizationRegistry",
     );
-    if (uri) return uri;
+    if (uri) return getResource(AuthorizationRegistryResource, this.fetch, uri);
     throw new SAIViolationMissingTripleError(
       this,
       INTEROP + "hasAuthorizationRegistry",

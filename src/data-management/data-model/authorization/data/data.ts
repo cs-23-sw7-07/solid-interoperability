@@ -2,7 +2,7 @@ import { Agent } from "../../agents/agent";
 import { createTriple, getResource, Rdf } from "../../RDF/rdf";
 import { AccessMode } from "../access/access-mode";
 import { INTEROP } from "../../namespace";
-import { accessModeFromEnum, getAccessmode } from "../../../Utils";
+import { getAccessmode } from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 import { getAgent } from "../../../Utils/get-grantee";
@@ -38,12 +38,12 @@ export abstract class Data extends Rdf {
     ];
 
     for (const mode of accessMode) {
-      quads.push(triple("accessMode", accessModeFromEnum(mode)));
+      quads.push(triple("accessMode", mode));
     }
 
     if (creatorAccessMode) {
       for (const mode of creatorAccessMode) {
-        quads.push(triple("creatorAccessMode", accessModeFromEnum(mode)));
+        quads.push(triple("creatorAccessMode", mode));
       }
     }
 

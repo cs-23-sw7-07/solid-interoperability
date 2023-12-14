@@ -7,13 +7,14 @@ import { createTriple, getResource, newResource } from "../../RDF/rdf";
 import { Fetch } from "../../../../fetch";
 import { Data } from "./data";
 import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
 import { AccessNeed } from "../access-needs/access-need";
 import {
   SAIViolationError,
   SAIViolationMissingTripleError,
 } from "../../../../Errors";
 import { SocialAgent } from "../../agents/socialAgent";
+import { getScopeOfGrant } from "../../../Utils";
+
 
 /**
  * Represents a data grant in the Solid interoperability specification.
@@ -75,7 +76,7 @@ export class DataGrant extends Data {
       creatorAccessMode,
     );
 
-    quads.push(triple("scopeOfGrant", scopeOfAuthFromEnum(scopeOfGrant)));
+    quads.push(triple("scopeOfGrant", scopeOfGrant));
     quads.push(triple("dataOwner", dataOwner.WebID));
     quads.push(triple("hasDataRegistration", hasDataRegistration.uri));
 
@@ -130,7 +131,7 @@ export class DataGrant extends Data {
    */
   public get ScopeOfGrant(): GrantScope {
     const scope = this.getObjectValueFromPredicate(INTEROP + "scopeOfGrant");
-    if (scope) return getScopeOfAuth(scope);
+    if (scope) return getScopeOfGrant(scope);
     throw new SAIViolationMissingTripleError(this, INTEROP + "scopeOfGrant");
   }
 

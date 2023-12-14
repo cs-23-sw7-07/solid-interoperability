@@ -14,6 +14,7 @@ import {
     SAIViolationMissingTripleError,
     SocialAgent
 } from "../../src";
+import {INTEROP} from "../../src/data-management/data-model/namespace";
 
 describe("DataAuthorization - test get and set methods/properties", () => {
     let session: Session;
@@ -127,25 +128,49 @@ describe("DataAuthorization - test get and set methods/properties", () => {
                 const id = pod + "test-unchangeable/wrong-rdfs/wrongDataAuth3";
                 access = await getResource(DataAuthorization, session.fetch, id);
             });
-    
-            test("Unit test: DataAuthorization - get ScopeOfAuthorization", () => {
-                expect(() => {access.ScopeOfAuthorization}).toThrow(SAIViolationMissingTripleError)
-            })
 
             test("Unit test: DataAuthorization - get DataOwner", () => {
                 expect(() => {access.DataOwner}).toThrow(SAIViolationMissingTripleError)
+                expect(() => {access.DataOwner}).toThrow(INTEROP + "dataOwner")
             })
 
             test("Unit test: DataAuthorization - getHasDataRegistration", () => {
-                expect(async () => {await access.getHasDataRegistration()}).rejects.toThrow(SAIViolationMissingTripleError)
+                expect( () => access.getHasDataRegistration()).rejects.toThrow(SAIViolationMissingTripleError);
+                expect( () => access.getHasDataRegistration()).rejects.toThrow(INTEROP + "hasDataRegistration");
             })
 
             test("Unit test: DataAuthorization - get HasDataInstance", () => {
-                expect(() => {access.HasDataInstance}).toThrow(SAIViolationMissingTripleError)
+                expect(() => {access.HasDataInstance}).toThrow(SAIViolationMissingTripleError);
+                expect(() => {access.HasDataInstance}).toThrow(INTEROP + "hasDataInstance");
             })
+        })
+
+        describe("Missing Predicates", () => {
+            let access: DataAuthorization;
+
+            beforeAll(async () => {
+                const id = pod + "test-unchangeable/wrong-rdfs/wrongDataAuth4";
+                access = await getResource(DataAuthorization, session.fetch, id);
+            });
+    
+            test("Unit test: DataAuthorization - get ScopeOfAuthorization", () => {
+                expect(() => {access.ScopeOfAuthorization}).toThrow(SAIViolationMissingTripleError)
+                expect(() => {access.ScopeOfAuthorization}).toThrow(INTEROP + "scopeOfAuthorization")
+
+            })
+        })
+
+        describe("Missing Predicates", () => {
+            let access: DataAuthorization;
+
+            beforeAll(async () => {
+                const id = pod + "test-unchangeable/wrong-rdfs/wrongDataAuth5";
+                access = await getResource(DataAuthorization, session.fetch, id);
+            });
 
             test("Unit test: DataAuthorization - get getInheritsFromAuthorization", () => {
                 expect(async () => await access.getInheritsFromAuthorization()).rejects.toThrow(SAIViolationMissingTripleError);
+                expect(async () => await access.getInheritsFromAuthorization()).rejects.toThrow(INTEROP + "inheritsFromAuthorization");
             })
         })
     })

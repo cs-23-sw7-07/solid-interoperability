@@ -7,7 +7,6 @@ import { AccessMode } from "../access";
 import { Data } from "./data";
 import { createTriple, getResource, newResource } from "../../RDF/rdf";
 import { INTEROP } from "../../namespace";
-import { getScopeOfAuth, scopeOfAuthFromEnum } from "../../../Utils";
 import { AccessNeed } from "../access-needs";
 import {
   SAIViolationError,
@@ -16,6 +15,7 @@ import {
 import { IDataGrantBuilder } from "./IDataGrantBuilder";
 import { DataGrant } from "./data-grant";
 import { SocialAgent } from "../../agents/socialAgent";
+import { getScopeOfGrant } from "../../../Utils";
 
 /**
  * Represents a class that conforms to the `Data Authorization` graph defined in the Solid interoperability specification.
@@ -75,9 +75,7 @@ export class DataAuthorization extends Data {
       creatorAccessMode,
     );
 
-    quads.push(
-      triple("scopeOfAuthorization", scopeOfAuthFromEnum(scopeOfAuthorization)),
-    );
+    quads.push(triple("scopeOfAuthorization", scopeOfAuthorization));
 
     if (dataOwner) quads.push(triple("dataOwner", dataOwner.WebID));
 
@@ -113,7 +111,7 @@ export class DataAuthorization extends Data {
     const scope = this.getObjectValueFromPredicate(
       INTEROP + "scopeOfAuthorization",
     );
-    if (scope) return getScopeOfAuth(scope);
+    if (scope) return getScopeOfGrant(scope);
     throw new SAIViolationMissingTripleError(
       this,
       INTEROP + "scopeOfAuthorization",
@@ -220,7 +218,27 @@ export class DataAuthorization extends Data {
     const grants: DataGrant[] = [];
 
     switch (this.ScopeOfAuthorization) {
-      case GrantScope.All:
+      case GrantScope.All: {
+        for (const reg of await builder.getAllDataRegistrations(
+          this.RegisteredShapeTree,
+        )) {
+          grants.push(
+            await DataGrant.new(
+              builder.generateId(),
+              this.fetch,
+              await this.getGrantee(),
+              this.RegisteredShapeTree,
+              await this.getSatisfiesAccessNeed(),
+              this.AccessMode,
+              GrantScope.AllFromRegistry,
+              reg.RegisteredBy,
+              reg,
+              this.CreatorAccessMode,
+            ),
+          );
+        }
+        break;
+      }
       case GrantScope.AllFromAgent: {
         for (const reg of await builder.getAllDataRegistrations(
           this.RegisteredShapeTree,
