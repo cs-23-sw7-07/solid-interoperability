@@ -1,11 +1,12 @@
 import { Prefixes, Store } from "n3";
-import { ApplicationAgent, SocialAgent } from "../agent";
 import { AgentRegistration } from "./agent-registration";
 import { AccessGrant } from "../authorization/access";
 import { Fetch } from "../../../fetch";
 import { createTriple, newResourceContainer } from "../RDF/rdf";
 import { INTEROP } from "../namespace";
 import { SAIViolationMissingTripleError } from "../../../Errors";
+import { SocialAgent } from "../agents/socialAgent";
+import { ApplicationAgent } from "../agents/applicationAgent";
 
 /**
  * A class which has the fields to conform to the `Application Agent Registration` graph defined in the Solid interoperability specification.

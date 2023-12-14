@@ -1,5 +1,5 @@
 import { DataFactory, Parser, Prefixes, Quad, Store } from "n3";
-import { NotParsable } from "../../Errors";
+import { NotParsable } from "../../Errors/NotParsable";
 
 /**
  * The result of parseTurtle function.

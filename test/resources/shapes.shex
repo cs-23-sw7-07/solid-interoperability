@@ -1,0 +1,14 @@
+PREFIX localhost: <http://localhost:3001/ldp#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<#Test> {
+  a [localhost:Test] ;
+  rdfs:label xsd:string;
+  localhost:hasThing IRI *
+}
+
+<#Thing> {
+  a [localhost:Thing] ;
+  rdfs:label xsd:string
+}

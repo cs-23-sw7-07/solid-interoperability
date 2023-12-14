@@ -1,5 +1,5 @@
 import { DatasetCore } from "@rdfjs/types";
-import { DataFactory, NamedNode, Prefixes, Store, Writer } from "n3";
+import { DataFactory, Prefixes, Store, Writer } from "n3";
 
 const trimNamedGraph = (dataset: DatasetCore): Store => {
   const newDataset = new Store();
@@ -26,7 +26,7 @@ const trimNamedGraph = (dataset: DatasetCore): Store => {
  */
 export function serializeTurtle(
   dataset: DatasetCore,
-  prefixes: Prefixes<string | NamedNode>,
+  prefixes: Prefixes,
 ): Promise<string> {
   const writer = new Writer({
     format: "text/turtle",

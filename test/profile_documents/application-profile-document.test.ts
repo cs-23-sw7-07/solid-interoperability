@@ -97,7 +97,7 @@ describe("ApplicationProfileDocument", () => {
             const actual = applicationProfileDocument.ApplicationThumbnail;
             expect(actual).toEqual(undefined);
         });
-        
+
         it("Unit test - get getHasAccessNeedGroup", () => {
             expect(async () => await applicationProfileDocument.getHasAccessNeedGroup()).rejects.toThrow(SAIViolationMissingTripleError);
             expect(async () => await applicationProfileDocument.getHasAccessNeedGroup()).rejects.toThrow(INTEROP + "hasAccessNeedGroup");

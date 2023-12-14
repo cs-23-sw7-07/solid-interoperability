@@ -1,10 +1,11 @@
-import { Agent, SocialAgent } from "../../agent";
+import { Agent } from "../../agents/agent";
 import { createTriple, getResource, Rdf } from "../../RDF/rdf";
 import { INTEROP } from "../../namespace";
 import { getDate } from "../../../Utils";
 import { SAIViolationMissingTripleError } from "../../../../Errors";
 import { AccessNeedGroup } from "../access-needs/access-need-group";
 import { getAgent } from "../../../Utils/get-grantee";
+import { SocialAgent } from "../../agents/socialAgent";
 
 /**
  * Represents an abstract class for access authorization and grant.

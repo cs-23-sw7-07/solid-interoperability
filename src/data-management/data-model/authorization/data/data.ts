@@ -1,4 +1,4 @@
-import { Agent } from "../../agent";
+import { Agent } from "../../agents/agent";
 import { createTriple, getResource, Rdf } from "../../RDF/rdf";
 import { AccessMode } from "../access/access-mode";
 import { INTEROP } from "../../namespace";

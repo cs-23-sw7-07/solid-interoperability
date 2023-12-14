@@ -1,5 +1,5 @@
 import { Prefixes, Store } from "n3";
-import { Agent, SocialAgent } from "../../agent";
+import { Agent } from "../../agents/agent";
 import { DataRegistration } from "../../registration/data-registration";
 import { GrantScope } from "../grant-scope";
 import { Fetch } from "../../../../fetch";
@@ -14,6 +14,7 @@ import {
 } from "../../../../Errors";
 import { IDataGrantBuilder } from "./IDataGrantBuilder";
 import { DataGrant } from "./data-grant";
+import { SocialAgent } from "../../agents/socialAgent";
 import { getScopeOfGrant } from "../../../Utils";
 
 /**

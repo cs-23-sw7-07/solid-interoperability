@@ -1,0 +1,6 @@
+@prefix shapetrees: <http://www.w3.org/ns/shapetrees#>
+@prefix localhost: <http://localhost:3001/ldp#>
+
+localhost:Thing
+  a shapetrees:ShapeTree ;
+  shapetrees:shape localhost:Thing .

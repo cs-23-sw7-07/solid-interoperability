@@ -2,7 +2,7 @@ import {getAuthenticatedSession, getNodeTestingEnvironment, getPodRoot} from "@i
 import {Session} from "@inrupt/solid-client-authn-node";
 import {AgentRegistryResource, ApplicationRegistration, getResource, SocialAgentRegistration} from "../../src";
 import {randomUUID} from "crypto";
-import {copyFolder, deleteFolder} from "../Utils/folder-management";
+import {copyFolder} from "../Utils/folder-management";
 
 describe("Agent registry set - test properties/methods", () => {
     let session: Session;
@@ -51,7 +51,7 @@ describe("Agent registry set - test properties/methods", () => {
         });
 
         afterAll(async () => {
-            await deleteFolder(root + containerNewName)
+            //await deleteFolder(root + containerNewName)
         });
 
         test("Unit test: AgentRegistryResource - addRegistration #1", async () => {

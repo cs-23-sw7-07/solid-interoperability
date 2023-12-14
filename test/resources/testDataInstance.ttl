@@ -1,0 +1,9 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix localhost: <http://localhost:3001/ldp#>
+
+localhost:ccbd77ae-f769-4e07-b41f-5136501e13e7\#Test
+  a localhost:Test ;
+  rdfs:label "This is a test" ;
+  localhost:hasThing
+    SW7-DI:576520a6-af5a-4cf9-8b40-8b1512b59c73\#Thing ,
+    SW7-DI:106a82aa-6911-4a7e-a49b-383cbaa9da66\#Thing .

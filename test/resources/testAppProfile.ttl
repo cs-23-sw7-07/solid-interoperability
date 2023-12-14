@@ -1,0 +1,22 @@
+@prefix interop: <http://www.w3.org/ns/solid/interop#>.
+@prefix TestAPP: <http://localhost:3002/>.
+@prefix acme: <https://acme.example/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix solidtrees: <https://shapetrees.example/solid/>.
+
+TestAPP:\#id
+  a interop:Application ;
+  interop:applicationName "TestAPP" ;
+  interop:applicationDescription "Manage projects with ease" ;
+  interop:applicationAuthor acme:\#corp ;
+  interop:hasAccessNeedGroup TestAPP:\#need-test .
+TestAPP:\#need-test
+  interop:accessNecessity interop:accessRequired ;
+  interop:accessScenario interop:PersonalAccess ;
+  interop:authenticatesAs interop:Pilot ;
+  interop:hasAccessNeed TestAPP:\#need-thing .
+TestAPP:\#need-thing
+  a interop:AccessNeed ;
+  interop:registeredShapeTree solidtrees:Project ;
+  interop:accessNecessity interop:accessRequired ;
+  interop:accessMode acl:Read, acl:Write .
