@@ -44,11 +44,19 @@ describe("Application", () => {
   });
 
   it("should be able to fetch RDF file", async () => {
-    let res1: Response = await fetch("http://localhost:3002/testThing1.ttl", {headers: {Accepts: "text/turtle"}});
-    let res2: Response = await fetch("http://localhost:3002/shapes.shex", {headers: {Accepts: "text/shex"}});
-    let res3: Response = await fetch("http://localhost:3002/shapeTreeTestThing.shex", {headers: {Accepts: "text/shex"}});
+    const res1: Response = await fetch("http://localhost:3002/testThing1.ttl", {
+      headers: { Accepts: "text/turtle" },
+    });
+    const res2: Response = await fetch("http://localhost:3002/shapes.shex", {
+      headers: { Accepts: "text/shex" },
+    });
+    const res3: Response = await fetch(
+      "http://localhost:3002/shapeTreeTestThing.shex",
+      { headers: { Accepts: "text/shex" } },
+    );
     console.log(await res3.text());
-    expect(await res1.text()).toBe("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+    expect(await res1.text()).toBe(
+      "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
         "@prefix localhost: <http://localhost:3001/ldp#>\n" +
         "\n" +
         "localhost:576520a6-af5a-4cf9-8b40-8b1512b59c73\\#Thing\n" +
