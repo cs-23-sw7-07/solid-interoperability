@@ -1,0 +1,12 @@
+PREFIX st: <http://www.w3.org/ns/shapetrees#>
+
+<#TestTree>
+  a st:ShapeTree ;
+  st:expectsType st:Container ;
+  st:shape localhost:Test ;
+  st:contains localhost:Thing .
+
+<#ThingTree>
+  a st:ShapeTree ;
+  st:expectsType st:Resource ;
+  st:shape localhost:Thing .

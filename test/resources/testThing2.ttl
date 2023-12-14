@@ -1,0 +1,6 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix localhost: <http://localhost:3001/ldp#>
+
+localhost:106a82aa-6911-4a7e-a49b-383cbaa9da66\#Thing
+  a localhost:Task ;
+  rdfs:label "Test task 2" .
